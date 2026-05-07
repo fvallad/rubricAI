@@ -19,7 +19,8 @@ class session_manager {
     private const PARAMS = [
         'use_moodle', 'path', 'ingested', 'sum_ok',
         'd1', 'd2', 'd2_json', 'd3', 'd4',
-        'sel_sug', 'instrument', 'exported', 'cmid',
+        'sel_sug', 'instrument', 'exported', 'cmid', 'feedback', 'max_grade',
+        'correction_instrument'
     ];
 
     /** Dimensions whose change triggers cascading invalidation. */
@@ -29,7 +30,7 @@ class session_manager {
     private const DOWNSTREAM = ['s_sugs', 'sel_sug', 'instrument', 'inst_content', 'rubric_content'];
 
     /** Large-content keys captured separately (PARAM_RAW, non-empty check). */
-    private const LARGE_CONTENT = ['s_sugs', 'inst_content', 'rubric_content'];
+    private const LARGE_CONTENT = ['s_sugs', 'inst_content', 'rubric_content', 'correction_content'];
 
     // ------------------------------------------------------------------
     // Lifecycle

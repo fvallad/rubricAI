@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Any, List, Optional
 
 class SuggestionItem(BaseModel):
     name: str
@@ -47,6 +47,30 @@ class RubricDesign(BaseModel):
     criteria: List[RubricCriterion]
     justification: Optional[str] = None
 
+# --- Correction Instrument Schemas (Step 9) ---
+
+class CorrectionKeyItem(BaseModel):
+    question: str
+    answer: str
+
+class ChecklistItem(BaseModel):
+    criterion: str
+
+class RatingScaleItem(BaseModel):
+    criterion: str
+
+class CorrectionDesign(BaseModel):
+    title: str
+    type: Optional[str] = None
+    items: Optional[List[Any]] = None
+    criteria: Optional[List[Any]] = None
+    levels: Optional[List[Any]] = None
+    rubric_criteria: Optional[List[Any]] = None
+    justification: Optional[str] = None
+
+    class Config:
+        extra = 'allow'
+
 class FeedbackClassification(BaseModel):
     is_valid: bool
     reason: Optional[str] = None
@@ -67,3 +91,6 @@ class GenerateRequest(BaseModel):
     d3_function: str = ""
     d4_modality: str = ""
     num_items: Optional[int] = 5
+    correction_type: str = ""       # clave_correccion, lista_cotejo, escala_valoracion, rubrica
+    correction_label: str = ""       # Human-readable label
+    quiz_items_json: str = ""        # JSON of quiz items for context

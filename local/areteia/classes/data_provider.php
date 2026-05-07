@@ -523,7 +523,9 @@ class data_provider {
         }
 
         // Recalculate sumgrades (sum of maxmark from quiz_slots)
-        \mod_quiz\grade_calculator::recompute_quiz_sumgrades($quiz);
+        if (function_exists('quiz_update_sumgrades')) {
+            quiz_update_sumgrades($quiz);
+        }
 
         // Verify sumgrades was updated; if still 0 with questions, force-fix.
         $db_sumgrades = $DB->get_field('quiz', 'sumgrades', ['id' => $quiz->id]);
@@ -572,7 +574,7 @@ class data_provider {
         $q->defaultmark            = isset($q_data['points']) ? (float)$q_data['points'] : 1.0;
         $q->penalty                = ($q_data['type'] === 'essay') ? 0.0 : 0.3333333;
         $q->qtype                  = $q_data['type'];
-        $q->length                 = ($q_data['type'] === 'essay') ? 0 : 1;
+        $q->length                 = ($q_data['type'] === 'description') ? 0 : 1;
         $q->stamp                  = make_unique_id_code();
         $q->category               = $category_id;
         $q->parent                 = 0;

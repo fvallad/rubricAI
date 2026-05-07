@@ -10,6 +10,7 @@ from schemas import (
     SuggestionsResponse, 
     InstrumentDesign, 
     RubricDesign,
+    CorrectionDesign,
     FeedbackClassification
 )
 from rag.utils import get_instrument_list
@@ -187,7 +188,8 @@ async def _prepare_prompt_data(request: GenerateRequest):
             classify_feedback,
             get_suggestions_prompt, 
             get_design_prompt, 
-            get_rubric_prompt
+            get_rubric_prompt,
+            get_correction_prompt
         )
         from rag.search import search_course, search_guidelines
 
@@ -325,6 +327,18 @@ async def _prepare_prompt_data(request: GenerateRequest):
         elif request.step == 6:
             prompt = get_rubric_prompt(request.instrument_content, request.objective, full_context, request.feedback)
             schema = RubricDesign
+        elif request.step == 9:
+            prompt = get_correction_prompt(
+                correction_type=request.correction_type,
+                correction_label=request.correction_label,
+                chosen_instrument=request.chosen_instrument,
+                instrument_content=request.instrument_content,
+                quiz_items_json=request.quiz_items_json,
+                objective=request.objective,
+                full_context=full_context,
+                feedback=request.feedback
+            )
+            schema = CorrectionDesign
         else:
             return None, None, None
 

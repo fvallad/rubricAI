@@ -234,8 +234,9 @@ if (!$already_ingested) {
             // Success
             echo html_writer::start_tag('div', [
                 'class' => 'areteia-card',
-                'style' => 'border-left: 5px solid #28a745; background: #f4fff4; margin-bottom:20px;',
+                'style' => 'border-left: 5px solid #28a745; background: #f4fff4; margin-bottom:20px; display: flex; justify-content: space-between; align-items: center;',
             ]);
+            echo html_writer::start_tag('div');
             echo html_writer::tag('strong', '✨ Biblioteca creada con éxito!', [
                 'style' => 'color:#28a745; display:block; margin-bottom:5px;',
             ]);
@@ -246,46 +247,10 @@ if (!$already_ingested) {
             echo html_writer::end_tag('div');
 
             $delete_url = new moodle_url($PAGE->url, ['step' => 1, 'action' => 'delete_rag', 'sesskey' => sesskey()]);
-            echo html_writer::start_tag('div', ['style' => 'text-align:right; margin-bottom: 20px;']);
-            echo html_writer::link($delete_url, '🗑️ Eliminar Biblioteca y reiniciar', [
+            echo html_writer::link($delete_url, 'Reconstruir Biblioteca', [
                 'class' => 'areteia-btn', 
-                'style' => 'background: #fff; color: #dc3545; border: 1px solid #dc3545;',
-                'data-confirm' => '¿Estás seguro de que deseas eliminar la biblioteca? Tendrás que volver a procesar los documentos si cambias de opinión.',
-            ]);
-            echo html_writer::end_tag('div');
-
-            // --- RAG Search Test Box ---
-            echo html_writer::start_tag('div', [
-                'class' => 'areteia-card',
-                'style' => 'border-left: 5px solid #6c63ff; background: #f8f7ff; margin-bottom:20px;',
-            ]);
-            echo html_writer::tag('strong', '🔍 Probá tu biblioteca', [
-                'style' => 'color:#6c63ff; display:block; margin-bottom:8px;',
-            ]);
-            echo html_writer::tag('p',
-                'Escribí una consulta de prueba y mirá qué fragmentos devuelve la IA desde tus documentos.',
-                ['style' => 'font-size:12px; margin:0 0 12px 0; color:#666;']
-            );
-            echo html_writer::start_tag('div', [
-                'style' => 'display:flex; gap:8px; align-items:stretch;',
-            ]);
-            echo html_writer::empty_tag('input', [
-                'type' => 'text',
-                'id' => 'rag-search-input',
-                'placeholder' => 'Ej: ¿Qué dice el material sobre gamificación?',
-                'class' => 'areteia-input',
-                'style' => 'flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:13px;',
-            ]);
-            echo html_writer::tag('button', 'Buscar', [
-                'id' => 'rag-search-btn',
-                'class' => 'areteia-btn areteia-btn-primary',
-                'style' => 'padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-size:13px;',
-                'data-courseid' => $id,
-            ]);
-            echo html_writer::end_tag('div');
-            echo html_writer::tag('div', '', [
-                'id' => 'rag-search-results',
-                'style' => 'margin-top:16px;',
+                'style' => 'background: #fff; color: #dc3545; border: 1px solid #dc3545; font-size: 12px; padding: 6px 12px;',
+                'data-confirm' => '¿Estás seguro de que deseas eliminar y reconstruir la biblioteca? Tendrás que volver a procesar los documentos.',
             ]);
             echo html_writer::end_tag('div');
             step_renderer::render_nav(1, $prev_url, new moodle_url($PAGE->url, ['step' => 3, 'action' => 'eval']), 'Continuar a Crear Evaluación →');

@@ -221,15 +221,13 @@ class step_renderer {
         echo \html_writer::end_tag('div');
     }
 
-    /**
-     * Render the "Ver Prompt" button.
-     */
     public static function render_preview_button(int $step): string {
         return \html_writer::tag('button', '👁️ Ver Prompt', [
             'type'        => 'button',
             'class'       => 'areteia-btn areteia-btn-preview',
             'data-p-step' => $step,
-            'title'       => 'Ver el diseño del prompt que se enviará a la IA'
+            'title'       => 'Ver el diseño del prompt que se enviará a la IA',
+            'style'       => 'display: none;'
         ]);
     }
 

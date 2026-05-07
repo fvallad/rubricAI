@@ -191,3 +191,92 @@ def get_rubric_prompt(instrument_content, objective, full_context, feedback=""):
       }}
     ]
   }}"""
+
+def get_correction_prompt(correction_type, correction_label, chosen_instrument, instrument_content, quiz_items_json, objective, full_context, feedback=""):
+    feedback_sect = f"\n### AJUSTES SOLICITADOS POR EL DOCENTE:\n{feedback}\n" if feedback else ""
+
+    # Type-specific instructions and JSON schema
+    type_instructions = {
+        "clave_correccion": {
+            "desc": "una CLAVE DE CORRECCIÓN (answer key) que proporcione la respuesta correcta para cada pregunta/ítem del instrumento de evaluación",
+            "schema": '''{
+    "title": "Clave de corrección para ...",
+    "type": "clave_correccion",
+    "items": [
+      {"question": "Texto de la pregunta", "answer": "Respuesta correcta"}
+    ],
+    "justification": "Breve justificación pedagógica"
+  }'''
+        },
+        "lista_cotejo": {
+            "desc": "una LISTA DE COTEJO (checklist) con criterios observables que verifican la presencia o ausencia de componentes requeridos",
+            "schema": '''{
+    "title": "Lista de cotejo para ...",
+    "type": "lista_cotejo",
+    "criteria": [
+      {"criterion": "Descripción del criterio observable"}
+    ],
+    "justification": "Breve justificación pedagógica"
+  }'''
+        },
+        "escala_valoracion": {
+            "desc": "una ESCALA DE VALORACIÓN con criterios y niveles de logro que permitan graduar el desempeño de forma ágil",
+            "schema": '''{
+    "title": "Escala de valoración para ...",
+    "type": "escala_valoracion",
+    "levels": ["Insuficiente", "Suficiente", "Bueno", "Destacado"],
+    "criteria": [
+      {"criterion": "Descripción del criterio a evaluar"}
+    ],
+    "justification": "Breve justificación pedagógica"
+  }'''
+        },
+        "rubrica": {
+            "desc": "una RÚBRICA ANALÍTICA con criterios y descriptores detallados para cada nivel de logro",
+            "schema": '''{
+    "title": "Rúbrica analítica para ...",
+    "type": "rubrica",
+    "levels": ["Insuficiente", "Suficiente", "Bueno", "Destacado"],
+    "criteria": [
+      {"criterion": "Nombre del criterio"}
+    ],
+    "rubric_criteria": [
+      {
+        "name": "Nombre del criterio",
+        "description": "Qué se evalúa",
+        "levels": [
+          {"label": "Destacado", "score": 4, "description": "Descriptor de desempeño"}
+        ]
+      }
+    ],
+    "justification": "Justificación pedagógica detallada"
+  }'''
+        }
+    }
+
+    info = type_instructions.get(correction_type, type_instructions["rubrica"])
+
+    return f"""### TAREA A REALIZAR:
+  Genera {info['desc']} para un instrumento de evaluación de tipo "{chosen_instrument}".
+
+  ### OBJETIVOS DE APRENDIZAJE:
+  {objective}
+
+  ### INSTRUMENTO DE EVALUACIÓN (Ítems generados previamente):
+  {instrument_content}
+
+  ### ÍTEMS DEL CUESTIONARIO (JSON):
+  {quiz_items_json}
+
+  ### MARCO PEDAGÓGICO Y DIRECTRICES:
+  {full_context}
+  {feedback_sect}
+
+  ### INSTRUCCIONES CRÍTICAS:
+  1. El instrumento de corrección debe estar perfectamente alineado con los ítems de evaluación proporcionados.
+  2. Cada criterio debe ser claro, observable y pedagógicamente fundamentado.
+  3. Basa los criterios en los objetivos de aprendizaje y los materiales del curso.
+  4. Responde ÚNICAMENTE en formato JSON según el esquema indicado abajo.
+
+  ### FORMATO DE RESPUESTA (JSON ÚNICAMENTE):
+  {info['schema']}"""

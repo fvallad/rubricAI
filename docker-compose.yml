@@ -94,7 +94,7 @@ services:
       - "8000:8000"
     # environment:
       # - ARETEIA_SYNC_PATH=/var/www/moodledata/areteia_sync
-    env_file: .env
+    env_file: ./areteia_ai/.env
     volumes:
       - ./areteia_ai:/app
       - ./moodledata:/var/www/moodledata

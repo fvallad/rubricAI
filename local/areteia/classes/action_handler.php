@@ -232,10 +232,11 @@ class action_handler {
                 foreach ($questions as $idx => &$q) {
                     if (isset($item_points[$idx])) {
                         $weight_percentage = (float)$item_points[$idx];
-                        $q['points'] = round(($weight_percentage / 100.0) * $max_grade, 2);
+                        $q['weight'] = $weight_percentage; // Persist the percentage weight
+                        $q['points'] = round(($weight_percentage / 100.0) * $max_grade, 2); // Calculate absolute points
                     }
                 }
-                unset($q); // break reference reference
+                unset($q); // break reference
                 
                 // Actualizar la sesión con los pesos finales configurados por el usuario antes de inyectar
                 $parsed['items'] = $questions;
@@ -317,8 +318,8 @@ class action_handler {
     private static function handle_preview(int $course_id): void {
         header('Content-Type: application/json');
         
-        $step = optional_param('p_step', 4, PARAM_INT);
-        $feedback = optional_param('feedback', '', PARAM_TEXT);
+        $step     = optional_param('p_step', 4, PARAM_INT);
+        $feedback = optional_param('feedback', session_manager::get('feedback', ''), PARAM_TEXT);
         
         $summary = data_provider::get_course_summary($course_id);
         

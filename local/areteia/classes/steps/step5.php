@@ -77,7 +77,10 @@ class step5 {
         step_renderer::render_rag_info();
 
         $usage = session_manager::get('s5_usage', null);
-        echo \local_areteia\step_renderer::render_ai_usage_badge($usage);
+        if (!empty($usage)) {
+            $usage_json = json_encode($usage);
+            echo "<script>console.log('AI Token Usage (Step 5):', {$usage_json});</script>";
+        }
 
         // Instrument summary card
         echo html_writer::start_tag('div', [

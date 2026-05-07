@@ -14,6 +14,12 @@ document.addEventListener("click", e => {
     // Skip the ingest and publish buttons — handled natively for security (sesskey)
     if (link.id === 'confirm-ingest-btn' || link.id === 'btn-publish-quiz') return;
 
+    // Handle confirmation if needed
+    if (link.dataset.confirm && !confirm(link.dataset.confirm)) {
+        e.preventDefault();
+        return;
+    }
+
     // Handle different types of triggers (links vs form buttons)
     let urlString = link.href;
     let isFormSubmit = false;
@@ -149,7 +155,10 @@ document.addEventListener("click", e => {
         initTreeCheckboxes();
         initRagSearchTest();
         initIngestionForm();
+        initPromptPreview();
+        initItemAdjustmentUI();
         initInstrumentFallback();
+        initQuizWeightsAdjustment();
     }).catch(err => {
         console.error(err);
         alert("Error en la comunicación con el servidor. Por favor, reintenta.");
@@ -474,6 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initPromptPreview();
     initItemAdjustmentUI();
     initInstrumentFallback();
+    initQuizWeightsAdjustment();
 });
 
 /**
@@ -566,9 +576,21 @@ function initPromptPreview() {
         });
     });
 
-    // Close on ESC
+    // Close on ESC and Toggle prompt button on F9
     document.addEventListener("keydown", e => {
-        if (e.key === "Escape") closePromptPreview();
+        if (e.key === "Escape") {
+            closePromptPreview();
+        } else if (e.key === "F9") {
+            e.preventDefault();
+            const btns = document.querySelectorAll(".areteia-btn-preview");
+            btns.forEach(btn => {
+                if (btn.style.display === "none") {
+                    btn.style.display = "inline-block";
+                } else {
+                    btn.style.display = "none";
+                }
+            });
+        }
     });
 }
 
@@ -804,6 +826,7 @@ function initInstrumentFallback() {
             initPromptPreview();
             initItemAdjustmentUI();
             initInstrumentFallback();
+            initQuizWeightsAdjustment();
 
             // Update URL in history
             const finalUrl = new URL(url);
@@ -814,4 +837,126 @@ function initInstrumentFallback() {
             main.style.opacity = '1';
         });
     });
+}
+
+/**
+ * Update absolute points labels (pts) based on current max grade and percentages.
+ */
+function updateQuizItemAbsPoints() {
+    const maxGradeInput = document.getElementById('max_grade_input');
+    if (!maxGradeInput) return;
+
+    const maxGrade = parseFloat(maxGradeInput.value) || 0;
+    const inputs = document.querySelectorAll('.quiz-item-points');
+
+    inputs.forEach(input => {
+        const pct = parseFloat(input.value) || 0;
+        const abs = (pct / 100.0) * maxGrade;
+        const label = document.querySelector(`.quiz-item-abs-points[data-idx="${input.dataset.idx}"]`);
+        if (label) {
+            label.innerText = `(${abs.toFixed(2)} pts)`;
+        }
+    });
+}
+
+/**
+ * Step 7: Auto-adjust quiz weights to always sum up to 100%.
+ * Respects manually modified inputs and prevents exceeding 100%.
+ */
+function initQuizWeightsAdjustment() {
+    const inputs = Array.from(document.querySelectorAll('.quiz-item-points'));
+    if (!inputs.length) return;
+
+    // Initial calculation for absolute points
+    updateQuizItemAbsPoints();
+
+    inputs.forEach(input => {
+        if (input.dataset.boundWeights) return;
+        input.dataset.boundWeights = "1";
+        input.dataset.locked = "0"; // 0 = auto-calculated, 1 = user manually set
+
+        input.addEventListener('change', function () {
+            let newVal = parseFloat(this.value);
+            if (isNaN(newVal) || newVal < 0.1) newVal = 0.1;
+
+            if (inputs.length <= 1) {
+                if (newVal > 100) newVal = 100;
+                this.value = newVal.toFixed(1);
+                return;
+            }
+
+            const otherInputs = inputs.filter(i => i !== this);
+            
+            // Calculate sum of other LOCKED inputs
+            let lockedSum = 0;
+            let unlockedInputs = [];
+            otherInputs.forEach(i => {
+                if (i.dataset.locked === "1") {
+                    lockedSum += parseFloat(i.value);
+                } else {
+                    unlockedInputs.push(i);
+                }
+            });
+
+            // Prevent newVal from exceeding the available percentage
+            let minRequiredForUnlocked = unlockedInputs.length * 0.1;
+            let maxAllowed = 100.0 - lockedSum - minRequiredForUnlocked;
+            
+            if (newVal > maxAllowed) {
+                newVal = maxAllowed;
+                if (newVal < 0.1) newVal = 0.1;
+                // Alerta suave para que entienda por qué se bajó su número
+                console.warn(`Valor ajustado a ${newVal} para no superar el 100% total con los campos bloqueados.`);
+            }
+
+            this.value = newVal.toFixed(1);
+            this.dataset.locked = "1";
+
+            let remaining = 100.0 - newVal - lockedSum;
+            if (remaining < 0) remaining = 0;
+
+            // Si no quedan campos desbloqueados y el usuario BAJÓ el valor de este campo,
+            // sobrará un porcentaje. En ese caso, debemos desbloquear el resto para que lo absorban.
+            if (unlockedInputs.length === 0 && remaining > 0.05) {
+                otherInputs.forEach(i => i.dataset.locked = "0");
+                unlockedInputs = otherInputs;
+            }
+
+            const unlockedCount = unlockedInputs.length;
+            if (unlockedCount > 0) {
+                let distVal = Math.floor((remaining / unlockedCount) * 10) / 10;
+                let sumDistributed = 0;
+
+                unlockedInputs.forEach((unlocked, index) => {
+                    if (index === unlockedCount - 1) {
+                        // El último toma exactamente lo que falta
+                        let lastVal = remaining - sumDistributed;
+                        if (lastVal < 0.1) lastVal = 0.1;
+                        unlocked.value = lastVal.toFixed(1);
+                    } else {
+                        unlocked.value = distVal.toFixed(1);
+                        sumDistributed += distVal;
+                    }
+                });
+            }
+            
+            // Re-calculate absolute points for all items
+            updateQuizItemAbsPoints();
+        });
+
+        // Prevenir que la tecla Enter envíe el formulario por accidente
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur(); // Quita el foco para forzar el evento 'change'
+            }
+        });
+    });
+
+    // Also watch for max_grade changes to update absolute points
+    const maxGradeInput = document.getElementById('max_grade_input');
+    if (maxGradeInput && !maxGradeInput.dataset.bound) {
+        maxGradeInput.dataset.bound = "1";
+        maxGradeInput.addEventListener('input', updateQuizItemAbsPoints);
+    }
 }
