@@ -229,12 +229,20 @@ class step7 {
             echo html_writer::end_tag('div');
         }
 
+        // Determine activity type from instrument
+        $activity_type = encaje_table::get_activity_type($instrument);
+        $activity_label = encaje_table::ACTIVITY_TYPE_LABELS[$activity_type] ?? 'Tarea';
+        $activity_icon = encaje_table::ACTIVITY_TYPE_ICONS[$activity_type] ?? '📋';
+
         // Preview card
         echo html_writer::start_tag('div', ['class' => 'areteia-card', 'style' => 'margin-bottom:20px;']);
         
         $final_json = session_manager::get('final_selection_json', '');
-        $is_quiz = !empty($final_json);
+        $is_quiz = ($activity_type === 'quiz' && !empty($final_json));
         $quiz_injected = optional_param('quiz_injected', 0, PARAM_INT);
+        $assign_injected = optional_param('assign_injected', 0, PARAM_INT);
+        $forum_injected = optional_param('forum_injected', 0, PARAM_INT);
+        $any_published = ($quiz_injected == 1 || $assign_injected == 1 || $forum_injected == 1);
         
         if ($is_quiz) {
             $data = json_decode($final_json, true);
@@ -348,7 +356,8 @@ class step7 {
             echo html_writer::end_tag('form'); // end quiz form
 
         } else {
-            echo html_writer::tag('p', "<strong>Vista previa final: $instrument</strong>", [
+            // --- NON-QUIZ: Assign or Forum export ---
+            echo html_writer::tag('p', "<strong>{$activity_icon} Vista previa: $instrument</strong> <span style='font-size:11px; background:#e8f0fe; color:#185fa5; padding:2px 8px; border-radius:10px;'>→ {$activity_label}</span>", [
                 'style' => 'color:#185fa5; font-size:1.1em; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;',
             ]);
 
@@ -380,6 +389,43 @@ class step7 {
                     ]
                 );
             }
+
+            // --- Export form for Assign / Forum ---
+            if (!$any_published) {
+                $inject_action = ($activity_type === 'forum') ? 'inject_forum' : 'inject_assign';
+                $inject_url = new moodle_url($PAGE->url, [
+                    'action'  => $inject_action,
+                    'id'      => $ctx['id'],
+                    'sesskey' => sesskey()
+                ]);
+                echo html_writer::start_tag('form', ['id' => 'activity-export-form', 'method' => 'POST', 'action' => $inject_url->out(false)]);
+                echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]);
+
+                echo html_writer::start_tag('div', ['style' => 'display:flex; align-items:center; justify-content:space-between; margin-top:20px; gap:20px; flex-wrap:wrap;']);
+
+                // Section selector
+                $sections = data_provider::get_course_sections($ctx['id']);
+                echo html_writer::start_tag('div', ['style' => 'flex:1; min-width:200px;']);
+                echo html_writer::tag('strong', 'Ubicación en Moodle:', ['style' => 'display:block; font-size:13px; margin-bottom:5px;']);
+                echo html_writer::start_tag('select', ['name' => 'section_num', 'class' => 'form-control', 'style' => 'max-width:280px; font-size:13px;']);
+                foreach ($sections as $sec) {
+                    echo html_writer::tag('option', s($sec['name']), ['value' => $sec['num']]);
+                }
+                echo html_writer::end_tag('select');
+                echo html_writer::end_tag('div');
+
+                // Publish button
+                $btn_label = "🚀 Publicar {$activity_label} en Moodle";
+                echo html_writer::tag('button', $btn_label, [
+                    'id'    => 'btn-publish-activity',
+                    'type'  => 'submit',
+                    'class' => 'areteia-btn areteia-btn-primary',
+                    'style' => 'background:#28a745; border-color:#28a745;'
+                ]);
+
+                echo html_writer::end_tag('div');
+                echo html_writer::end_tag('form');
+            }
         }
         echo html_writer::end_tag('div');
 
@@ -405,56 +451,72 @@ class step7 {
         $prev_url   = new moodle_url($PAGE->url, ['step' => 6]); // Now goes back to 5 due to sequence update
         $export_url = new moodle_url($PAGE->url, ['action' => 'export', 'sesskey' => sesskey()]);
 
-        if ($exported == 1 || $quiz_injected == 1) { // Hide if either is published to avoid confusion
+        if ($exported == 1 || $any_published) {
             step_renderer::render_nav(7, $prev_url, null, '', [], '✔ Publicado con éxito');
         } else {
-            // Se pasa null en el tercer parámetro para eliminar el botón duplicado de "Publicar"
             step_renderer::render_nav(7, $prev_url, null);
         }
 
         // ----------------------------------------------------------------
-        // Quiz injection block
+        // Success / Error banners for all activity types
         // ----------------------------------------------------------------
-        $quiz_injected = optional_param('quiz_injected', 0, PARAM_INT);
-        $quiz_error    = optional_param('quiz_error', 0, PARAM_INT);
-        $quiz_cmid     = optional_param('quiz_cmid', 0, PARAM_INT);
+        $quiz_injected   = optional_param('quiz_injected', 0, PARAM_INT);
+        $assign_injected = optional_param('assign_injected', 0, PARAM_INT);
+        $forum_injected  = optional_param('forum_injected', 0, PARAM_INT);
+        $quiz_error      = optional_param('quiz_error', 0, PARAM_INT);
+        $export_error    = optional_param('export_error', 0, PARAM_INT);
+        $quiz_cmid       = optional_param('quiz_cmid', 0, PARAM_INT);
+        $assign_cmid     = optional_param('assign_cmid', 0, PARAM_INT);
+        $forum_cmid      = optional_param('forum_cmid', 0, PARAM_INT);
 
-        // Success banner
+        // Quiz success
         if ($quiz_injected == 1) {
-            echo html_writer::start_tag('div', [
-                'class' => 'areteia-card',
-                'style' => 'border-left:5px solid #28a745; background:#f4fff4; margin-top:20px;',
-            ]);
-            echo html_writer::tag('strong', '🎯 ¡Cuestionario publicado en Moodle!', [
-                'style' => 'color:#28a745; display:block; margin-bottom:5px;',
-            ]);
-            echo html_writer::tag('p', '3 preguntas creadas correctamente.', [
-                'style' => 'font-size:12px; margin-bottom:10px;',
-            ]);
-            if ($quiz_cmid) {
-                echo html_writer::link(
-                    new moodle_url('/mod/quiz/view.php', ['id' => $quiz_cmid]),
-                    'Ir al cuestionario ↗',
-                    ['class' => 'areteia-btn areteia-btn-primary external', 'target' => '_blank']
-                );
-            }
-            echo html_writer::end_tag('div');
+            self::render_success_banner('🎯 ¡Cuestionario publicado en Moodle!', 'Preguntas creadas correctamente.', '/mod/quiz/view.php', $quiz_cmid, 'Ir al cuestionario ↗');
+        }
+        // Assign success
+        if ($assign_injected == 1) {
+            self::render_success_banner('📋 ¡Tarea publicada en Moodle!', 'La tarea ha sido creada con los ítems del instrumento.', '/mod/assign/view.php', $assign_cmid, 'Ir a la tarea ↗');
+        }
+        // Forum success
+        if ($forum_injected == 1) {
+            self::render_success_banner('💬 ¡Foro publicado en Moodle!', 'El foro de debate ha sido creado exitosamente.', '/mod/forum/view.php', $forum_cmid, 'Ir al foro ↗');
         }
 
-        // Error banner
-        if ($quiz_error == 1) {
+        // Error banners
+        if ($quiz_error == 1 || $export_error == 1) {
             echo html_writer::start_tag('div', [
                 'class' => 'areteia-card',
                 'style' => 'border-left:5px solid #dc3545; background:#fff4f4; margin-top:20px;',
             ]);
-            echo html_writer::tag('strong', '❌ Error al crear el cuestionario', [
+            echo html_writer::tag('strong', '❌ Error al crear la actividad', [
                 'style' => 'color:#dc3545; display:block; margin-bottom:5px;',
             ]);
-            echo html_writer::tag('p',
-                'Revisá los logs de Moodle para más detalles.',
-                ['style' => 'font-size:12px; margin:0;']
-            );
+            echo html_writer::tag('p', 'Revisá los logs de Moodle para más detalles.', ['style' => 'font-size:12px; margin:0;']);
             echo html_writer::end_tag('div');
         }
+    }
+
+    /**
+     * Render a generic success banner for any published activity.
+     */
+    private static function render_success_banner(string $title, string $message, string $mod_path, int $cmid, string $link_text): void {
+        echo html_writer::start_tag('div', [
+            'class' => 'areteia-card',
+            'style' => 'border-left:5px solid #28a745; background:#f4fff4; margin-top:20px;',
+        ]);
+        echo html_writer::tag('strong', $title, [
+            'style' => 'color:#28a745; display:block; margin-bottom:5px;',
+        ]);
+        echo html_writer::tag('p', $message, [
+            'style' => 'font-size:12px; margin-bottom:10px;',
+        ]);
+        if ($cmid) {
+            echo html_writer::link(
+                new moodle_url($mod_path, ['id' => $cmid]),
+                $link_text,
+                ['class' => 'areteia-btn areteia-btn-primary external', 'target' => '_blank']
+            );
+        }
+        echo html_writer::end_tag('div');
     }
 }

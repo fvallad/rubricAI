@@ -57,6 +57,95 @@ class encaje_table {
         'rubrica'           => '📋',
     ];
 
+    /**
+     * Maps each evaluation instrument to the best Moodle activity type.
+     * 'quiz'   = Cuestionario Moodle (structured auto-graded questions)
+     * 'assign' = Tarea Moodle (text/file submission, manual grading)
+     * 'forum'  = Foro Moodle (discussion-based activities)
+     */
+    public const ACTIVITY_TYPE = [
+        'Análisis de fuentes documentales'    => 'assign',
+        'Aprendizaje servicio (APS)'          => 'assign',
+        'Cuestionario'                        => 'quiz',
+        'Debate'                              => 'forum',
+        'Ensayo / Desarrollo'                 => 'assign',
+        'Escape room'                         => 'quiz',
+        'Esquema'                             => 'assign',
+        'Estudio de caso / Análisis de casos' => 'assign',
+        'Evaluación auténtica'                => 'assign',
+        'Evaluación oral'                     => 'forum',
+        'Glosario'                            => 'assign',
+        'Juego de rol'                        => 'assign',
+        'Mapa conceptual'                     => 'assign',
+        'Monografía'                          => 'assign',
+        'Portafolio'                          => 'assign',
+        'Prácticas / Pruebas clínicas'        => 'assign',
+        'Prácticas de laboratorio'            => 'assign',
+        'Proyectos de investigación'          => 'assign',
+        'Prueba mixta'                        => 'quiz',
+        'Recensión bibliográfica'             => 'assign',
+        'Resolución de problemas abiertos'    => 'assign',
+        'Resumen'                             => 'assign',
+        'Simulación'                          => 'assign',
+    ];
+
+    /**
+     * Resolve the best Moodle activity type for a given instrument name.
+     * Uses fuzzy matching identical to get_correction_options().
+     *
+     * @param string $instrument
+     * @return string  'quiz', 'assign', or 'forum'
+     */
+    public static function get_activity_type(string $instrument): string {
+        $instrument = trim($instrument);
+        if (empty($instrument)) {
+            return 'assign'; // safe default
+        }
+
+        // 1. Exact match
+        if (isset(self::ACTIVITY_TYPE[$instrument])) {
+            return self::ACTIVITY_TYPE[$instrument];
+        }
+
+        // 2. Fuzzy match
+        $norm = self::normalize($instrument);
+        $best_match = 'assign';
+        $best_score = 0;
+
+        foreach (self::ACTIVITY_TYPE as $canonical => $type) {
+            $norm_canonical = self::normalize($canonical);
+
+            if ($norm === $norm_canonical) {
+                return $type;
+            }
+            if (strpos($norm_canonical, $norm) !== false || strpos($norm, $norm_canonical) !== false) {
+                return $type;
+            }
+
+            similar_text($norm, $norm_canonical, $pct);
+            if ($pct > $best_score) {
+                $best_score = $pct;
+                $best_match = $type;
+            }
+        }
+
+        return ($best_score >= 60) ? $best_match : 'assign';
+    }
+
+    /** Human-readable labels for each Moodle activity type. */
+    public const ACTIVITY_TYPE_LABELS = [
+        'quiz'   => 'Cuestionario',
+        'assign' => 'Tarea',
+        'forum'  => 'Foro',
+    ];
+
+    /** Icons for each Moodle activity type. */
+    public const ACTIVITY_TYPE_ICONS = [
+        'quiz'   => '📝',
+        'assign' => '📋',
+        'forum'  => '💬',
+    ];
+
     /** Pedagogical descriptions for each correction instrument. */
     public const DESCRIPTIONS = [
         'clave_correccion'  => 'Se asigna a instrumentos con respuestas convergentes o verificables. Incluye ítems cerrados o de respuesta única donde la corrección es objetiva y precisa.',

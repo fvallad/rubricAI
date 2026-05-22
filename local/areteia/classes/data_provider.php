@@ -36,7 +36,7 @@ class data_provider {
         foreach ($modinfo->get_section_info_all() as $section) {
             if ($section->uservisible && ($section->summary || !empty($modinfo->sections[$section->section]))) {
                 $sectiondata = [
-                    'name' => get_section_name($course, $section),
+                    'name' => self::get_section_name_clean($course, $section),
                     'summary' => strip_tags($section->summary),
                     'activities' => []
                 ];
@@ -112,7 +112,7 @@ class data_provider {
 
         // 2. Traverse sections and modules
         foreach ($modinfo->get_section_info_all() as $section) {
-            $section_name = clean_param(get_section_name($course, $section), PARAM_FILE);
+            $section_name = clean_param(self::get_section_name_clean($course, $section), PARAM_FILE);
             $section_folder_name = $section->section . '_' . ($section_name ?: 'Section');
             
             if (!empty($modinfo->sections[$section->section])) {
@@ -242,10 +242,10 @@ class data_provider {
             if (!$section->uservisible) continue;
             if (empty($modinfo->sections[$section->section])) continue;
 
-            $section_name = get_section_name($course, $section);
+            $section_name = self::get_section_name_clean($course, $section);
             $section_node = [
                 'id'         => $section->id,
-                'name'       => $section_name ?: "Sección {$section->section}",
+                'name'       => $section_name,
                 'type'       => 'section',
                 'activities' => []
             ];
@@ -320,7 +320,7 @@ class data_provider {
             if (!$section->uservisible) continue;
             $sections[] = [
                 'num'  => (int)$section->section,
-                'name' => get_section_name($course, $section),
+                'name' => self::get_section_name_clean($course, $section),
             ];
         }
         return $sections;
@@ -411,6 +411,15 @@ class data_provider {
         if (!$section_id) {
             foreach ($modinfo->get_section_info_all() as $s) {
                 if ($s->section > 0) {
+                    $section_id  = $s->id;
+                    $section_num = $s->section;
+                    break;
+                }
+            }
+        }
+        if (!$section_id) {
+            foreach ($modinfo->get_section_info_all() as $s) {
+                if ((int)$s->section === 0) {
                     $section_id  = $s->id;
                     $section_num = $s->section;
                     break;
@@ -827,9 +836,10 @@ class data_provider {
      * @param int $courseid
      * @param string $name
      * @param string $description
+     * @param int $section_num  Section number (0 = General). Defaults to first non-zero section.
      * @return object The created course module info
      */
-    public static function create_assign_activity($courseid, $name, $description) {
+    public static function create_assign_activity($courseid, $name, $description, $section_num = -1) {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/course/lib.php');
         
@@ -840,25 +850,81 @@ class data_provider {
         $modinfo = get_fast_modinfo($course);
         $sections = $modinfo->get_section_info_all();
         $sectionid = 0;
-        foreach ($sections as $s) {
-            if ($s->section > 0) {
-                $sectionid = $s->id;
-                $sectionnum = $s->section;
-                break;
+        $sectionnum = 0;
+
+        if ($section_num >= 0) {
+            // Use the requested section
+            foreach ($sections as $s) {
+                if ((int)$s->section === $section_num) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
+            }
+        }
+
+        // Fallback: use first non-zero section
+        if (!$sectionid) {
+            foreach ($sections as $s) {
+                if ($s->section > 0) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
+            }
+        }
+        if (!$sectionid) {
+            foreach ($sections as $s) {
+                if ((int)$s->section === 0) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
             }
         }
         
+        // Convert Markdown-like content to HTML for better display
+        $html_description = format_text($description, FORMAT_MARKDOWN);
+
         // 1. Create assignment instance
         $assign = new \stdClass();
         $assign->course = $courseid;
         $assign->name = $name;
-        $assign->intro = $description;
-        $assign->introformat = FORMAT_MARKDOWN;
+        $assign->intro = $html_description;
+        $assign->introformat = FORMAT_HTML;
         $assign->grade = 100;
+        $assign->submissiondrafts = 0;
+        $assign->requiresubmissionstatement = 0;
+        $assign->sendnotifications = 0;
+        $assign->sendlatenotifications = 0;
+        $assign->sendstudentnotifications = 1;
+        $assign->teamsubmission = 0;
+        $assign->requireallteammemberssubmit = 0;
+        $assign->blindmarking = 0;
+        $assign->markingworkflow = 0;
+        $assign->markingallocation = 0;
         $assign->timemodified = time();
         $assign->id = $DB->insert_record('assign', $assign);
+
+        // 2. Enable online text submission by default
+        $plugin = new \stdClass();
+        $plugin->assignment = $assign->id;
+        $plugin->plugin = 'onlinetext';
+        $plugin->subtype = 'assignsubmission';
+        $plugin->name = 'enabled';
+        $plugin->value = '1';
+        $DB->insert_record('assign_plugin_config', $plugin);
+
+        // 3. Enable file submission
+        $plugin2 = new \stdClass();
+        $plugin2->assignment = $assign->id;
+        $plugin2->plugin = 'file';
+        $plugin2->subtype = 'assignsubmission';
+        $plugin2->name = 'enabled';
+        $plugin2->value = '1';
+        $DB->insert_record('assign_plugin_config', $plugin2);
         
-        // 2. Add course module
+        // 4. Add course module
         $cm = new \stdClass();
         $cm->course = $courseid;
         $cm->module = $module->id;
@@ -866,12 +932,102 @@ class data_provider {
         $cm->section = $sectionid;
         $cm->id = add_course_module($cm);
         
-        // 3. Add cm to section
+        // 5. Add cm to section
         course_add_cm_to_section($courseid, $cm->id, $sectionnum);
         
-        // 4. Rebuild cache
+        // 6. Rebuild cache
         rebuild_course_cache($courseid, true);
         
+        return (object)['coursemodule' => $cm->id];
+    }
+
+    /**
+     * Create a new Moodle Forum activity programmatically.
+     * Used for debate and oral evaluation instruments.
+     * 
+     * @param int $courseid
+     * @param string $name
+     * @param string $description
+     * @param int $section_num  Section number (0 = General). Defaults to first non-zero section.
+     * @return object The created course module info
+     */
+    public static function create_forum_activity($courseid, $name, $description, $section_num = -1) {
+        global $CFG, $DB;
+        require_once($CFG->dirroot . '/course/lib.php');
+        require_once($CFG->dirroot . '/mod/forum/lib.php');
+        
+        $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+        $module = $DB->get_record('modules', ['name' => 'forum'], '*', MUST_EXIST);
+        
+        // Find the requested section
+        $modinfo = get_fast_modinfo($course);
+        $sections = $modinfo->get_section_info_all();
+        $sectionid = 0;
+        $sectionnum = 0;
+
+        if ($section_num >= 0) {
+            foreach ($sections as $s) {
+                if ((int)$s->section === $section_num) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
+            }
+        }
+
+        // Fallback: use first non-zero section
+        if (!$sectionid) {
+            foreach ($sections as $s) {
+                if ($s->section > 0) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
+            }
+        }
+        if (!$sectionid) {
+            foreach ($sections as $s) {
+                if ((int)$s->section === 0) {
+                    $sectionid = $s->id;
+                    $sectionnum = $s->section;
+                    break;
+                }
+            }
+        }
+
+        // Convert Markdown-like content to HTML
+        $html_description = format_text($description, FORMAT_MARKDOWN);
+
+        // 1. Create forum instance
+        $forum = new \stdClass();
+        $forum->course = $courseid;
+        $forum->name = $name;
+        $forum->intro = $html_description;
+        $forum->introformat = FORMAT_HTML;
+        $forum->type = 'general';   // general discussion forum
+        $forum->assessed = 0;       // no rating by default
+        $forum->scale = 100;
+        $forum->forcesubscribe = 0; // optional subscription
+        $forum->trackingtype = 1;   // optional tracking
+        $forum->maxbytes = 0;
+        $forum->maxattachments = 9;
+        $forum->timemodified = time();
+        $forum->id = $DB->insert_record('forum', $forum);
+
+        // 2. Add course module
+        $cm = new \stdClass();
+        $cm->course = $courseid;
+        $cm->module = $module->id;
+        $cm->instance = $forum->id;
+        $cm->section = $sectionid;
+        $cm->id = add_course_module($cm);
+
+        // 3. Add cm to section
+        course_add_cm_to_section($courseid, $cm->id, $sectionnum);
+
+        // 4. Rebuild cache
+        rebuild_course_cache($courseid, true);
+
         return (object)['coursemodule' => $cm->id];
     }
 
@@ -904,5 +1060,37 @@ class data_provider {
             }
         }
         rmdir($dir);
+    }
+
+    /**
+     * Get a cleaned section name, falling back to a default if empty/spaces.
+     *
+     * @param \stdClass $course
+     * @param \section_info $section
+     * @return string
+     */
+    public static function get_section_name_clean($course, $section): string {
+        $name = trim(get_section_name($course, $section));
+        if ($name === '') {
+            if ($section->section == 0) {
+                // Section 0 is always General/General Info
+                $name = get_string('general', 'moodle');
+                if (empty($name) || $name === 'general') {
+                    $name = 'General';
+                }
+            } else {
+                // Other sections, e.g. Tema 1, Semana 1, etc.
+                try {
+                    $name = get_string('sectionname', 'format_' . $course->format);
+                } catch (\Exception $e) {
+                    $name = 'Sección';
+                }
+                if (empty($name) || $name === 'sectionname') {
+                    $name = 'Sección';
+                }
+                $name .= ' ' . $section->section;
+            }
+        }
+        return $name;
     }
 }
