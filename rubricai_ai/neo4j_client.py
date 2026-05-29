@@ -324,49 +324,63 @@ class Neo4jClient:
 
     def get_ontology_graph(self) -> dict:
         """Returns nodes and edges for visualizing the ontology/rubric space in Cytoscape/D3."""
-        # Fetch all BloomLevels, PedagogicalDimensions, Rubrics, Criteria, and standard relationships
-        nodes = []
-        edges = []
-        seen_nodes = set()
-        
         # 1. Fetch BloomLevels
-        bloom_res = self.query("MATCH (b:BloomLevel) RETURN b.level as name, 'bloom' as type, b.description as desc")
+        bloom_res = self.query("MATCH (b:BloomLevel) RETURN b.level as id, b.level as label, 'bloom' as type, b.description as desc")
         # 2. Fetch Dimensions
-        dim_res = self.query("MATCH (d:PedagogicalDimension) RETURN d.name as name, 'dimension' as type, d.description as desc")
+        dim_res = self.query("MATCH (d:PedagogicalDimension) RETURN d.name as id, d.name as label, 'dimension' as type, d.description as desc")
         # 3. Fetch Rubrics
-        rubric_res = self.query("MATCH (r:Rubric) RETURN r.id as id, r.title as name, 'rubric' as type, r.description as desc")
+        rubric_res = self.query("MATCH (r:Rubric) RETURN r.id as id, r.title as label, 'rubric' as type, r.description as desc")
         # 4. Fetch Criteria
-        criteria_res = self.query(
-            """
-            MATCH (r:Rubric)-[:HAS_CRITERION]->(c:Criterion)-[:MAPS_TO]->(d:PedagogicalDimension)
-            RETURN c.id as id, c.name as name, 'criterion' as type, c.description as desc, r.id as rubric_id, d.name as dim_name
-            """
-        )
+        crits_res = self.query("MATCH (c:Criterion) RETURN c.id as id, c.name as label, 'criterion' as type, c.description as desc")
+        # 5. Fetch Courses
+        courses_res = self.query("MATCH (c:Course) RETURN c.id as id, c.name as label, 'course' as type")
+        # 6. Fetch Activities
+        acts_res = self.query("MATCH (a:Activity) RETURN a.id as id, a.name as label, 'activity' as type, a.type as act_type, a.description as desc")
+        # 7. Fetch Resources
+        res_res = self.query("MATCH (r:Resource) RETURN r.id as id, r.name as label, 'resource' as type, r.type as res_type")
+        # 8. Fetch Recommendations
+        recs_res = self.query("MATCH (rc:Recommendation) RETURN rc.id as id, rc.element as label, 'recommendation' as type, rc.issue as desc")
+
+        # Consolidate all nodes
+        nodes = []
+        for n in (bloom_res + dim_res + rubric_res + crits_res + courses_res + acts_res + res_res + recs_res):
+            nodes.append({
+                "id": str(n["id"]),
+                "label": n["label"],
+                "type": n["type"],
+                "description": n.get("desc", "")
+            })
+
+        # Fetch all edges/relationships
+        edges = []
         
-        # Add Bloom nodes
-        for r in bloom_res:
-            node_id = f"bloom_{r['name']}"
-            nodes.append({"id": node_id, "label": r['name'], "type": "bloom", "description": r['desc']})
-            
-        # Add Dimension nodes
-        for r in dim_res:
-            node_id = f"dim_{r['name']}"
-            nodes.append({"id": node_id, "label": r['name'], "type": "dimension", "description": r['desc']})
-            
-        # Add Rubric nodes
-        for r in rubric_res:
-            node_id = f"rubric_{r['id']}"
-            nodes.append({"id": node_id, "label": r['name'], "type": "rubric", "description": r['desc']})
-            
-        # Add Criteria nodes and relationships
-        for r in criteria_res:
-            node_id = f"crit_{r['id']}"
-            nodes.append({"id": node_id, "label": r['name'], "type": "criterion", "description": r['desc']})
-            
-            # Edges
-            edges.append({"source": f"rubric_{r['rubric_id']}", "target": node_id, "relation": "HAS_CRITERION"})
-            edges.append({"source": node_id, "target": f"dim_{r['dim_name']}", "relation": "MAPS_TO"})
-            
+        # Rubric -> Criterion (HAS_CRITERION)
+        rel_rub_crit = self.query("MATCH (r:Rubric)-[rel:HAS_CRITERION]->(c:Criterion) RETURN r.id as source, c.id as target, 'HAS_CRITERION' as relation")
+        # Criterion -> Dimension (MAPS_TO)
+        rel_crit_dim = self.query("MATCH (c:Criterion)-[rel:MAPS_TO]->(d:PedagogicalDimension) RETURN c.id as source, d.name as target, 'MAPS_TO' as relation")
+        # Course -> Activity (HAS_ACTIVITY)
+        rel_cour_act = self.query("MATCH (c:Course)-[rel:HAS_ACTIVITY]->(a:Activity) RETURN c.id as source, a.id as target, 'HAS_ACTIVITY' as relation")
+        # Course -> Resource (HAS_RESOURCE)
+        rel_cour_res = self.query("MATCH (c:Course)-[rel:HAS_RESOURCE]->(r:Resource) RETURN c.id as source, r.id as target, 'HAS_RESOURCE' as relation")
+        # Course -> Rubric (EVALUATED_WITH)
+        rel_cour_rub = self.query("MATCH (c:Course)-[rel:EVALUATED_WITH]->(r:Rubric) RETURN c.id as source, r.id as target, 'EVALUATED_WITH' as relation, rel.score as score")
+        # Course -> Recommendation (HAS_RECOMMENDATION)
+        rel_cour_rec = self.query("MATCH (c:Course)-[rel:HAS_RECOMMENDATION]->(rc:Recommendation) RETURN c.id as source, rc.id as target, 'HAS_RECOMMENDATION' as relation")
+        # Activity -> Criterion (COVERS)
+        rel_act_crit = self.query("MATCH (a:Activity)-[rel:COVERS]->(c:Criterion) RETURN a.id as source, c.id as target, 'COVERS' as relation, rel.similarity as similarity")
+
+        for e in (rel_rub_crit + rel_crit_dim + rel_cour_act + rel_cour_res + rel_cour_rub + rel_cour_rec + rel_act_crit):
+            edge = {
+                "source": str(e["source"]),
+                "target": str(e["target"]),
+                "relation": e["relation"]
+            }
+            if "score" in e and e["score"] is not None:
+                edge["score"] = float(e["score"])
+            if "similarity" in e and e["similarity"] is not None:
+                edge["similarity"] = float(e["similarity"])
+            edges.append(edge)
+
         return {"nodes": nodes, "edges": edges}
 
 # Instancia singleton

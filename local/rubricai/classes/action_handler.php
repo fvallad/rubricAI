@@ -523,18 +523,22 @@ class action_handler {
             $format = $result->format_evaluation ?? 'No disponible.';
             $recs = isset($result->recommendations) ? (array)$result->recommendations : [];
 
+            // Add debug logs to PHP error log
+            error_log("RubricAI Audit Completed - Course: $course_id, Rubric: $rubric_id, Score: $score");
+
             // Save to Moodle database (config_plugins)
             session_manager::save_audit_results($course_id, $score, $holistic, $format, $recs, $rubric_id);
 
-            // Also keep in session for immediate compatibility
-            session_manager::set('compare_score', $score);
-            session_manager::set('compare_holistic', $holistic);
-            session_manager::set('compare_format', $format);
-            session_manager::set('compare_recommendations', json_encode($recs));
-            session_manager::set('compare_rubric_id', $rubric_id);
+            // Also keep in session with course-specific isolation
+            session_manager::set('compare_score_' . $course_id, $score);
+            session_manager::set('compare_holistic_' . $course_id, $holistic);
+            session_manager::set('compare_format_' . $course_id, $format);
+            session_manager::set('compare_recommendations_' . $course_id, json_encode($recs));
+            session_manager::set('compare_rubric_id_' . $course_id, $rubric_id);
 
             $redir = new \moodle_url($base_url, ['step' => 8, 'action' => 'compare', 'compared' => 1]);
         } else {
+            error_log("RubricAI Audit Failed - Course: $course_id, Rubric: $rubric_id");
             $redir = new \moodle_url($base_url, ['step' => 8, 'action' => 'compare', 'error' => 'evaluation_failed']);
         }
 

@@ -66,13 +66,13 @@ class step8 {
             $rubric_id = $db_results['rubric_id'];
             $compared = true;
         } else {
-            $compared = (session_manager::get('compare_score') !== null);
+            $compared = (session_manager::get('compare_score_' . $courseid) !== null);
             if ($compared) {
-                $score = session_manager::get('compare_score', 0.0);
-                $holistic = session_manager::get('compare_holistic', '');
-                $format_desc = session_manager::get('compare_format', '');
-                $recs = json_decode(session_manager::get('compare_recommendations', '[]'), true);
-                $rubric_id = session_manager::get('compare_rubric_id', '');
+                $score = session_manager::get('compare_score_' . $courseid, 0.0);
+                $holistic = session_manager::get('compare_holistic_' . $courseid, '');
+                $format_desc = session_manager::get('compare_format_' . $courseid, '');
+                $recs = json_decode(session_manager::get('compare_recommendations_' . $courseid, '[]'), true);
+                $rubric_id = session_manager::get('compare_rubric_id_' . $courseid, '');
             }
         }
 
@@ -192,11 +192,11 @@ class step8 {
         // Reset recalculation param if requested
         if (optional_param('recalc', 0, PARAM_INT)) {
             session_manager::clear_audit_results($courseid);
-            session_manager::clear('compare_score');
-            session_manager::clear('compare_holistic');
-            session_manager::clear('compare_format');
-            session_manager::clear('compare_recommendations');
-            session_manager::clear('compare_rubric_id');
+            session_manager::unset_key('compare_score_' . $courseid);
+            session_manager::unset_key('compare_holistic_' . $courseid);
+            session_manager::unset_key('compare_format_' . $courseid);
+            session_manager::unset_key('compare_recommendations_' . $courseid);
+            session_manager::unset_key('compare_rubric_id_' . $courseid);
             redirect(new moodle_url($PAGE->url, ['step' => 8, 'action' => 'compare']));
         }
 
