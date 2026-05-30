@@ -51,7 +51,10 @@ class step8 {
         if ($error) {
             $msg = 'Ocurrió un error al procesar la auditoría.';
             if ($error === 'no_rubric') $msg = 'No seleccionaste una rúbrica válida.';
-            if ($error === 'evaluation_failed') $msg = 'La evaluación multiagente falló. Verifica que el microservicio de Python esté operativo.';
+            if ($error === 'evaluation_failed') {
+                $sess_msg = session_manager::get('compare_error_' . $courseid);
+                $msg = $sess_msg ?: 'La evaluación multiagente falló. Verifica que el microservicio de Python esté operativo y configurado en tu archivo .env.';
+            }
             echo html_writer::tag('div', '❌ ' . $msg, ['class' => 'alert alert-danger', 'style' => 'padding: 15px; border-radius: 8px; margin-bottom: 20px; background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.2); color: #ea868f;']);
         }
 
@@ -197,6 +200,7 @@ class step8 {
             session_manager::unset_key('compare_format_' . $courseid);
             session_manager::unset_key('compare_recommendations_' . $courseid);
             session_manager::unset_key('compare_rubric_id_' . $courseid);
+            session_manager::unset_key('compare_error_' . $courseid);
             redirect(new moodle_url($PAGE->url, ['step' => 8, 'action' => 'compare']));
         }
 

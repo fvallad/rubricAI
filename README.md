@@ -72,6 +72,10 @@ Estos archivos virtuales se organizan bajo la estructura del directorio sincroni
   - Cos entre $0.80$ y $0.84$ $\rightarrow$ Escala de $5\%$ a $50\%$
   - Cos $< 0.80$ $\rightarrow$ Descartado (umbral mínimo).
 
+> [!IMPORTANT]
+> **Interdependencia de FAISS, HuggingFace y Neo4j**:
+> El motor de búsqueda local **FAISS** no puede operar de forma aislada. Depende estrictamente de la generación previa de embeddings vectoriales mediante el modelo de **HuggingFace** (`intfloat/multilingual-e5-small`) y la base de datos de grafos de **Neo4j** (Aura Cloud) para registrar las relaciones semánticas. Si alguno de estos componentes no está disponible o configurado, la indexación y la auditoría pedagógica fallarán.
+
 ---
 
 ## 3. Orquestación Multi-Agente (`agents.py`)
@@ -222,31 +226,125 @@ AURA_INSTANCENAME=Instance01-barto
 
 ---
 
-## 7. Despliegue y Comandos de Administración
+## 7. Despliegue y Guía de Comandos de Administración (Docker)
 
-### Levantar toda la infraestructura limpia:
+A continuación se detallan todos los comandos necesarios para desplegar, apagar, monitorear y depurar la infraestructura de **RubricAI**:
+
+### 7.1. Control del Ciclo de Vida de los Contenedores
+
+* **Levantar la infraestructura completa (Moodle, RAG, Frontend, etc.)**:
+  Construye las imágenes del backend RAG y del frontend Astro, y levanta todos los contenedores en segundo plano:
+  ```bash
+  docker compose up -d --build
+  ```
+
+* **Apagar la infraestructura (Detener contenedores)**:
+  Detiene todos los contenedores activos de la pila sin borrar los datos persistidos en los volúmenes:
+  ```bash
+  docker compose down
+  ```
+
+* **Apagar y eliminar volúmenes (Reinicio completo/Limpieza total)**:
+  > [!WARNING]
+  > Esto borrará la base de datos de PostgreSQL y la caché de HuggingFace local.
+  ```bash
+  docker compose down -v
+  ```
+
+* **Verificar el estado de todos los contenedores**:
+  Muestra una tabla con el ID, estado de salud y mapeo de puertos de cada contenedor de la pila:
+  ```bash
+  docker compose ps
+  ```
+
+### 7.2. Monitoreo de Logs en Tiempo Real
+
+* **Ver logs de todos los servicios**:
+  ```bash
+  docker compose logs -f
+  ```
+
+* **Ver logs del microservicio RAG (FastAPI/Python)**:
+  ```bash
+  docker compose logs -f python_rag
+  ```
+
+* **Ver logs del frontend Astro (Vite/Node)**:
+  ```bash
+  docker compose logs -f frontend
+  ```
+
+* **Ver logs del contenedor de Moodle (PHP-FPM)**:
+  ```bash
+  docker compose logs -f moodle
+  ```
+
+### 7.3. Comandos de Administración de Moodle
+
+* **Limpiar la caché de Moodle**:
+  Esencial tras modificar archivos del plugin, dependencias o variables de entorno del contenedor:
+  ```bash
+  docker compose exec moodle php admin/cli/purge_caches.php
+  ```
+
+* **Ejecutar el cron de Moodle manualmente**:
+  Útil para procesar colas de tareas pendientes, correos u otras tareas diferidas en Moodle:
+  ```bash
+  docker compose exec moodle php admin/cli/cron.php
+  ```
+
+### 7.4. Scripts Auxiliares del Proyecto
+
+* **Restaurar cursos de prueba en Moodle**:
+  Inyecta copias de seguridad de asignaturas de prueba de forma masiva en el Moodle contenedorizado:
+  ```bash
+  bash scripts/import_courses.sh
+  ```
+
+* **Empaquetar el plugin para distribución externa**:
+  Genera el archivo comprimido `rubricai_plugin.zip` en la raíz del proyecto listo para ser instalado en cualquier servidor Moodle:
+  ```bash
+  bash package_plugin.sh
+  ```
+
+---
+
+## 8. Detalle y Estructura de Contenedores (Dockerfiles)
+
+La plataforma RubricAI se divide en tres `Dockerfiles` específicos para cada capa del sistema:
+
+### 8.1. Moodle App Container (Servidor Principal)
+* **Archivo**: [`Dockerfile`](file:///run/media/dracero/08c67654-6ed7-4725-b74e-50f29ea60cb21/pythonAI-Others/AreteIA/Dockerfile)
+* **Base**: `php:8.1-fpm-bookworm`
+* **Descripción**: Instala todas las dependencias necesarias de PHP para Moodle (GD, Intl, OPcache, PostgreSQL, mysqli, zip, Redis, Memcached, Sodium). Genera las configuraciones regionales UTF-8 y clona la versión de Moodle configurada en `.env` (`MOODLE_VERSION=MOODLE_405_STABLE`).
+
+### 8.2. Microservicio de Inteligencia Artificial (FastAPI)
+* **Archivo**: [`rubricai_ai/Dockerfile`](file:///run/media/dracero/08c67654-6ed7-4725-b74e-50f29ea60cb21/pythonAI-Others/AreteIA/rubricai_ai/Dockerfile)
+* **Base**: `python:3.11.9-slim`
+* **Descripción**: Configura el backend de agentes y RAG. Instala dependencias desde `requirements.txt` usando cache mounts de BuildKit para agilizar compilaciones, y corre el servidor Uvicorn en el puerto `8000`.
+
+### 8.3. Frontend de Visualización (Astro)
+* **Archivo**: [`frontend/Dockerfile`](file:///run/media/dracero/08c67654-6ed7-4725-b74e-50f29ea60cb21/pythonAI-Others/AreteIA/frontend/Dockerfile)
+* **Base**: `node:22-alpine`
+* **Descripción**: Contenedoriza la interfaz Astro del panel de control. Instala dependencias con `npm install` y corre el servidor de desarrollo (`npm run dev`) mapeando el puerto `4321` y exponiéndolo al host mediante la directiva `--host`.
+
+---
+
+## 9. Comandos para Levantar Todo el Ecosistema
+
+Dado que el archivo `.env` declara de forma unificada los dos archivos de Docker Compose:
+`COMPOSE_FILE=docker-compose.moodle.yml:docker-compose.python.yml`
+
+Puedes administrar y levantar **todos** los contenedores con un único comando:
+
+### Levantar y compilar todos los servicios:
 ```bash
 docker compose up -d --build
 ```
 
-### Monitorear los logs del microservicio de agentes (FastAPI):
+### Detener todos los servicios:
 ```bash
-docker compose logs -f python_rag
+docker compose down
 ```
 
-### Limpiar la caché de Moodle para forzar la lectura del plugin y entornos:
-```bash
-docker compose exec moodle php admin/cli/purge_caches.php
-```
 
-### Restaurar cursos de prueba en Moodle:
-El repositorio cuenta con un script automatizado para inyectar copias de seguridad de cursos (`.mbz` / `.zip`) de forma masiva en tu Moodle local:
-```bash
-bash scripts/import_courses.sh
-```
-
-### Empaquetar el plugin para distribución externa:
-Genera un archivo empaquetado `rubricai_plugin.zip` listo para subirse en cualquier otro servidor Moodle mediante su interfaz de plugins:
-```bash
-bash package_plugin.sh
-```

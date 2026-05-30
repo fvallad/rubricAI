@@ -8,10 +8,33 @@ from llm import generate_completion
 
 logger = logging.getLogger(__name__)
 
+def check_has_content(course_data: dict) -> bool:
+    """Checks if the course has any actual pedagogical/evaluable content,
+    ignoring default forums like 'Avisos', 'Novedades', or 'Announcements'."""
+    sections = course_data.get("sections", [])
+    evaluable_activities = []
+    for s in sections:
+        for act in s.get("activities", []):
+            name_lower = act.get("name", "").lower()
+            type_lower = act.get("type", "").lower()
+            # Ignore Moodle default announcement forums
+            if type_lower == "forum" and (name_lower in ["avisos", "announcements", "novedades", "news forum"]):
+                continue
+            evaluable_activities.append(act)
+    return len(evaluable_activities) > 0
+
 class PedagogicalHolisticAgent:
     """Agent in charge of assessing pedagogical alignment, Bloom taxonomy matching, and overall content coherence."""
     
     def evaluate(self, course_data: dict, rubric_data: dict, course_id: int = None) -> str:
+        # Check if the course has any activities in any sections
+        if not check_has_content(course_data):
+            return (
+                "CRITICAL WARNING: El curso no contiene ninguna actividad ni recurso pedagógico en sus secciones. "
+                "No hay contenidos prácticos ni evaluaciones para contrastar contra la rúbrica. "
+                "La alineación pedagógica es inexistente (0%) debido a la falta total de actividades."
+            )
+
         rubric_str = json.dumps(rubric_data, indent=2, ensure_ascii=False)
         course_str = json.dumps(course_data, indent=2, ensure_ascii=False)
         
@@ -70,6 +93,13 @@ class FormatStructureAgent:
     """Agent in charge of auditing formatting, settings, technical consistency, and structure of Moodle course elements."""
     
     def evaluate(self, course_data: dict) -> str:
+        # Check if the course has any activities in any sections
+        if not check_has_content(course_data):
+            return (
+                "CRITICAL WARNING: El aula virtual se encuentra vacía. No tiene secciones con actividades "
+                "o recursos configurados. Formato e infraestructura técnica incompleta."
+            )
+
         course_str = json.dumps(course_data, indent=2, ensure_ascii=False)
         
         system_prompt = (
@@ -122,12 +152,15 @@ class OntologyAgent:
                         "type": act_type
                     })
                 else:
+                    settings = act.get("settings")
+                    if not isinstance(settings, dict):
+                        settings = {}
                     activities.append({
                         "id": act.get("id"),
                         "name": act.get("name"),
                         "type": act_type,
                         "description": act.get("description", ""),
-                        "duedate": act.get("settings", {}).get("duedate", 0)
+                        "duedate": settings.get("duedate", 0)
                     })
                     
         self.client.sync_course_data(course_id, course_title, activities, resources)
@@ -275,6 +308,24 @@ class SynthesisAgent:
     """Agent in charge of consolidating all reports and creating the structured EvaluateResponse."""
     
     def synthesize(self, course_id: int, rubric_id: str, holistic_report: str, format_report: str, ontology_analysis: dict = None) -> dict:
+        is_empty = "CRITICAL WARNING" in (holistic_report or "") or "CRITICAL WARNING" in (format_report or "")
+        if is_empty:
+            return {
+                "course_id": course_id,
+                "rubric_id": rubric_id,
+                "overall_score": 0.0,
+                "holistic_evaluation": holistic_report or "El curso está vacío.",
+                "format_evaluation": format_report or "El curso está vacío.",
+                "recommendations": [
+                    {
+                        "element": "General",
+                        "type": "format",
+                        "issue": "El aula virtual no contiene ninguna sección con actividades o recursos.",
+                        "change": "Debe agregar secciones y actividades pedagógicas (como tareas, cuestionarios, foros) y archivos de soporte para poder auditar el formato y la alineación constructiva del curso."
+                    }
+                ]
+            }
+
         ontology_str = ""
         if ontology_analysis:
             ontology_str = "\n### ANÁLISIS DE COBERTURA ONTOLÓGICA (Similitud Semántica Actividad -> Criterio):\n"
@@ -328,6 +379,8 @@ class SynthesisAgent:
         """
         
         res, _ = generate_completion(prompt, system_prompt)
+        if res is None:
+            raise Exception("El modelo de lenguaje (LLM) no devolvió ninguna respuesta (puede ser por Rate Limit/cuota o API key incorrecta). Verifica la configuración de tu archivo .env.")
         
         try:
             # Squeeze to find JSON object
@@ -361,28 +414,31 @@ class SynthesisAgent:
             """
             try:
                 repaired_res, _ = generate_completion(repair_prompt, "Eres un formateador estricto de JSON. Devuelves únicamente JSON puro.")
-                start_idx = repaired_res.find('{')
-                end_idx = repaired_res.rfind('}')
-                if start_idx != -1 and end_idx != -1:
-                    clean_repaired = repaired_res[start_idx:end_idx+1].strip()
-                    data = json.loads(clean_repaired)
-                    
-                    if not data.get("holistic_evaluation"):
-                        data["holistic_evaluation"] = holistic_report or "Evaluación holística completada."
-                    if not data.get("format_evaluation"):
-                        data["format_evaluation"] = format_report or "Evaluación de formato completada."
-                    if "overall_score" not in data:
-                        data["overall_score"] = 75.0
+                if repaired_res is not None:
+                    start_idx = repaired_res.find('{')
+                    end_idx = repaired_res.rfind('}')
+                    if start_idx != -1 and end_idx != -1:
+                        clean_repaired = repaired_res[start_idx:end_idx+1].strip()
+                        data = json.loads(clean_repaired)
                         
-                    data["course_id"] = course_id
-                    data["rubric_id"] = rubric_id
-                    return data
+                        if not data.get("holistic_evaluation"):
+                            data["holistic_evaluation"] = holistic_report or "Evaluación holística completada."
+                        if not data.get("format_evaluation"):
+                            data["format_evaluation"] = format_report or "Evaluación de formato completada."
+                        if "overall_score" not in data:
+                            data["overall_score"] = 75.0
+                            
+                        data["course_id"] = course_id
+                        data["rubric_id"] = rubric_id
+                        return data
             except Exception as e_repair:
                 logger.error(f"Repair attempt failed: {e_repair}")
-
+ 
             # Fallback structure with regex score extraction if possible
-            score_match = re.search(r'"overall_score"\s*:\s*([0-9.]+)', res)
-            fallback_score = float(score_match.group(1)) if score_match else 50.0
+            fallback_score = 50.0
+            if res:
+                score_match = re.search(r'"overall_score"\s*:\s*([0-9.]+)', res)
+                fallback_score = float(score_match.group(1)) if score_match else 50.0
             
             return {
                 "course_id": course_id,

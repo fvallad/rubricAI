@@ -12,5 +12,18 @@ services:
       - ./rubricai_ai:/app
       - hf_cache:/root/.cache/huggingface
 
+  frontend:
+    build: ./frontend
+    container_name: astro_frontend
+    restart: unless-stopped
+    ports:
+      - "4321:4321"
+    env_file: .env
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - python_rag
+
 volumes:
   hf_cache:

@@ -517,8 +517,8 @@ class action_handler {
         // 2. Call python RAG service evaluate endpoint
         $result = rag_client::evaluate($course_id, $rubric_id, $payload);
 
-        if ($result) {
-            $score = isset($result->overall_score) ? (float)$result->overall_score : 50.0;
+        if ($result && (!isset($result->status) || $result->status !== 'error') && isset($result->overall_score)) {
+            $score = (float)$result->overall_score;
             $holistic = $result->holistic_evaluation ?? 'No disponible.';
             $format = $result->format_evaluation ?? 'No disponible.';
             $recs = isset($result->recommendations) ? (array)$result->recommendations : [];
@@ -528,6 +528,9 @@ class action_handler {
 
             // Save to Moodle database (config_plugins)
             session_manager::save_audit_results($course_id, $score, $holistic, $format, $recs, $rubric_id);
+
+            // Clear previous errors if any
+            session_manager::unset_key('compare_error_' . $course_id);
 
             // Also keep in session with course-specific isolation
             session_manager::set('compare_score_' . $course_id, $score);
@@ -539,6 +542,11 @@ class action_handler {
             $redir = new \moodle_url($base_url, ['step' => 8, 'action' => 'compare', 'compared' => 1]);
         } else {
             error_log("RubricAI Audit Failed - Course: $course_id, Rubric: $rubric_id");
+            $error_msg = 'La evaluación multiagente falló. Verifica que el microservicio de Python esté operativo y configurado en tu archivo .env.';
+            if ($result && isset($result->message)) {
+                $error_msg = 'Error del microservicio: ' . htmlspecialchars($result->message);
+            }
+            session_manager::set('compare_error_' . $course_id, $error_msg);
             $redir = new \moodle_url($base_url, ['step' => 8, 'action' => 'compare', 'error' => 'evaluation_failed']);
         }
 
