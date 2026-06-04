@@ -1,0 +1,41 @@
+Actividad: Estudio de caso/Análisis de casos - AreteIA
+Tipo: assign
+
+Instrucciones de la tarea:
+Estudio de caso acreditativo: Análisis y toma de decisiones en gestión de tecnología educativa
+
+📖 Escenario / Contexto
+
+La institución educativa "Centro Avanzado de Formación Digital" (CAFD), fundada en 2015 en Buenos Aires, enfrenta un creciente desafío en la integración de tecnologías digitales para mejorar los procesos de enseñanza y aprendizaje. Durante el primer trimestre de 2024, el equipo directivo, liderado por la directora Laura Méndez, ha detectado que a pesar de la adquisición reciente de plataformas digitales y dispositivos tecnológicos, la adopción efectiva por parte de docentes y estudiantes es menor al 40%. Esto ha generado preocupación, ya que la institución invirtió aproximadamente 1.200.000 pesos argentinos en las últimas seis meses en infraestructura tecnológica y capacitaciones.
+
+En una reunión realizada el 15 de marzo de 2024, el comité de innovación educativa discutió diversos indicadores y evidencias que reflejan problemas de usabilidad, resistencia al cambio por parte de algunos docentes, poca formación técnica adecuada e insuficiente acompañamiento pedagógico para integrar herramientas digitales. Se reportaron casos específicos donde plataformas de aprendizaje en línea presentan una tasa de abandono del 30% entre estudiantes, y en donde las evaluaciones digitales no reflejan mejoras significativas en los aprendizajes medidos.
+
+El dilema central radica en que, aunque se reconoce la necesidad de tecnología para flexibilizar el aprendizaje, la implementación actual no está alineada con las prácticas docentes ni con las expectativas de los alumnos. El equipo debe decidir entre diversas alternativas: aumentar las capacitaciones técnicas y pedagógicas, ajustar la plataforma para mejorar la experiencia de usuario, fomentar comunidades de práctica para docentes, o reconsiderar la inversión tecnológica actual para priorizar metodologías pedagógicas antes que herramientas.
+
+Como parte del análisis, se dispone de datos cuantitativos y cualitativos recogidos en encuestas internas, registros de uso de plataformas, y evidencia documental de reuniones previas. Se observa además que existen actores externos interesados en la provisión de nuevas soluciones digitales, lo que añade presión comercial y política a las decisiones internas.
+
+El caso requiere que el equipo directivo y los docentes analicen críticamente la situación para delimitar los problemas principales, identificar los datos relevantes y considerar alternativas sostenibles y fundamentadas para la mejora continua de la gestión tecnológica educativa.
+
+
+
+Ítem 1 — Ensayo / Respuesta abierta / Tarea de producción (Difícil)
+
+Analizá detenidamente la situación presentada en el caso del Centro Avanzado de Formación Digital. Identificá cuáles son los principales problemas que afectan la implementación de tecnología educativa en la institución. Justificá tu respuesta fundamentándote en la información provista y discriminando entre los datos relevantes y los detalles secundarios. Elaborá un análisis estructurado que demuestre tu capacidad para delimitar problemas en un contexto profesional.
+
+Objetivos: Obj 1
+
+Ítem 2 — Ensayo / Respuesta abierta / Tarea de producción (Difícil)
+
+Considerando la información brindada en el caso, proponé al menos tres alternativas de intervención que el equipo directivo podría implementar para mejorar la integración de tecnología educativa en la institución. Para cada alternativa, evaluá sus posibles ventajas y desventajas desde una perspectiva pedagógica y organizacional. Fundamentá tu argumentación integrando conceptos de gestión tecnológica y comunidades de práctica.
+
+Objetivos: Obj 1
+
+Ítem 3 — Ensayo / Respuesta abierta / Tarea de producción (Media)
+
+En grupos pequeños, discutí y consensuá una propuesta estratégica que aborde el dilema central presentado en el caso. Durante la discusión, asigná roles (por ejemplo, director/a, docente, especialista en tecnología, estudiante) para representar diferentes perspectivas. Prepará una argumentación clara para el plenario final, en la que expongas la propuesta elegida y sus fundamentos. En el plenario, compará las propuestas de los distintos grupos, identificando puntos en común y diferencias relevantes.
+
+Objetivos: Obj 1
+
+
+
+Justificación Pedagógica: Este instrumento es un estudio de caso acreditativo que evalúa tareas cognitivas de nivel alto (analizar, evaluar y crear) conforme a la taxonomía de Bloom, alineadas con los objetivos de aprendizaje del curso. La modalidad individual y grupal permite la evaluación sumativa y el desarrollo de competencias en análisis crítico, discriminación de información relevante y argumentación fundamentada, cruciales para la gestión tecnológica en contextos educativos. Los ítems de respuesta abierta garantizan que el estudiante integre conocimientos conceptuales y procedimentales, elaborando respuestas complejas y originales. Se cumple con la estructura requerida, con un escenario narrativo rico y detallado que promueve la reflexión profunda y el trabajo colaborativo, con criterios de corrección claros vinculados a la identificación de problemas, análisis de datos y formulación de alternativas sustentadas.

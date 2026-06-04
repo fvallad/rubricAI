@@ -1,0 +1,101 @@
+Actividad: Actividad Tema 2 - De Bits a Información H5P
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+.editing .section .activity .contentwithoutlink, .editing .section .activity .activityinstance {
+    padding-right: 30px;
+}
+#page-navbar .breadcrumb li .no-link {
+    background-color: #111216;
+}
+#embedgenially { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#geniallycontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 100%;
+margin-top: 40px;
+margin-right: 5px;
+margin-bottom: 10px;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+h2 {
+    display: none !important;
+}
+#embedyoutube { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#youtubecontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin: 40px;
+padding: 10px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+.parrafo {
+font-family: 'Open Sans', sans-serif;
+color:#fff;
+font-size: 18px;
+text-align:left;
+margin: 20px;
+padding-left:20px;
+padding-right:20px;
+}
+
+
+
+
+
+ACTIVIDADES - DE BITS A INFORMACIÓN
+
+CONSIGNA
+En esta oportunidad, les vamos a pedir que:
+
+
+
+
+
+
+
+
+  
+
+
+Compartan en este foro la imagen descargada de los grupos que crearon, junto con una justificación. Recién podrán ver las participaciones de los demás luego de haber enviado la suya.
+ 
+
+ --&gt;

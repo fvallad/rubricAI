@@ -1,14 +1,29 @@
 .env
-moodledata/secret/
-moodledata/sessions/
-moodledata/cache/
-moodledata/localcache/
-moodledata/muc/
-moodledata/temp/
-moodledata/trashdir/
 *.pyc
 **/__pycache__/
-moodledata/backups/copia_de_seguridad-moodle2-course-1188-edetns-elg_ed_25-20260522-1153-nu.mbz
-moodledata/backups/sem6_edet.mbz
-moodledata/backups/copia_de_seguridad-moodle2-course-1276-tecde_ed_26-20260522-1200-nu.mbz
-moodledata/backups/wetransfer_entre_cables-mbz_2026-05-21_1821.zip
+
+# Python virtual environments (5.6 GB - MUST BE EXCLUDED)
+rubricai_ai/.venv/
+venv/
+.venv/
+
+# Node modules (140 MB - MUST BE EXCLUDED)
+**/node_modules/
+
+# AI local search indexes (31 MB - EXCLUDE)
+rubricai_ai/data/
+
+# Moodle data directory:
+# We EXCLUDE caches, sessions, secrets, temp files, and large backups, but ALLOW filedir (images) and structure
+moodledata/cache/
+moodledata/localcache/
+moodledata/sessions/
+moodledata/temp/
+moodledata/trashdir/
+moodledata/muc/
+moodledata/secret/
+moodledata/backups/*.mbz
+moodledata/backups/*.zip
+
+# ZIP files (except packaging if any, but we ignore general zips)
+rubricai_plugin.zip

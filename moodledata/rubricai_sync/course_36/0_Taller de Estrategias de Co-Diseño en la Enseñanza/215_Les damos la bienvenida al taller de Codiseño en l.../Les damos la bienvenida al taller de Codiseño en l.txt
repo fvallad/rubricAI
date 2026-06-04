@@ -1,0 +1,5 @@
+Actividad: Les damos la bienvenida al taller de Codiseño en l...
+Tipo: label
+
+Contenido de la etiqueta:
+Les damos la bienvenida al taller de Codiseño en la enseñanza, una invitación a volver sobre nuestras prácticas, trayectorias y saberes docentes para repensarlos a la luz de los desafíos contemporáneos. El codiseño es una forma de habitar la enseñanza como práctica reflexiva, situada y colaborativa. Partimos de la convicción de que las propuestas educativas no se diseñan en soledad: se tejen con otros, se ven atravesadas por tecnologías, se disputan en marcos normativos, se encarnan en cuerpos y afectos, se construyen en tensión con el contexto. El taller propone un proceso compartido para abrir preguntas, imaginar posibilidades y ensayar futuros codiseñados en la enseñanza universitaria. Te invitamos a comenzar.

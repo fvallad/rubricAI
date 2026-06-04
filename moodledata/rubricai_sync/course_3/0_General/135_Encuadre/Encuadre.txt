@@ -1,0 +1,2 @@
+Actividad: Encuadre
+Tipo: resource

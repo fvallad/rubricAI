@@ -17,6 +17,13 @@ from schemas import (
     EvaluateRequest
 )
 from rag.utils import get_instrument_list
+from tracing import (
+    trace_moodle_request,
+    trace_rag,
+    add_run_metadata,
+    add_run_tags,
+    create_tracing_middleware,
+)
 import json
 import re
 
@@ -33,6 +40,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add LangSmith tracing middleware for incoming HTTP requests
+try:
+    TracingMiddleware = create_tracing_middleware()
+    app.add_middleware(TracingMiddleware)
+    logging.info("LangSmith HTTP tracing middleware enabled.")
+except Exception as e:
+    logging.warning(f"Could not add LangSmith tracing middleware: {e}")
+
 @app.on_event("startup")
 async def startup_event():
     # Warm up the embedding model
@@ -48,6 +63,15 @@ async def startup_event():
         logging.info("Guidelines ready.")
     except Exception as e:
         logging.warning(f"Guidelines index not found at startup: {e}")
+    
+    # Warm up Neo4j database connection & initialization
+    from neo4j_client import get_neo4j_client
+    try:
+        logging.info("Warming up Neo4j database connection & seeding...")
+        get_neo4j_client()
+        logging.info("Neo4j client initialized.")
+    except Exception as e:
+        logging.warning(f"Could not connect to Neo4j at startup: {e}")
     
     logging.info("Service fully ready.")
 
@@ -74,16 +98,20 @@ async def root():
 
 
 @app.post("/sync")
+@trace_moodle_request(name="moodle_sync")
 async def sync_course(request: SyncRequest):
+    add_run_metadata({"n_files": len(request.files)})
     verified = []
     for f in request.files:
         path = f.get("localpath")
         if path and os.path.exists(path):
             verified.append(f.get("filename"))
+    add_run_metadata({"n_verified": len(verified)})
     return {"status": "success", "files_verified": len(verified)}
 
 
 @app.post("/ingest")
+@trace_moodle_request(name="moodle_ingest")
 async def ingest_course(request: Request, background_tasks: BackgroundTasks):
     """
     Trigger ingestion for a course folder in the background.
@@ -95,6 +123,7 @@ async def ingest_course(request: Request, background_tasks: BackgroundTasks):
         return {"status": "error", "message": "course_id is required"}
         
     course_id = int(course_id_str)
+    add_run_metadata({"course_id": course_id})
 
     from rag.pipeline import run_ingestion
     from rag.store import get_course_dir
@@ -124,6 +153,8 @@ async def ingest_course(request: Request, background_tasks: BackgroundTasks):
     else:
         logging.info(f"Received and saved {len(selected_files)} files for course {course_id}")
     
+    add_run_metadata({"n_files": len(selected_files), "files": selected_files[:10]})
+
     # Initialize progress
     INGESTION_PROGRESS[course_id] = {
         "progress": 0, 
@@ -145,38 +176,46 @@ async def ingest_course(request: Request, background_tasks: BackgroundTasks):
     }
 
 @app.post("/search")
+@trace_moodle_request(name="moodle_search")
 async def search_endpoint(request: SearchRequest):
     """
     Query a course embedding for RAG.
     """
+    add_run_metadata({"course_id": request.course_id, "query_length": len(request.query)})
+
     if not request.course_id or not request.query:
         return {"status": "error", "message": "course_id and query required"}
 
     from rag.search import search_course
     try:
         results = search_course(request.course_id, request.query)
+        add_run_metadata({"n_results": len(results)})
         return {"status": "success", "results": results}
     except Exception as e:
         logging.exception("Error searching course")
         return {"status": "error", "message": str(e)}
 
 @app.get("/instruments")
+@trace_moodle_request(name="moodle_instruments")
 async def list_instruments():
     """
     Returns the full list of instruments from the master document.
     """
     try:
         instruments = get_instrument_list()
+        add_run_metadata({"n_instruments": len(instruments)})
         return {"status": "success", "instruments": instruments}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
 
 @app.post("/preview")
+@trace_moodle_request(name="moodle_preview")
 async def preview_endpoint(request: GenerateRequest):
     """
     Returns the prompts that would be sent to the LLM.
     """
+    add_run_metadata({"course_id": request.course_id, "step": request.step})
     try:
         prompt, system_prompt, _ = await _prepare_prompt_data(request)
         if not prompt:
@@ -242,7 +281,7 @@ async def _prepare_prompt_data(request: GenerateRequest):
                 try:
                     # Clean JSON in case LLM added markdown wrappers
                     json_fb = re.sub(r'^```json|```$', '', raw_feedback, flags=re.MULTILINE).strip()
-                    fb_data = FeedbackClassification.parse_raw(json_fb)
+                    fb_data = FeedbackClassification.model_validate_json(json_fb)
                     if not fb_data.is_valid:
                         return {
                             "status": "error", 
@@ -391,10 +430,18 @@ async def _prepare_prompt_data(request: GenerateRequest):
         return {"status": "error", "message": str(e)}, None, None
 
 @app.post("/generate")
+@trace_moodle_request(name="moodle_generate")
 async def generate_endpoint(request: GenerateRequest):
     """
     Main generative endpoint for Steps 4, 5, and 6.
     """
+    add_run_metadata({
+        "course_id": request.course_id,
+        "step": request.step,
+        "chosen_instrument": request.chosen_instrument or None,
+        "has_feedback": bool(request.feedback),
+    })
+
     try:
         # from llm import generate_completion
         from llm import _llm_instance
@@ -417,14 +464,17 @@ async def generate_endpoint(request: GenerateRequest):
         # 5. Parse and Validate JSON
         try:
             clean_json = re.sub(r'^```json|```$', '', response_text, flags=re.MULTILINE).strip()
-            validated_data = schema.parse_raw(clean_json)
+            validated_data = schema.model_validate_json(clean_json)
+            add_run_metadata({"generation_status": "success", "usage": usage})
             return {
                 "status": "success", 
-                "output": validated_data.dict(),
+                "output": validated_data.model_dump(),
                 "usage": usage
             }
         except Exception as e:
             logging.exception("Validation failed for LLM output")
+            add_run_tags(["validation-failed"])
+            add_run_metadata({"generation_status": "validation_error", "error": str(e)})
             # If validation fails, we try to return the raw text with a warning or just error
             return {
                 "status": "error", 
@@ -490,10 +540,12 @@ def check_status(course_id: int):
 
 
 @app.delete("/ingest/{course_id}")
+@trace_moodle_request(name="moodle_delete_embeddings")
 async def delete_embeddings(course_id: int):
     """
     Delete the RAG index, metadata and selected_files list for a course.
     """
+    add_run_metadata({"course_id": course_id})
     from rag.store import get_index_path, get_metadata_path, get_course_dir
     import os
     for path in [
@@ -510,6 +562,7 @@ async def delete_embeddings(course_id: int):
 # --- RubricAI Neo4j & Multi-Agent Endpoints ---
 
 @app.post("/rubrics")
+@trace_moodle_request(name="moodle_create_rubric")
 def create_rubric(rubric: dict):
     """
     Creates or updates a rubric in the Neo4j database.
@@ -521,12 +574,14 @@ def create_rubric(rubric: dict):
     
     try:
         rubric_id = client.save_rubric(rubric)
+        add_run_metadata({"rubric_id": rubric_id})
         return {"status": "success", "rubric_id": rubric_id}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
 
 @app.get("/rubrics")
+@trace_moodle_request(name="moodle_list_rubrics")
 def list_rubrics():
     """
     Retrieves all rubrics stored in Neo4j.
@@ -543,10 +598,12 @@ def list_rubrics():
 
 
 @app.get("/rubrics/{rubric_id}")
+@trace_moodle_request(name="moodle_get_rubric")
 def get_rubric(rubric_id: str):
     """
     Retrieves a full rubric from Neo4j.
     """
+    add_run_metadata({"rubric_id": rubric_id})
     from neo4j_client import get_neo4j_client
     client = get_neo4j_client()
     if not client or not client.initialized:
@@ -562,10 +619,16 @@ def get_rubric(rubric_id: str):
 
 
 @app.post("/evaluate")
+@trace_moodle_request(name="moodle_evaluate")
 def evaluate_course(request: EvaluateRequest):
     """
     Triggers multi-agent course comparison against a rubric.
     """
+    add_run_metadata({
+        "course_id": request.course_id,
+        "rubric_id": request.rubric_id,
+    })
+
     from agents import MultiAgentCoordinator
     try:
         coordinator = MultiAgentCoordinator()
@@ -574,6 +637,7 @@ def evaluate_course(request: EvaluateRequest):
             rubric_id=request.rubric_id,
             course_data=request.course_data
         )
+        add_run_metadata({"final_score": result.get("overall_score", 0.0)})
         return result
     except Exception as e:
         logging.exception("Error in /evaluate endpoint")
@@ -581,6 +645,7 @@ def evaluate_course(request: EvaluateRequest):
 
 
 @app.get("/ontology")
+@trace_moodle_request(name="moodle_ontology")
 def get_ontology():
     """
     Returns nodes and edges representing the pedagogical ontology from Neo4j.
@@ -591,7 +656,11 @@ def get_ontology():
         return {"nodes": [], "edges": []}
     
     try:
-        return client.get_ontology_graph()
+        result = client.get_ontology_graph()
+        add_run_metadata({
+            "n_nodes": len(result.get("nodes", [])),
+            "n_edges": len(result.get("edges", [])),
+        })
+        return result
     except Exception as e:
         return {"status": "error", "message": str(e)}
-

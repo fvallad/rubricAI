@@ -1,9 +1,0 @@
-Actividad: Diario de Bitácora
-Tipo: page
-
-Descripción:
-
-
-Contenido de la página:
-
- 

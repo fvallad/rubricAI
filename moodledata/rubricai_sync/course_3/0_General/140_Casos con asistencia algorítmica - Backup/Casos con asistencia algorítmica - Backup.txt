@@ -1,0 +1,196 @@
+Actividad: Casos con asistencia algorítmica - Backup
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+
+  
+ 
+  
+
+
+
+Casos con asistencia algorítmica
+    
+
+ 
+
+
+La integración de la inteligencia artificial generativa (IAGen) en el diseño de casos de estudio abre nuevas posibilidades pedagógicas. Este módulo propone explorar cómo la IAGen puede asistir, colaborar y cocrear en distintas etapas del diseño, desde la organización de ideas hasta la formulación de preguntas críticas. Además, se reflexiona sobre el uso ético de estas herramientas tanto por docentes como por estudiantes, y se presentan estrategias para promover una interacción crítica y creativa con la IA.
+Te invitamos a recorrer los contenidos y descargar el módulo completo para profundizar en cada una de las propuestas.
+¡No te olvides de participar en la actividad!
+
+
+  Descargar módulo 
+
+
+
+
+
+
+ IAGen EN EL DISEÑO DE ESTUDIO DE CASOS
+ ASISTENCIA, COLABORACIÓN Y COCREACIÓN
+ ORGANIZACIÓN, DISEÑO Y PREGUNTAS
+ REVISIÓN FINAL DEL CASO
+ USO DE LA IAGen EN LOS ESTUDIANTES
+
+ 
+
+
+IAGen en el diseño de estudio de casos
+
+
+El diseño de un caso de estudio es un proceso creativo en el que el docente construye relatos que presentan situaciones relevantes para el aprendizaje. En este proceso, la inteligencia artificial generativa (IAGen) emerge como una aliada clave, capaz de sostener un diálogo dinámico que acompaña al docente desde las etapas iniciales hasta la planificación didáctica final. A diferencia de una herramienta que ofrece respuestas puntuales, la IAGen puede adaptarse a múltiples caminos de exploración, enriqueciendo la tarea pedagógica con propuestas inesperadas y ampliando las posibilidades de creación. A través del diálogo con la IA, una idea inicial puede transformarse en una propuesta detallada y significativa.
+
+
+Durante la conceptualización del caso, la IAGen colabora proponiendo contextos, perfiles de personajes y dilemas narrativos, lo que permite al docente contrastar estas sugerencias con sus objetivos de enseñanza y su experiencia. Asimismo, la IA puede actuar como un “espejo crítico”, generando versiones alternativas del caso y desafiando al docente a repensar sus decisiones para asegurar claridad y coherencia en el relato. Este intercambio fortalece la dimensión creativa del diseño, sin sustituir el rol del docente, sino potenciando su mirada experta.
+
+La colaboración entre docente e IA puede adoptar diversas formas, dependiendo de las necesidades e intereses de quien diseña. En la etapa preactiva, la IAGen ayuda a organizar ideas, definir objetivos, seleccionar contenidos y explorar el propósito del caso (introducción, profundización o evaluación de contenidos). En el segundo momento, previo a la escritura, la IA facilita el mapeo de habilidades y conocimientos esperados, sugiere actividades y fomenta reflexiones alineadas con los objetivos. En la tercera etapa, ya en el proceso de redacción, la IAGen puede generar borradores, mejorar la expresión escrita, formular preguntas críticas y sugerir formatos visuales o digitales pertinentes. Finalmente, en la  última etapa, colabora en la organización del recorrido didáctico, proponiendo formas de estructurar la consigna, definir etapas y roles en distintos entornos (presenciales, virtuales o híbridos), diseñar retroalimentaciones y promover la metacognición de los estudiantes.
+
+Para revisar las múltiples posibilidades de esta colaboración, se propone utilizar la metáfora de la “escalera de la IA” (Perkins et al., 2024; Tarasow et al., 2024) que da cuenta de la gradualidad en la profundización de la interacción con la IAGen. En este marco, se presentan seis formas concretas de diálogo, asistencia y colaboración con la IA, ilustradas a través del recorrido de una docente ficticia, Ana Feler. Estas formas representan solo una parte del abanico de posibilidades que cada docente puede explorar creativamente, adaptando la herramienta a sus propias prácticas.
+
+En síntesis, la utilización de la IAGen en el diseño de casos de estudio permite al docente ampliar su capacidad creativa y pedagógica, enriquecer los relatos y generar experiencias de aprendizaje más profundas, reflexivas y motivadoras, abriendo nuevas rutas para la innovación educativa.
+
+  
+  Para profundizar en las decisiones docentes teniendo en cuenta los distintos momentos de la construcción de un caso, te sugerimos leer el material presentado en el tercer apartdo del módulo:  "ENSEÑAR CON CASOS" . 
+
+
+
+ 
+
+Asistencia, colaboración y cocreación de ideas
+
+
+La inteligencia artificial generativa (IAGen) puede desempeñar distintos roles en el proceso de elaboración y revisión de casos de estudio, desde funciones asistenciales más estructuradas hasta formas de colaboración creativa. En los primeros niveles de interacción, la IA actúa como asistente evaluando casos ya elaborados a partir de criterios previamente definidos por el docente. Entre estos criterios se destacan la coherencia interna del texto (detección de contradicciones o inconsistencias), la relevancia de los elementos en relación con los objetivos pedagógicos, y la claridad del lenguaje utilizado, identificando partes ambiguas o de difícil comprensión para los estudiantes.
+Desde un rol más colaborativo, la IA no se limita a detectar problemas, sino que propone mejoras activas sobre la estructura y el contenido del caso. Puede recomendar cambios en la secuencia narrativa, proponer nuevas preguntas o enfoques para profundizar el análisis, y sugerir adaptaciones que hagan el caso más pertinente para un grupo específico de estudiantes o en un determinado contexto de aplicación.
+
+Un segundo nivel de colaboración implica la cocreación del núcleo narrativo, entendido como el eje central del caso que no solo presenta el problema a analizar, sino que también construye una historia atractiva y situada. Este componente narrativo cumple una doble función: plantea una situación concreta de la realidad y genera una conexión emocional que facilita el compromiso y la comprensión por parte de los estudiantes. Según Furman (2024), las historias humanizan el contenido, lo contextualizan y lo hacen más relevante desde el punto de vista educativo.
+
+
+
+En este nivel más interactivo, el diálogo entre docente e IA se vuelve clave. El o la docente aporta los objetivos pedagógicos, el marco conceptual y los lineamientos generales del caso, mientras que la IA contribuye con alternativas narrativas, variaciones de estilos y detalles situacionales que enriquecen la propuesta original. A diferencia del rol estructurado del asistente, aquí la IA se convierte en un interlocutor creativo, capaz de ampliar el espectro de interpretaciones y de sugerir relatos que estimulen una reflexión más profunda.
+
+
+Para que esta cocreación resulte productiva, es fundamental que el docente formule instrucciones claras y precisas. Esto incluye definir el propósito del relato, el tono y estilo deseado (formal, anecdótico, técnico, emocional), y establecer parámetros específicos como la extensión del texto, el uso de lenguaje inclusivo o referencias relevantes para el contexto pedagógico. Así, se favorece una colaboración significativa que potencia el valor educativo del caso de estudio mediante una integración eficaz de la creatividad humana y la capacidad generativa de la IA. 
+
+
+ 
+
+Organización, diseño y preguntas
+
+
+
+La inteligencia artificial generativa (IAGen) puede asumir un rol de asistencia específica en la organización de la información y la creación de recursos visuales en torno a casos de estudio. Su aplicación permite estructurar contenidos complejos, facilitando su comprensión a través de herramientas como tablas, esquemas, cuadros comparativos o diagramas jerárquicos. Estas representaciones visuales, generadas por asistentes como ChatGPT o Napkin AI, mejoran la legibilidad, el atractivo y la claridad del material educativo.
+Entre las principales funciones que puede asumir la IAGen en este nivel se destacan: resumir y categorizar información clave, diseñar estructuras visuales para ilustrar procesos o relaciones jerárquicas, y proponer formatos organizativos que potencien el impacto visual y conceptual del contenido. Además, la IA puede generar imágenes que acompañen tanto el relato narrativo como los conceptos centrales, representando ideas complejas, creando escenarios o personajes para contextualizar los casos, y aportando dinamismo a la presentación mediante la ruptura de la linealidad textual.
+
+En un nivel más avanzado, la IAGen participa en la construcción de perspectivas de análisis. Aquí, el trabajo conjunto con el docente se orienta a enriquecer el enfoque analítico del caso mediante un diálogo reflexivo. A partir de un marco teórico y metodológico definido por el docente, la IA puede sugerir puntos de vista complementarios, conexiones interdisciplinarias y posiciones críticas que amplíen el campo de análisis. Estas propuestas pueden estar alineadas con teorías específicas —por ejemplo, las de Bourdieu o Coulón— o enfocarse en la comparación entre contextos culturales diversos. La clave de esta colaboración está en la claridad de las instrucciones docentes, que orientan a la IA hacia interpretaciones relevantes y pertinentes.
+
+Por último, la IAGen puede contribuir activamente en la formulación de preguntas críticas, promoviendo el pensamiento reflexivo y el debate. A partir del encuadre general que brinda el docente, la IA propone preguntas que revelan aspectos no evidentes, vinculan teoría y práctica, o introducen miradas alternativas e interdisciplinarias. Este proceso ocurre de manera iterativa: el docente revisa las preguntas generadas, selecciona las más adecuadas, solicita nuevas formulaciones si es necesario y ajusta el enfoque según el nivel de profundidad buscado. Así, se construye un conjunto de interrogantes que impulsa un análisis integral y enriquecido del caso de estudio.
+
+
+
+
+
+ 
+
+Revisión final del caso
+
+
+En esta fase avanzada de interacción con la inteligencia artificial generativa (IAGen), se propone utilizarla como agente simulado que asume un rol específico —ya sea de docente o estudiante— para llevar a cabo una revisión exhaustiva del caso de estudio. Esta estrategia permite evaluar el caso desde una perspectiva definida, con el objetivo de identificar oportunidades de mejora en cuanto a claridad, coherencia, adecuación a los objetivos pedagógicos y precisión de las consignas.
+
+
+Asignar un rol a la IA enriquece la revisión al encuadrar sus observaciones dentro de un punto de vista concreto. Por ejemplo, desde el rol docente, la IAGen puede evaluar si el caso está correctamente estructurado, si los contenidos se alinean con el marco teórico, si cumple con los objetivos de aprendizaje y si la consigna dirigida a los estudiantes es clara en relación con tiempos, formatos y criterios de evaluación. Desde el rol estudiante, en cambio, la IA se enfoca en la claridad del lenguaje, la accesibilidad conceptual y el interés o comprensión que puede generar el caso desde la perspectiva del destinatario.
+
+Esta dinámica de revisión requiere tres momentos clave. Primero, se define el rol que asumirá la IA, junto con los criterios específicos de evaluación. Luego, la IA realiza una revisión minuciosa basada en esos criterios, organizando sus observaciones de manera clara y ordenada. Finalmente, se genera una instancia de retroalimentación reflexiva, en la cual el docente analiza las sugerencias ofrecidas, identifica ajustes necesarios y modifica el caso o las consignas en función de las necesidades detectadas.
+
+Además de revisar el contenido del caso, esta instancia es útil para trabajar con la IA en el diseño y la precisión de las consignas dirigidas a los estudiantes. A partir de una simulación desde la mirada estudiantil, la IA puede colaborar en la elaboración de consignas claras, comprensibles y bien contextualizadas, mejorando así la efectividad comunicativa del dispositivo didáctico. Esta revisión final contribuye a afinar tanto el contenido como su presentación, asegurando que el caso de estudio sea pedagógicamente sólido, accesible y coherente en todos sus componentes.
+
+
+ 
+
+Uso de la IAGen en los esudiantes
+
+
+Así como se ha trabajado el uso de la inteligencia artificial generativa (IAGen) desde el rol docente en el diseño y análisis de casos, también es fundamental considerar su utilización desde la perspectiva del aprendizaje estudiantil. A lo largo del curso, se han explorado múltiples formas en las que la IAGen puede integrarse a procesos de enseñanza, y esa experiencia ofrece insumos valiosos para anticipar cómo los estudiantes podrían emplearla en el análisis de situaciones problemáticas.
+Los estudiantes pueden utilizar la IAGen para ampliar su mirada y participar activamente en el proceso de análisis. Entre las posibles aplicaciones se incluyen: reorganizar perspectivas, caracterizar personajes, construir argumentos para debates, sistematizar ideas en formatos visuales, formular diálogos o incluso crear sus propios casos. Estas actividades fomentan la creatividad y el pensamiento crítico, siempre que se acompañen de un diseño pedagógico que promueva el uso reflexivo y ético de la herramienta.
+Sin embargo, el potencial de la IAGen también plantea desafíos. Surgen preocupaciones sobre los límites de su uso, especialmente cuando existe el riesgo de que su empleo inhiba la creatividad o sustituya la reflexión personal por respuestas generadas automáticamente. Esto lleva a interrogantes clave para el docente: ¿cómo garantizar que el análisis del caso sea genuinamente realizado por los estudiantes?, ¿qué tipo de actividades debemos promover para fortalecer sus propios procesos cognitivos y expresivos?
+
+Ante estos desafíos, se proponen estrategias concretas que integran la IA de manera crítica y formativa. Entre ellas, se destacan: diseñar consignas que promuevan la reflexión más que la reproducción de contenido; pedir fundamentaciones personales o grupales de las decisiones tomadas durante el análisis; incluir preguntas con implicancias personales que generen respuestas únicas; e invitar a una reflexión metacognitiva sobre cómo se abordó el caso, incluyendo el uso explícito de herramientas de IA.
+
+También se sugiere legitimar el uso de la IA como apoyo en tareas específicas —como generar ideas, ordenar hipótesis, ampliar información o construir visualizaciones— dentro de una propuesta híbrida que combine momentos virtuales y presenciales para profundizar la reflexión. Finalmente, se enfatiza el rol del docente en brindar una retroalimentación constante que acompañe y guíe un uso transparente y responsable de estas tecnologías en el proceso de aprendizaje.
+
+
+
+
+
+
+  Actividades 
+
+
+  function mostrarContenido(id) {
+    document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+    const activa = document.getElementById(id);
+    if (activa) activa.classList.add('visible');
+
+    const botones = document.querySelectorAll('.item-menu');
+    botones.forEach(boton => boton.classList.remove('activo'));
+    const index = id.replace('contenido', '');
+    const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+    if (botonActivo) botonActivo.classList.add('activo');
+  }
+
+  function mostrarPopup(el, texto) {
+    document.querySelectorAll('.popup-box').forEach(p => p.remove());
+    const popup = document.createElement('div');
+    popup.className = 'popup-box';
+    popup.textContent = texto;
+    document.body.appendChild(popup);
+    const rect = el.getBoundingClientRect();
+    popup.style.left = `${rect.left + window.scrollX}px`;
+    popup.style.top = `${rect.top + window.scrollY - 40}px`;
+    popup.style.display = 'block';
+
+    function cerrarPopup(event) {
+      if (!popup.contains(event.target) && event.target !== el) {
+        popup.remove();
+        document.removeEventListener('click', cerrarPopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
+  }
+function mostrarContenido(id) {
+  document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+  const activa = document.getElementById(id);
+  if (activa) activa.classList.add('visible');
+
+  const botones = document.querySelectorAll('.item-menu');
+  botones.forEach(boton => boton.classList.remove('activo'));
+  const index = id.replace('contenido', '');
+  const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+  if (botonActivo) botonActivo.classList.add('activo');
+
+  // Actualiza la URL sin recargar
+  const nuevaUrl = new URL(window.location);
+  nuevaUrl.searchParams.set('seccion', index);
+  window.history.replaceState({}, '', nuevaUrl);
+}
+document.addEventListener('DOMContentLoaded', function () {
+  //  Botón de descarga: foco
+  const btn = document.querySelector('.btn-descarga');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      setTimeout(() => this.blur(), 100);
+    });
+  }
+
+  //  Obtiene el valor del parámetro ?seccion=...
+  const urlParams = new URLSearchParams(window.location.search);
+  const seccion = urlParams.get('seccion') || '1';
+
+  // Activa automáticamente el contenido y el botón correspondiente
+  mostrarContenido('contenido' + seccion);
+});

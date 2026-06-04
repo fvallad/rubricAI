@@ -1,0 +1,8 @@
+Actividad: Foro - Consultas
+Tipo: forum
+
+Descripción del foro:
+
+h2 {
+    display: none;
+}

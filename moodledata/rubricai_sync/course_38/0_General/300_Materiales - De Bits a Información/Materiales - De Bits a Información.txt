@@ -1,0 +1,323 @@
+Actividad: Materiales - De Bits a Información
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+
+
+.editing .section .activity .contentwithoutlink, .editing .section .activity .activityinstance {
+    padding-right: 30px;
+}
+h2 {
+    display: none;
+}
+#page-navbar .breadcrumb li .no-link {
+    background-color: #111216;
+}
+.cardencabezado{
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-rows: minmax(100%, 1fr);
+    grid-template-areas: "stack";
+    overflow: hidden;
+}
+
+.cardencabezado img, .cardencabezado figcaption{
+    grid-area: stack;
+}
+
+.cardencabezado img{
+    width: 100%;
+
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardencabezado figcaption{
+    transform: translate(400px, 30%);
+    text-align: justify;
+    transition: transform 0.6s;
+    color: #fff;
+}
+.botonmas img{
+    width: 10%;
+margin-left: 80%;
+    height: 10%;
+    object-fit: cover;
+}
+#embedgenially { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#geniallycontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin-top: 40px;
+margin-right: 5px;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+
+#embedyoutube { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#youtubecontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin-top: 40px;
+margin-right: 20%;
+margin-left: 20%;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+
+
+
+
+
+
+
+
+DE BITS A INFORMACIÓN
+
+MATERIALES PRINCIPALES
+
+
+
+  
+       
+            
+        
+    
+  
+
+Armas de destrucción matemática. Cap. 5:  Víctimas civiles - La justicia en la era del big data.
+
+O'Neil, C (2018).
+
+       
+            
+        
+    
+  
+  
+  
+       
+            
+        
+    
+  
+
+
+Atlas de Inteligencia Artificial. Poder, política y costos planetarios. Cap III: Los datos (fragmentos seleccionados)
+
+Crawford, K. (2022).
+
+
+
+       
+            
+        
+    
+  
+
+
+
+
+
+  
+       
+            
+        
+    
+  
+
+PRESENTACIÓN SEGUNDO ENCUENTRO
+
+Villani, D y López Rosenfeld, M. (2024)
+
+       
+            
+        
+    
+  
+  
+
+
+
+MATERIALES COMPLEMENTARIOS
+
+
+
+
+
+
+
+
+
+
+¿Qué es Worldcoin (WLD) y cuál es su relación con los ojos y la privacidad?
+
+Leal, A. (2024)
+
+
+
+
+
+
+
+
+
+
+
+
+Google, obligada a borrar millones de datos tras reconocer que la navegación “de incógnito” no es “privada”
+elDiario.es
+
+
+
+
+
+
+
+
+
+
+ 
+  
+       
+            
+        
+    
+Visualización de coincidencia de estudiantes en cursos
+Villani, D y López Rosenfeld, M. (2024)
+
+       
+            
+        
+    
+  
+  
+
+       
+            
+        
+     
+La explotación laboral detrás de la inteligencia artificial
+DataGénero
+
+       
+            
+        
+    
+  
+
+
+
+
+
+  
+       
+            
+        
+    
+  
+
+Charla TEDx "Utilizando el poder de millones de mentes humanas"
+
+Luis von Ahn
+
+       
+            
+        
+    
+  
+  
+
+       
+            
+        
+ 
+    
+
+Charla TEDx "Educación masiva para el futuro"
+Luis von Ahn
+
+       
+            
+        
+    
+  
+
+
+
+  
+       
+            
+        
+    
+  
+
+Empresas y servicios de almacenamiento.
+Google Cloud
+
+
+       
+            
+        
+    
+  
+  
+
+
+       
+            
+        
+ 
+    
+
+Mobility and sociocultural events in mobile phone data records
+Ponieman, N. B., Sarraute, C., Minnoni, M., Travizano, M., Rodriguez Zivic, P. y Salles, A. (2016)
+
+       
+            
+        
+    
+  
+
+
+    
+  
+-->

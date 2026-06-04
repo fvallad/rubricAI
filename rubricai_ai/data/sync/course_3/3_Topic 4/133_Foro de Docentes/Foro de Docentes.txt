@@ -1,5 +1,0 @@
-Actividad: Foro de Docentes
-Tipo: forum
-
-Descripción del foro:
-Foro de Docentes

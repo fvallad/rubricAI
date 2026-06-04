@@ -1,0 +1,485 @@
+Actividad: Unidad 1 - backup
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+
+
+  .moodle-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+
+.encabezado-video {
+  position: relative;
+  width: 100%;
+  height: 300px; /* ocupa todo el alto de la pantalla */
+  overflow: hidden;
+}
+
+.video-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* proporción 16:9 */
+  min-height: 100vh;
+  min-width: 177.78vh; /* asegura que cubra el contenedor */
+  transform: translate(-50%, -50%);
+  border: none;
+  filter: brightness(1.001); /* fuerza el repintado sin afectar el brillo */
+}
+
+  .main-container {
+    display: flex;
+    margin-top: 1em;
+  }
+
+  .sidebar {
+    width: 25%;
+    position: sticky;
+    top: 0;
+    padding: 1em;
+    box-sizing: border-box;
+    background: #f9f9f9;
+  }
+
+  .content {
+    width: 75%;
+    padding: 1em;
+    box-sizing: border-box;
+  }
+.hr-plata {
+  border: none;                 /* quitamos el borde por defecto */
+  height: 0;                    /* la línea la dibuja el gradient, no la altura */
+  padding: 12px 0;              /* "padding" superior e inferior (separa la línea) */
+  background:
+    linear-gradient(to right, transparent, #c0c0c0, transparent) center/100% 1px no-repeat;
+  /* Opcional: un toque suave de brillo central */
+  /* background: linear-gradient(to right, transparent, #d0d0d0, #bfbfbf, transparent) center/100% 1px no-repeat; */
+  margin: 0;                    /* sin margen adicional (ajusta si lo prefieres) */
+}
+  .font-small  { font-size: 0.9em;  }
+  .font-medium { font-size: 1.1em;  }
+  .font-large  { font-size: 1.5em;  }
+
+  @media (max-width: 768px) {
+    .main-container { flex-direction: column; }
+    .sidebar, .content { width: 100%; }
+    .sidebar { position: static; margin-top: 1em; }
+  }
+
+  /* Popup para notas en móviles */
+    .popup-box {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 1000;
+    font-size: 0.9em;
+    display: none;
+    white-space: normal;
+    max-width: 90vw;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+#footnote-sidebar-content {
+  background-color: #333;
+  color: #fff;
+  padding: 1em;
+  border-radius: 10px;
+  max-width: 100%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  font-size: 0.95em;
+  margin-bottom: 1em;
+  transition: all 0.3s ease;
+}
+#footnote-sidebar-content {
+  background-color: #333;
+  color: #fff;
+  padding: 1em;
+  border-radius: 10px;
+  max-width: 100%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  font-size: 0.95em;
+  margin-bottom: 1em;
+  transition: all 0.3s ease;
+}
+
+.nota-titulo {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  font-size: 0.95em;
+  opacity: 0.8;
+}
+
+.nota-dinamica {
+  font-size: 0.95em;
+}
+/*Cambios en textos*/
+
+/* Importar Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&family=Roboto:wght@400;500&display=swap');
+
+
+
+/* Título principal */
+.titulo-ppal {
+  font-family: 'Open Sans', sans-serif;
+font-weight: 700;
+  font-size: 2.5rem;
+  color: #111;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+/* Subtítulo */
+.subtitulo-ppal {
+ font-family: 'Open Sans', sans-serif;
+  font-size: 1.8rem;
+  color: #444;
+  margin: 0.5rem 0 1.5rem;
+  text-align: left;
+}
+
+/* Primer tipo de párrafo (por defecto) */
+.parrafo1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  margin: 1rem 0;
+}
+
+/* Segundo tipo de párrafo (más elegante, énfasis) */
+.parrafo2 {
+font-family: monospace;
+  font-size: 1.2rem;
+  color: #111;
+  font-weight: 400;
+  margin: 1rem 0;
+border: 1px solid #111;   /* ejemplo de borde */
+  border-radius: 10px;      /* redondeo uniforme */
+  padding: 10px; 
+}
+.cita {
+font-family: monospace;
+  font-size: 1.5rem;
+  color: #111;
+  font-weight: 500;
+  margin: 1rem 0;
+text-align: center;
+  padding: 10px; 
+}
+.titulo-seccion{
+ font-family: 'Open Sans', sans-serif;
+  font-size: 1.3rem;
+  color: #111;
+  font-weight: 700;
+  margin: 1rem 0;
+
+}
+/* Tercer tipo de párrafo (más pequeño, informativo) */
+.parrafo3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 1rem 0;
+}
+
+/* Texto destacado con fondo negro y letra blanca */
+.destacado {
+  background-color: #000;
+  color: #fff;
+/*  padding: 0.5rem 1rem;*/
+  border-radius: 5px;
+  display: inline-block;
+  font-weight: bold;
+  margin: 0.5rem 0;
+
+}
+.destacado-new {
+  background-color: #898883;
+  color: #fff;
+  display: inline-block;
+  font-weight: bold;
+
+}
+
+.contenedor-boton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.boton-volver {
+    width: 100%;
+    max-width: 450px;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    line-height: 50px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.boton-volver:hover {
+    background-color: #333;
+}
+
+
+
+
+
+
+
+
+
+  
+
+    
+
+
+  
+    
+    
+  
+
+
+
+    
+    
+
+  
+    Unidad 1
+    Presentación
+  
+
+      
+  Interrogar la tecnología para codiseñar la enseñanza
+        
+Iniciar un taller de codiseño en la enseñanza universitaria requiere, ante todo, revisar nuestras certezas sobre aquello con lo que diseñamos. ¿Qué entendemos por “tecnología educativa”? ¿Cómo se configura su presencia en nuestras prácticas cotidianas? ¿Qué relaciones establece con el conocimiento, el poder, los cuerpos y los afectos?
+Esta primera unidad propone una apertura epistemológica: interrogar la tecnología en la contemporaneidad implica asumir que no se trata solo de una herramienta funcional, sino de una mediación cultural, cognitiva, afectiva y política que participa activamente en la construcción del mundo educativo. Desde esta mirada, enseñar con tecnologías implica también pensar con ellas, como parte de ensambles sociotécnicos donde se entrelazan humanos, no humanos, materiales, simbólicos y afectivos.
+El codiseño se presenta aquí como una práctica situada, relacional y no neutral. Una invitación a recuperar el carácter colectivo, afectivo y político de nuestras decisiones tecnopedagógicas, entendiendo que toda configuración educativa es, en sí misma, un acto de diseño y una toma de posición epistemológica.
+Como plantea Jane Bennett (2010), “la agencia no es propiedad exclusiva de los humanos, sino que emerge de la interacción de múltiples fuerzas en un ensamblaje”. Desde esta perspectiva, el diseño educativo ya no puede pensarse como un proceso lineal o meramente instrumental, sino como una práctica enredada con plataformas, normativas, algoritmos, textos, cuerpos, políticas y deseos.
+Este primer paso no busca resolver, sino abrir preguntas, desnaturalizar lo dado, sospechar de lo evidente. Y, sobre todo, habilitar una mirada crítica y creativa sobre cómo enseñamos y qué mundos producimos cuando diseñamos con tecnologías.
+Nos proponemos así compartir un proceso de codiseño en un escenario educativo basado en la indagación, en la construcción de interrogantes genuinos que surgen del encuentro entre tecnologías, contextos y prácticas en nuestros entornos educativos. Una mirada que, como advierte Tripaldi (2023), reconoce que “todo diálogo con la tecnología sucede en un territorio híbrido en el que nuestros instrumentos influyen en nuestro comportamiento tanto como nosotres influimos en ellos.” 
+
+        
+Aperturas - Interrogantes: ¿Qué entendemos por tecnología educativa cuando codiseñamos propuestas de enseñanza? ¿Estamos diseñando con tecnologías o también estamos diseñando las formas en que pensamos con ellas?
+Eje central: El codiseño como acto epistemológico: abrir preguntas sobre las narrativas dominantes de la tecnología educativa. Pensar la tecnología más allá de su función instrumental, como una forma de pensamiento y existencia.
+ “Todo diálogo con la tecnología sucede en un territorio híbrido en el que nuestros instrumentos influyen en nuestro comportamiento tanto como nosotres influimos en ellos” (Tripaldi, 2023)
+        
+
+        
+  
+ Lecturas críticas sobre la relación entre educación y tecnologíaTe proponemos avanzar en la lectura de los textos que mostramos a continuación:
+Castañeda, L.(2021).Trazabilidad de los discursos sobre tecnología educativa: los caminos de la  influencia. Revista  Interuniversitaria  de  Investigación  en  Tecnología  Educativa, 10, 1-8. https://revistas.um.es/riite/article/view/480011/305411
+Suárez-Guerrero, C., Rivera-Vargas, P., y Rebour, M. (2020). Preguntas educativas para la tecnología digital como respuesta. Edutec. Revista Electrónica De Tecnología Educativa, (73), pp. 7-22. https://doi.org/10.21556/edutec.2020.73.1733
+Watters, A. (2019). Las 100 peores debacles de la tecnología educativa de la década. 31 dic 2019 
+http://hackeducation.com/2019/12/31/what-a-shitshow2020.73.1733
+Dejamos algunas claves para avanzar en la lectura:
+-Detrás de los distintos discursos que circulan sobre la relación entre educación y tecnologías subyacen diferentes intencionalidades, supuestos y criterios que condicionan las prácticas En tiempos de abundancia de conexiones, dispositivos, aplicaciones, es importante recuperar preguntas pedagógicas sobre los sentidos la tecnología en el campo educativo y su potencial para resolver problemas.
+-Históricamente, el campo de la tecnología educativa estuvo plasmado de discursos sobre potencialidades y límites de la las tecnologías en educación; en la última década una serie de ideas construidas pueden ser 
+
+Diseñar entre tensiones: prácticas, promesas y desafíos en educaciónA partir de la lectura de los textos y de estas orientaciones, te invitamos a reflexionar sobre los ítems que figuran a continuación.
+Para eso, te pedimos que elijas dos de las propuestas que se encuentran debajo e identifiques:
+1.  Promesas/interrogantes/discursos/posicionamientos que aparecen en los textos sobre de la relación entre educación y tecnología y que representen una mirada crítica por parte de los autores a la que adhieras Te puede ayudar esta pregunta: ¿con qué discursos/promesas/interrogantes/posicionamientos que presentan los autores acuerdo? Justificalo desde aportes del autor
+2.  Promesas que aparecen en los textos a las que vos adherías hasta la lectura de los mismos y, a partir de nueva mirada, descubrís que tienen objeciones. Te puede ayudar esta pregunta:  ¿Qué creencia o supuesto sobre la tecnología en la educación tenía antes de leer los textos que ahora, al ser cuestionado, lo descubro como problemático o engañoso? (Describí la creencia y usá los textos para exponer la objeción)
+3.  Promesas que identificás en los textos y son criticadas por los autores pero, aún así, seguís adhiriendo, más allá de las críticas. Te puede ayudar la siguiente pregunta: ¿Qué propuesta/discurso/promesa/ finalidad educativa, que los autores critican o ignoran, me gustaría reivindicar y bajo qué condiciones pedagógicas concretas podría ser valioso? (En este punto, sería importante reconocer la crítica, formular un interrogante y proponer una vía de acción).
+4. Desafíos pedagógicos actuales en torno a la relación entre educación y tecnologías que no aparecen en los textos pero te gustaría agregar. Te puede ayudar esta pregunta:     ¿Qué fenómenos tecnológicos o educativos emergentes no abordados por los textos (p. ej., IA generativa, deepfakes, ecología digital) requieren urgentemente una pregunta crítica desde las perspectivas de Castañeda, Suárez-Guerrero et al. y Watters? Formulá un nuevo interrogante aplicando el marco analítico de la bibliografía.
+Una vez realizada la selección de los dos ítems con los que te gustaría trabajar y construida la respuesta a partir de las preguntas orientadoras, te invitamos a realizar dos intervenciones (una para cada ítem) en el foro "Promesas, interrogantes y desafíos de las tecnologías digitales" Luego, leé las intervenciones realizadas por otros/as compañeros/as y respondé a aquella que con la que te sientas identificado/a o que te gustaría debatir, justificando tu postura con los aportes de los autores
+      
+    
+
+  Volver
+
+
+
+
+    
+    
+      PRESENTACIÓN
+      DESTACADOS
+      BIBLIOGRAFÍA
+      CONSIGNA
+    
+
+  
+
+
+
+
+
+
+  #grid-reveal.fixed {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .tile-reveal {
+    filter: blur(8px);
+    transition: filter 0.5s ease-out;
+    will-change: filter;
+    background-repeat: no-repeat;
+  }
+
+
+
+
+
+
+(function(){
+  const urlImagen = 'https://campus.citep.rec.uba.ar/repository/coursefilearea/file.php/1/pruebas_edet_cod/pruebabotones.png';
+  const cols = 5, rows = 5;
+
+  const wrapper = document.getElementById('wrapper-reveal');
+  const grid    = document.getElementById('grid-reveal');
+  const tiles   = [];
+
+  const img = new Image();
+  img.src = urlImagen;
+  img.onload = () => {
+    const aspect = img.naturalWidth / img.naturalHeight;
+
+    for (let i = 0; i < cols*rows; i++) {
+      const t = document.createElement('div');
+      t.className = 'tile-reveal';
+      grid.appendChild(t);
+      tiles.push(t);
+    }
+
+    const total = tiles.length;
+    const order = Array.from({length: total}, (_,i)=>i);
+    for (let i = total-1; i>0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    const revealRank = [];
+    order.forEach((idx, rank)=>{ revealRank[idx]=rank; });
+
+    let startY, revealEndY, holdEndY;
+
+    function resizeAll(){
+      const vh = window.innerHeight;
+      const colWidth = wrapper.parentElement.clientWidth;
+      const vwRaw = vh * aspect;
+      const vw = Math.min(vwRaw, colWidth);
+      const tileW = vw/cols, tileH = vh/rows;
+
+      wrapper.style.width = vw+'px';
+      grid.style.width    = vw+'px';
+      grid.style.height   = vh+'px';
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${tileW}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${tileH}px)`;
+
+      tiles.forEach((t,i)=>{
+        const c = i%cols, r = Math.floor(i/cols);
+        t.style.width              = tileW+'px';
+        t.style.height             = tileH+'px';
+        t.style.backgroundImage    = `url(${urlImagen})`;
+        t.style.backgroundSize     = `${vw}px ${vh}px`;
+        t.style.backgroundPosition = `-${c*tileW}px -${r*tileH}px`;
+      });
+
+      const rect = wrapper.getBoundingClientRect();
+      startY     = rect.top + window.pageYOffset;
+      revealEndY = startY + vh;
+      holdEndY   = revealEndY + vh;
+    }
+
+    function onScroll(){
+      const y = window.pageYOffset;
+      if (y >= startY && y {
+        t.style.filter = (revealRank[i] < count) ? 'blur(0)' : 'blur(8px)';
+      });
+    }
+
+    window.addEventListener('resize', ()=>{ resizeAll(); onScroll(); });
+    window.addEventListener('scroll', ()=>{ window.requestAnimationFrame(onScroll); },{passive:true});
+    resizeAll();
+    onScroll();
+  };
+})();
+
+
+
+
+
+
+  function mostrarPopup(el, texto) {
+    document.querySelectorAll('.popup-box').forEach(p => p.remove());
+    const popup = document.createElement('div');
+    popup.className = 'popup-box';
+    popup.textContent = texto;
+    document.body.appendChild(popup);
+    const rect = el.getBoundingClientRect();
+    popup.style.left = `${rect.left + window.scrollX}px`;
+    popup.style.top = `${rect.top + window.scrollY - 40}px`;
+    popup.style.display = 'block';
+
+    function cerrarPopup(event) {
+      if (!popup.contains(event.target) && event.target !== el) {
+        popup.remove();
+        document.removeEventListener('click', cerrarPopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const refs      = document.querySelectorAll('.footnote-ref');
+    const display   = document.getElementById('footnote-sidebar-content');
+    const dataStore = document.querySelector('.footnote-data');
+
+    function actualizar(){
+      if (window.innerWidth {
+        const r = ref.getBoundingClientRect();
+        if (r.top > 0 && r.top < window.innerHeight/2) activo = ref;
+      });
+      if (activo) {
+        const id   = activo.dataset.id;
+        const nota = dataStore.querySelector(`[data-id="${id}"]`).innerHTML;
+        display.querySelector('.nota-dinamica').innerHTML = nota;
+        const refRect  = activo.getBoundingClientRect();
+        const sideRect = display.parentElement.getBoundingClientRect();
+        display.style.marginTop = `${refRect.top - sideRect.top}px`;
+      } else {
+        display.querySelector('.nota-dinamica').innerHTML = '';
+        display.style.marginTop = '0';
+      }
+    }
+
+    refs.forEach(ref => {
+      ref.style.cursor = 'pointer';
+      ref.addEventListener('click', function() {
+        const id = ref.dataset.id;
+        const notaEl = dataStore.querySelector(`[data-id="${id}"]`);
+        if (!notaEl) return;
+        const nota = notaEl.textContent;
+        if (window.innerWidth

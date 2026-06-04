@@ -1,0 +1,88 @@
+Actividad: Tema 2 - De Bits a Información
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+#page-wrapper #page {
+    background-color: #191a1c;
+}
+#region-main {
+    background-color: #191a1c;
+}
+#page.drawers .main-inner {  
+    background-color: #191a1c;
+}
+.secondary-navigation+#page-content #region-main {
+    background-color: #191a1c;
+}
+.editing .section .activity .contentwithoutlink, .editing .section .activity .activityinstance {
+    padding-right: 30px;
+}
+#page-navbar .breadcrumb li .no-link {
+    background-color: #111216;
+}
+#embedgenially { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#geniallycontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin-top: 40px;
+margin-right: 5px;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+h2 {
+    display: none !important;
+}
+#embedyoutube { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#youtubecontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin-top: 40px;
+margin-right: 20%;
+margin-left: 20%;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+
+
+
+
+
+
+En esta semana, exploraremos cómo los datos se generan en línea, cómo se recopilan y almacenan, y el pasaje de lo físico a lo inmaterial. Analizaremos cómo los datos crudos se convierten en información útil, cómo esta información se convierte en un recurso valioso para la creación de modelos de Inteligencia Artificial y cómo la tercerización de almacenamiento impacta en la independencia tecnológica.

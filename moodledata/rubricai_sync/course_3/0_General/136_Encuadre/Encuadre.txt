@@ -1,0 +1,6 @@
+Actividad: Encuadre
+Tipo: url
+
+Descripción:
+
+URL: http://localhost:8080/pluginfile.php/150/mod_resource/content/1/Encuadre-Ense%C3%B1ar-con-Casos-2025.pdf

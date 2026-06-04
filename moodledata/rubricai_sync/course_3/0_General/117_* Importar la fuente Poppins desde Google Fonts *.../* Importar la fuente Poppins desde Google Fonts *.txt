@@ -1,0 +1,24 @@
+Actividad: /* Importar la fuente Poppins desde Google Fonts *...
+Tipo: label
+
+Contenido de la etiqueta:
+/* Importar la fuente Poppins desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Estilos para los párrafos */
+
+/* Ejemplo de párrafo pequeño */
+p.pequeno {font-family: 'Poppins', sans-serif;
+
+  font-size: 16px; /* Tamaño de fuente más pequeño */
+  color: #525252; /* Color de texto gris más claro */
+padding-left: 50px;
+}
+
+  Este curso propone un recorrido por el estudio de casos como estrategia didáctica en la enseñanza universitaria, en diálogo con las posibilidades que abren las herramientas de Inteligencia Artificial Generativa como asistentes en la co-construcción.
+La propuesta es flexible: podés comenzar por el módulo que más te interese. Las distintas secciones ofrecen conceptos, claves, herramientas, actividades para acompañar la reflexión y el diseño de tu propio caso de estudio. 
+Encontrarás un caso, el caso de Ana Feler, centrado en el recorrido de una docente universitaria, acompañado de preguntas que invitan a pensar tanto en las situaciones narradas como en tus propios procesos, y puede ser abordado de dos maneras:
+• Leyendo el caso completo desde el inicio, donde encontrarás conexiones con los distintos módulos que te ayudarán a comprender su construcción.
+• Explorando primero los módulos temáticos, desde donde se irán tejiendo vínculos con fragmentos del caso para enriquecer el análisis.
+
+Te invitamos a explorar, crear y repensar esta estrategia didáctica. ¡Buen recorrido!

@@ -5,6 +5,7 @@ import os
 from typing import Dict, List, Tuple
 from neo4j_client import get_neo4j_client
 from llm import generate_completion
+from tracing import trace_agent, add_run_metadata, add_run_tags
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +27,18 @@ def check_has_content(course_data: dict) -> bool:
 class PedagogicalHolisticAgent:
     """Agent in charge of assessing pedagogical alignment, Bloom taxonomy matching, and overall content coherence."""
     
+    @trace_agent(name="holistic_agent")
     def evaluate(self, course_data: dict, rubric_data: dict, course_id: int = None) -> str:
+        add_run_metadata({
+            "course_id": course_id,
+            "has_rag": course_id is not None,
+            "n_criteria": len(rubric_data.get("criteria", [])),
+            "n_sections": len(course_data.get("sections", [])),
+        })
+
         # Check if the course has any activities in any sections
         if not check_has_content(course_data):
+            add_run_tags(["empty-course"])
             return (
                 "CRITICAL WARNING: El curso no contiene ninguna actividad ni recurso pedagógico en sus secciones. "
                 "No hay contenidos prácticos ni evaluaciones para contrastar contra la rúbrica. "
@@ -62,6 +72,7 @@ class PedagogicalHolisticAgent:
                         logger.warning(f"Error performing criteria RAG search for {name}: {e}")
             if rag_findings:
                 rag_context = "\n### FRAGMENTOS REALES DE MATERIALES DEL CURSO (RAG):\n" + "\n".join(rag_findings)
+                add_run_metadata({"rag_findings_count": len(rag_findings)})
         
         system_prompt = (
             "Eres el Agente Holístico Pedagógico. Tu tarea es analizar de forma profunda y educativa "
@@ -92,9 +103,20 @@ class PedagogicalHolisticAgent:
 class FormatStructureAgent:
     """Agent in charge of auditing formatting, settings, technical consistency, and structure of Moodle course elements."""
     
+    @trace_agent(name="format_agent")
     def evaluate(self, course_data: dict) -> str:
+        n_activities = sum(
+            len(s.get("activities", [])) for s in course_data.get("sections", [])
+        )
+        add_run_metadata({
+            "n_sections": len(course_data.get("sections", [])),
+            "n_activities": n_activities,
+            "course_data_size_bytes": len(json.dumps(course_data)),
+        })
+
         # Check if the course has any activities in any sections
         if not check_has_content(course_data):
+            add_run_tags(["empty-course"])
             return (
                 "CRITICAL WARNING: El aula virtual se encuentra vacía. No tiene secciones con actividades "
                 "o recursos configurados. Formato e infraestructura técnica incompleta."
@@ -129,10 +151,12 @@ class OntologyAgent:
     def __init__(self):
         self.client = get_neo4j_client()
         
+    @trace_agent(name="ontology_sync", tags=["neo4j"])
     def sync_course_structure(self, course_id: int, course_title: str, course_data: dict):
         """Syncs the raw course structure nodes into Neo4j."""
         if not self.client or not self.client.initialized:
             logger.warning("Neo4j client not initialized. Skipping course structure sync.")
+            add_run_tags(["neo4j-unavailable"])
             return
             
         sections = course_data.get("sections", [])
@@ -162,16 +186,30 @@ class OntologyAgent:
                         "description": act.get("description", ""),
                         "duedate": settings.get("duedate", 0)
                     })
+
+        add_run_metadata({
+            "course_id": course_id,
+            "n_activities": len(activities),
+            "n_resources": len(resources),
+            "n_sections": len(sections),
+        })
                     
         self.client.sync_course_data(course_id, course_title, activities, resources)
 
+    @trace_agent(name="ontology_criteria_analysis", tags=["neo4j", "rag"])
     def get_rubric_criteria_analysis(self, course_id: int, rubric_id: str, rubric_data: dict) -> dict:
         """
         For each rubric criterion, searches RAG index for matching activities and files,
         records COVERS relationship in Neo4j, and returns a structured mapping analysis.
         """
-        analysis = {}
         criteria = rubric_data.get("criteria", [])
+        add_run_metadata({
+            "course_id": course_id,
+            "rubric_id": rubric_id,
+            "n_criteria": len(criteria),
+        })
+
+        analysis = {}
         
         def extract_cm_id(filepath: str) -> str:
             if not filepath:
@@ -198,6 +236,8 @@ class OntologyAgent:
                 """,
                 {"prefix": f"c_{course_id}_"}
             )
+
+        total_covers = 0
             
         for idx, crit in enumerate(criteria):
             crit_name = crit.get("name", "")
@@ -233,6 +273,7 @@ class OntologyAgent:
                 
                 for act_info in seen_acts.values():
                     analysis[crit_name]["activities"].append(act_info)
+                    total_covers += 1
                     
                     # Link in Neo4j
                     if self.client and self.client.initialized:
@@ -252,12 +293,23 @@ class OntologyAgent:
                         )
             except Exception as e:
                 logger.warning(f"Error compiling criteria analysis for {crit_name}: {e}")
+
+        add_run_metadata({"total_covers_created": total_covers})
                 
         return analysis
 
+    @trace_agent(name="ontology_log_results", tags=["neo4j"])
     def log_evaluation_results(self, course_id: int, rubric_id: str, score: float, recommendations: List[dict]):
         """Logs the evaluation and links recommendations to the course node in Neo4j."""
+        add_run_metadata({
+            "course_id": course_id,
+            "rubric_id": rubric_id,
+            "score": score,
+            "n_recommendations": len(recommendations),
+        })
+
         if not self.client or not self.client.initialized:
+            add_run_tags(["neo4j-unavailable"])
             return
             
         # 1. Create relation Course -> Rubric with score metadata
@@ -307,9 +359,19 @@ class OntologyAgent:
 class SynthesisAgent:
     """Agent in charge of consolidating all reports and creating the structured EvaluateResponse."""
     
+    @trace_agent(name="synthesis_agent")
     def synthesize(self, course_id: int, rubric_id: str, holistic_report: str, format_report: str, ontology_analysis: dict = None) -> dict:
+        add_run_metadata({
+            "course_id": course_id,
+            "rubric_id": rubric_id,
+            "holistic_report_length": len(holistic_report or ""),
+            "format_report_length": len(format_report or ""),
+            "has_ontology_analysis": ontology_analysis is not None,
+        })
+
         is_empty = "CRITICAL WARNING" in (holistic_report or "") or "CRITICAL WARNING" in (format_report or "")
         if is_empty:
+            add_run_tags(["empty-course"])
             return {
                 "course_id": course_id,
                 "rubric_id": rubric_id,
@@ -401,9 +463,16 @@ class SynthesisAgent:
             
             data["course_id"] = course_id
             data["rubric_id"] = rubric_id
+
+            add_run_metadata({
+                "overall_score": data["overall_score"],
+                "n_recommendations": len(data.get("recommendations", [])),
+            })
+
             return data
         except Exception as e:
             logger.error(f"Failed to parse consolidated JSON: {e}. Raw response: {res}. Retrying with strict format...")
+            add_run_tags(["json-repair-needed"])
             
             # Strict format repair prompt
             repair_prompt = f"""
@@ -430,6 +499,8 @@ class SynthesisAgent:
                             
                         data["course_id"] = course_id
                         data["rubric_id"] = rubric_id
+
+                        add_run_metadata({"json_repaired": True})
                         return data
             except Exception as e_repair:
                 logger.error(f"Repair attempt failed: {e_repair}")
@@ -439,6 +510,8 @@ class SynthesisAgent:
             if res:
                 score_match = re.search(r'"overall_score"\s*:\s*([0-9.]+)', res)
                 fallback_score = float(score_match.group(1)) if score_match else 50.0
+
+            add_run_metadata({"json_fallback": True, "fallback_score": fallback_score})
             
             return {
                 "course_id": course_id,
@@ -457,65 +530,51 @@ class SynthesisAgent:
             }
 
 class MultiAgentCoordinator:
-    """Coordinator that orchestrates the entire evaluation workflow."""
+    """Coordinator that orchestrates the entire evaluation workflow via LangGraph."""
     
     def __init__(self):
-        self.holistic_agent = PedagogicalHolisticAgent()
-        self.format_agent = FormatStructureAgent()
         self.ontology_agent = OntologyAgent()
         self.synthesis_agent = SynthesisAgent()
         
+    @trace_agent(name="multi_agent_evaluation")
     def evaluate_course(self, course_id: int, rubric_id: str, course_data: dict) -> dict:
-        # 1. Fetch rubric from Neo4j
-        rubric_data = None
-        if self.ontology_agent.client and self.ontology_agent.client.initialized:
-            rubric_data = self.ontology_agent.client.get_rubric(rubric_id)
-            
-        if not rubric_data:
-            logger.warning(f"Rubric {rubric_id} not found in Neo4j. Using generic mock rubric.")
-            rubric_data = {
-                "id": rubric_id,
-                "title": "Rúbrica Genérica de Calidad",
-                "criteria": [
-                    {"name": "Alineación Pedagógica", "description": "Grado en que las actividades evalúan los objetivos de aprendizaje.", "weight": 50},
-                    {"name": "Claridad y Completitud", "description": "Las instrucciones de las actividades son claras y no tienen campos vacíos.", "weight": 50}
-                ]
-            }
-            
-        # 2. Sync Course structure to Neo4j database
-        logger.info(f"Syncing course structure in Neo4j for course {course_id}...")
-        course_title = course_data.get("fullname", f"Curso {course_id}")
-        self.ontology_agent.sync_course_structure(course_id, course_title, course_data)
-        
-        # 3. Run RAG Criteria Analysis (Ontological Mapping)
-        logger.info(f"Running semantic similarity mapping for course {course_id} and rubric {rubric_id}...")
-        ontology_analysis = self.ontology_agent.get_rubric_criteria_analysis(course_id, rubric_id, rubric_data)
+        add_run_metadata({
+            "course_id": course_id,
+            "rubric_id": rubric_id,
+            "course_name": course_data.get("fullname", f"Curso {course_id}"),
+            "n_sections": len(course_data.get("sections", [])),
+            "orchestration": "langgraph_parallel",
+        })
 
-        # 4. Run agents evaluations
-        logger.info("Running holistic pedagogical agent evaluation with RAG...")
-        holistic_report = self.holistic_agent.evaluate(course_data, rubric_data, course_id)
-        
-        logger.info("Running technical format agent evaluation...")
-        format_report = self.format_agent.evaluate(course_data)
-        
-        # 5. Consolidate results via Synthesis Agent
-        logger.info("Running synthesis agent to consolidate reports...")
-        evaluation_result = self.synthesis_agent.synthesize(
-            course_id=course_id,
-            rubric_id=rubric_id,
-            holistic_report=holistic_report,
-            format_report=format_report,
-            ontology_analysis=ontology_analysis
-        )
-        
-        # 6. Log evaluation results and recommendations in Neo4j graph database
-        logger.info("Logging evaluation results and recommendations in Neo4j graph...")
-        self.ontology_agent.log_evaluation_results(
-            course_id=course_id,
-            rubric_id=rubric_id,
-            score=evaluation_result.get("overall_score", 0.0),
-            recommendations=evaluation_result.get("recommendations", [])
-        )
+        # Delegate to the LangGraph evaluation graph
+        from graph import evaluation_graph
+
+        logger.info(f"Invoking LangGraph evaluation graph for course {course_id}...")
+
+        initial_state = {
+            "course_id": course_id,
+            "rubric_id": rubric_id,
+            "course_data": course_data,
+            "rubric_data": {},  # Will be fetched by classifier_node
+            "html_analysis": "",
+            "quiz_analysis": "",
+            "assignment_analysis": "",
+            "forum_analysis": "",
+            "document_analysis": "",
+            "youtube_analysis": "",
+            "url_analysis": "",
+            "ontology_analysis": {},
+            "final_result": {},
+        }
+
+        result_state = evaluation_graph.invoke(initial_state)
+
+        evaluation_result = result_state.get("final_result", {})
+
+        add_run_metadata({
+            "final_score": evaluation_result.get("overall_score", 0.0),
+            "n_final_recommendations": len(evaluation_result.get("recommendations", [])),
+        })
         
         return evaluation_result
 

@@ -7,8 +7,9 @@ from pathlib import Path
 
 from rag.store import get_index_path, get_metadata_path, load_index
 from rag.utils import embed_text_chunks
+from tracing import trace_rag
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 RAG_THRESHOLD = float(os.getenv("RAG_THRESHOLD", 0.80))
@@ -26,6 +27,7 @@ def map_score_pedagogical(raw_score: float) -> float:
         return 0.05 + ((raw_score - 0.80) / 0.04) * 0.45
     return 0.05
 
+@trace_rag(name="rag_search_course")
 def search_course(course_id: int, query: str, top_k=20, threshold=None):
     """
     Search course embeddings and filter by similarity threshold.
@@ -69,6 +71,7 @@ def search_course_by_vector(course_id: int, query_vector: np.ndarray, top_k=10, 
                  f"top_score={float(D[0][0]):.4f} threshold={threshold}")
     return results
 
+@trace_rag(name="rag_search_guidelines")
 def search_guidelines(query: str, top_k=5):
     """
     Search specifically in the pedagogical guidelines (course_id=0).

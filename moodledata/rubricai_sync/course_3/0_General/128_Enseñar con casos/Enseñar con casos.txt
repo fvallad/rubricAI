@@ -1,0 +1,281 @@
+Actividad: Enseñar con casos
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+
+  
+ 
+  
+
+
+
+Enseñar con casos
+    
+
+ 
+
+
+En este módulo analizaremos los fundamentos teóricos del estudio de casos como estrategia didáctica. Abordaremos sus elementos básicos y las decisiones que, como docentes, debemos tomar en cada una de las etapas del diseño. Haremos especial foco en los procesos de escritura y en el planteo de las preguntas para la construcción de un caso. A continuación, te presentamos los puntos clave del recorrido, aunque te recomendamos profundizar en cada uno de ellos descargando el módulo completo.
+
+
+  Descargar módulo 
+
+
+
+
+
+
+ ESTUDIO DE CASOS EN LA ENSEÑANZA
+ ELEMENTOS BÁSICOS
+ DECISIONES DOCENTES
+ LA ESCRITURA
+ LAS PREGUNTAS
+
+ 
+
+
+El estudio de casos en la enseñanza
+
+
+El estudio de casos es una estrategia que se ha ido instalando en las prácticas de enseñanza, especialmente en el ámbito universitario. Como docentes, seguramente hemos escuchado experiencias de colegas o recordamos las propias. Podemos decir que es una estrategia de enseñanza que brinda a los estudiantes la posibilidad de plasmar sus conocimientos a partir de la resolución de problemáticas complejas y cercanas a la realidad. 
+Su inclusión en el ámbito universitario promueve el acercamiento a escenarios reales y al futuro desempeño profesional de los estudiantes. Además, promueve el desarrollo de las capacidades críticas y reflexivas al integrar los conocimientos y habilidades adquiridos. 
+Por sus características, el estudio de casos como metodología fomenta un rol activo y protagónico en los estudiantes. El tipo de actividades que promueve implica un alto grado de participación en la búsqueda de información, el intercambio de opiniones y la resolución de problemas. En general, se plantea como una propuesta grupal, por lo que favorece el trabajo colaborativo. Desde el rol docente se requiere un gran trabajo de diseño previo y un seguimiento constante.
+Uno de sus antecedentes se encuentra en la Universidad de Harvard a partir de las propuestas del profesor de Derecho Columbus Langdell, quien reemplazó el uso de libros de texto por estudio de casos. A partir de 1914, esta metodología se formalizó en la enseñanza del Derecho con el nombre de Case System y luego se expandió a otras disciplinas. 
+El estudio de casos fue pensado, originalmente como una estrategia metodológica para escenarios presenciales. Sin embargo, por las características de esta propuesta y la organización de sus actividades en momentos o etapas, podemos sostener que es factible implementarla tanto en aulas físicas como en espacios virtuales. Este ida y vuelta entre ambos entornos puede enriquecer distintos modos de aprendizaje.
+
+
+ 
+
+Elementos básicos y tipo de casos
+
+
+¿Cuáles son los principales elementos que debería incluir el estudio de casos? Varias autoras (Davini, 2008; Litwin, 2012; Waserman, 1999) coinciden en que, básicamente, son los siguientes:
+
+
+El relato breve de situación o caso. Desarrollo de discurso narrativo como elemento para enseñar.
+Un conjunto de preguntas críticas para analizar el caso.
+El trabajo grupal e intercambio.
+Material complementario para buscar información (entrevistas a especialistas, material producido por profesores, artículos periodísticos, informes, películas, textos, etc.
+ Actividades de seguimiento.
+
+
+
+En general, el estudio de casos implica un proceso que se inicia con la descripción de la situación problema y su contexto. Luego, es necesario diferenciar los datos o la información con la que se cuenta y cuál hay que investigar. A partir del debate y de la interacción se toman decisiones y se plantean posibles soluciones (Davini, 2008).
+La secuencia básica de actividades planteada por Davini es:
+
+
+
+  
+    Aperturay organización
+    
+      Presentación de los propósitos del trabajo y presentación del caso con informaciones básicas y preguntas de orientación. Posible organización de los alumnos en grupos más pequeños para la realización de las tareas.
+    
+  
+
+    Análisis
+    
+    Estudio del caso, búsqueda de nuevas informaciones, consultas o testimonios. Intercambio y debate progresivo. Organización de la información.
+    
+  
+  
+    Integración
+    
+ Intercambio y comparación de resultados de diferentes grupos y puesta en común de posibles soluciones o formas de intervención. 
+    
+  
+
+    Síntesis
+    
+ Desarrollo de conclusiones de la tarea y revisión del proceso seguido por los alumnos para alcanzarlas. Análisis de nuevas preguntas y problemas en el contexto específico de los alumnos.
+    
+  
+
+
+Algunas de las recomendaciones planteadas por la  misma autora  acerca de la estrategia son las siguientes: 
+
+
+ Que sean situaciones realistas, es decir, verdaderas o verosímiles del mundo de lo real. 
+  Que los estudiantes puedan tener representaciones, nociones o experiencias sobre la situación, a partir de las cuales les sea posible dar explicaciones.  
+  Desafiar a los estudiantes con situaciones complejas (no triviales) que requieran del análisis. 
+  Dar acceso a informaciones, incluidas en la descripción o buscadas en las actividades de análisis (búsqueda de datos, testimonios, observaciones, lecturas, etcétera).  
+ Guiar con preguntas reflexivas, relevantes y pertinentes a la situación analizada.  
+  Apoyar la síntesis de explicaciones con base en análisis e información. (p. 121) 
+
+
+A partir de lo planteado, podemos concluir que el estudio de casos favorece algunos procesos clave en el aprendizaje. Por un lado, permite ampliar la comprensión de problemas complejos. Además, desafía a los estudiantes a poner en marcha estrategias y recursos para la búsqueda de información. Finalmente, promueve la construcción colectiva de ideas para la resolución de las problemáticas iniciales.
+
+
+ 
+
+Decisiones docentes en las diferentes etapas
+
+
+
+Considerando los diferentes momentos que componen el estudio de casos, podemos plantear diferentes acciones que realizamos como docentes. En este apartado, iremos detallando cada etapa, con algunos interrogantes que pueden orientar las decisiones.
+
+
+  
+    Primer momento
+    
+Esta etapa es pre activa y supone el diseño general de la propuesta. En este momento resulta clave la selección de contenidos y temas, así como el análisis de la viabilidad y potencialidad del tema para el desarrollo de un caso. 
+Algunas preguntas que nos pueden orientar: ¿En qué momento se aplicaría el caso? ¿Cuál es el para qué del caso? ¿Será para iniciar una clase, profundizar en un contenido o evaluar y cerrar una unidad? De acuerdo con ello, ¿en qué tiempo propongo que se resuelva?
+    
+  
+
+    Segundo momento
+    
+Esta etapa se centra en el proceso más específico de delinear/darle forma al caso. Teniendo en cuenta los objetivos, las habilidades de pensamiento y los contenidos a trabajar, ¿Qué acciones se espera que realicen los estudiantes: reflexionar, conocer…? ¿Qué tipo de experiencia/s queremos ofrecerles?
+
+Aquí será clave construir previamente un “mapeo de habilidades y contenidos”. De esta forma se podrá identificar cuáles son los contenidos mínimos e indispensables que deben ser abordados.
+    
+  
+  
+    Tercer momento
+    
+Esta etapa implica la escritura concreta del caso, teniendo en cuenta el contenido y los objetivos definidos. Será esencial guiarse por el mapeo de habilidades desarrollado previamente. En este momento se tomarán decisiones sobre la escritura cumpliendo con los requisitos establecidos para los “buenos casos” desarrollados en este material, garantizando la transparencia en la exposición de las “grandes ideas”.
+
+Luego de la creación del caso tendremos que trabajar en la formulación de las preguntas críticas. Aquí será clave ayudar a que los estudiantes reconozcan lo central del caso para ir avanzando a un análisis más profundo y su posterior resolución. Estas preguntas deben ayudar a reconocer dilemas, posturas y problemas.
+
+    
+  
+
+    Cuarto momento
+    
+Es el momento de definición de agrupamiento, recorridos, pasos, entrega, etc. En esta etapa se define el recorrido y la consigna, así como las etapas de realización y los entornos en los que se desarrollará la actividad (aula física/ virtual/ híbrida).
+    
+  
+
+
+La coordinación requerirá de una supervisión constante, una observación detallada, la flexibilidad para hacer ajustes en el diseño del dispositivo que se tornen necesarios a partir de la implementación y una intervención oportuna ante posibles conflictos, complementadas con retroalimentación y devoluciones en cada fase.
+Finalmente, se sugiere integrar un proceso metacognitivo que permita mirar el proceso y evaluar el involucramiento de los estudiantes en el proceso de resolución.
+
+
+ 
+
+La escritura de casos
+
+
+El proceso de selección y la definición de criterios para definir cuáles son los mejores casos nos invita a sistematizar los pasos a seguir cuando realizamos la escritura de estos materiales. Esta etapa es una invitación a un interesante proceso creativo por parte de los docentes que deben hacer disparar la imaginación y desarrollar su habilidad para contar historias.
+¿Cómo podemos comenzar?
+
+Definir las “grandes ideas” que guiarán el caso.
+Plantear cuál es la historia o relato a partir de estas ideas. Podremos buscar inspiración en distintas fuentes, como artículos de periódicos, videos, textos, entrevistas, películas, libros y anécdotas personales (brindan realismo al relato), entre otros.
+Describir el contexto en el cual se desarrolla la historia especificando fechas y espacios, así como características sociales, económicas y culturales.
+Identificar y caracterizar los personajes principales y secundarios incluyendo atributos físicos, de personalidad, gustos, principales conflictos, aspectos anímicos, entre otros.
+Incluir información visual que permita concretar personajes, objetos, contextos o situaciones problemáticas, mediante el uso de fotografías, mapas, videos o animaciones que favorezcan el acercamiento al caso.
+Desarrollar los dilemas que enfrentan los personajes en el relato. La complejidad de las problemáticas que se planteen en el caso pueden llevar a definir disyuntivas interesantes que no presenten respuestas únicas y cerradas. 
+
+Como en todo proceso de escritura, en el inicio se trabajará con borradores que pasarán por distintas etapas de revisión. Es útil contar con la lectura crítica de colegas para alcanzar la versión definitiva.
+
+A continuación, planteamos algunas recomendaciones prácticas para este proceso:
+
+
+Pensar un título atrapante que sintetice lo central del caso.
+Revisar los borradores eliminando las partes confusas.
+Cuidar la coherencia y cohesión del texto.
+Variar la extensión y la sintaxis de las frases.
+Destacar los aspectos más importantes al comienzo y al final de los párrafos.
+No ser repetitivo.
+
+
+
+
+ 
+
+El planteo de las preguntas
+
+
+Mucho se ha hablado acerca de la importancia de trabajar con preguntas como herramienta didáctica. Sabemos que las preguntas, en especial si son abiertas, pueden promover el diálogo, el intercambio y fomentar aprendizajes más profundos, aspectos fundamentales en el estudio de casos. Por otro lado, funcionan como un recurso para fomentar aprendizajes más profundos. Según Furman (2021):
+Las buenas preguntas:
+no dirigen a una única respuesta, 
+disparan ideas, 
+ayudan a plantear problemas y a dar pistas para abordarlos,
+colaboran en hacer visible lo que están pensando los estudiantes, 
+remiten al núcleo central de los contenidos.
+
+También destaca la importancia de transformar preguntas fácticas en preguntas para pensar. Estas preguntas, generalmente abiertas, presentan desafíos o situaciones específicas, fomentando la reflexión, la investigación y el pensamiento crítico. Entre ellas se incluyen las metacognitivas/reflexivas y aquellas que invitan a fundamentar y profundizar las respuestas.
+Para incluir estas preguntas, propone: 
+Plantear el contenido en un contexto o situación. 
+Presentar un problema o desafío que no invite solamente a declarar conocimiento, sino que los apliquen para la resolución.
+Lograr el protagonismo de los estudiantes en la búsqueda de respuestas. Por ejemplo, invitarlos a responder desde un rol específico (médico, paciente, etc), participar en debates o proponer estrategias para resolver un problema planteado.
+
+No solo tenemos que pensar a los docentes como autores de las preguntas, sino también brindar a los estudiantes la posibilidad de formularlas. Fomentar su curiosidad y promover que interroguen a otros grupos o a los personajes de la historia del caso enriquece el proceso de aprendizaje y profundiza la comprensión de la problemática abordada.
+Uno de los aspectos centrales en la metodología de casos, además de la escritura de relatos consistentes y atrapantes, es el planteo de buenas preguntas que inviten al análisis, al reconocimiento de los diferentes elementos involucrados y a la comprensión de la situación. La definición de preguntas críticas es una de las tareas más importantes del docente en este tipo de propuestas. 
+El planteo de preguntas críticas tiene como objetivo que los estudiantes revisen sus ideas iniciales, analicen nociones y problemas relacionados con el caso. Se focaliza en la comprensión, la aplicación de conocimientos en el análisis del caso y en la formulación de propuestas de resolución de problemas. En este sentido, no será prioritario incluir preguntas que inviten a recordar datos o evocar o recordar información.
+Las preguntas deben invitar a reflexionar, ser claras y evitar sugerir respuestas. La escritura de buenas preguntas requiere de reescrituras y evaluación. Las preguntas críticas permiten un análisis progresivo, comenzando por aspectos superficiales y avanzando hacia lo complejo. También es clave que los casos presenten núcleos o “grandes ideas” para orientar la formulación de las preguntas. Se debe evitar la búsqueda de una única respuesta correcta, promoviendo distintas perspectivas y enfoques de análisis (Wassermann,  1999).
+
+
+
+
+
+
+
+
+  function mostrarContenido(id) {
+    document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+    const activa = document.getElementById(id);
+    if (activa) activa.classList.add('visible');
+
+    const botones = document.querySelectorAll('.item-menu');
+    botones.forEach(boton => boton.classList.remove('activo'));
+    const index = id.replace('contenido', '');
+    const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+    if (botonActivo) botonActivo.classList.add('activo');
+  }
+
+  function mostrarPopup(el, texto) {
+    document.querySelectorAll('.popup-box').forEach(p => p.remove());
+    const popup = document.createElement('div');
+    popup.className = 'popup-box';
+    popup.textContent = texto;
+    document.body.appendChild(popup);
+    const rect = el.getBoundingClientRect();
+    popup.style.left = `${rect.left + window.scrollX}px`;
+    popup.style.top = `${rect.top + window.scrollY - 40}px`;
+    popup.style.display = 'block';
+
+    function cerrarPopup(event) {
+      if (!popup.contains(event.target) && event.target !== el) {
+        popup.remove();
+        document.removeEventListener('click', cerrarPopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
+  }
+function mostrarContenido(id) {
+  document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+  const activa = document.getElementById(id);
+  if (activa) activa.classList.add('visible');
+
+  const botones = document.querySelectorAll('.item-menu');
+  botones.forEach(boton => boton.classList.remove('activo'));
+  const index = id.replace('contenido', '');
+  const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+  if (botonActivo) botonActivo.classList.add('activo');
+
+  // Actualiza la URL sin recargar
+  const nuevaUrl = new URL(window.location);
+  nuevaUrl.searchParams.set('seccion', index);
+  window.history.replaceState({}, '', nuevaUrl);
+}
+document.addEventListener('DOMContentLoaded', function () {
+  //  Botón de descarga: foco
+  const btn = document.querySelector('.btn-descarga');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      setTimeout(() => this.blur(), 100);
+    });
+  }
+
+  //  Obtiene el valor del parámetro ?seccion=...
+  const urlParams = new URLSearchParams(window.location.search);
+  const seccion = urlParams.get('seccion') || '1';
+
+  // Activa automáticamente el contenido y el botón correspondiente
+  mostrarContenido('contenido' + seccion);
+});

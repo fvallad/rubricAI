@@ -2,6 +2,7 @@ import os
 import logging
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
+from tracing import trace_llm_call, get_traced_openai_client, add_run_metadata
 
 load_dotenv()
 
@@ -24,7 +25,9 @@ class DashScopeProvider(LLMProvider):
         if base_url:
             dashscope.base_http_api_url = base_url
 
+    @trace_llm_call(name="dashscope_completion", metadata={"ls_provider": "dashscope"})
     def generate_completion(self, prompt: str, system_prompt: str) -> tuple[str, dict]:
+        add_run_metadata({"ls_model_name": self.model})
         try:
             messages = [
                 {'role': 'system', 'content': system_prompt},
@@ -42,6 +45,7 @@ class DashScopeProvider(LLMProvider):
                     "output_tokens": response.usage.output_tokens,
                     "total_tokens": response.usage.total_tokens
                 }
+                add_run_metadata({"usage": usage})
                 return content, usage
             else:
                 logging.error(f"DashScope Error: {response.code} - {response.message}")
@@ -53,10 +57,14 @@ class DashScopeProvider(LLMProvider):
 class OpenAIProvider(LLMProvider):
     def __init__(self):
         import openai
-        self.client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        base_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        # Wrap with LangSmith tracing — auto-captures all LLM call details
+        self.client = get_traced_openai_client(base_client)
         self.model = os.getenv("OPENAI_MODEL", "gpt-4o")
 
+    @trace_llm_call(name="openai_completion", metadata={"ls_provider": "openai"})
     def generate_completion(self, prompt: str, system_prompt: str) -> tuple[str, dict]:
+        add_run_metadata({"ls_model_name": self.model})
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -71,6 +79,7 @@ class OpenAIProvider(LLMProvider):
                 "output_tokens": response.usage.completion_tokens,
                 "total_tokens": response.usage.total_tokens
             }
+            add_run_metadata({"usage": usage})
             return content, usage
         except Exception as e:
             logging.exception("Exception during OpenAI call")
@@ -80,13 +89,17 @@ class GoogleProvider(LLMProvider):
     def __init__(self):
         import openai
         # Use standard OpenAI client configured for Google Gemini API endpoint
-        self.client = openai.OpenAI(
+        base_client = openai.OpenAI(
             api_key=os.getenv("GOOGLE_API_KEY"),
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
         )
+        # Wrap with LangSmith tracing — auto-captures all LLM call details
+        self.client = get_traced_openai_client(base_client)
         self.model = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
 
+    @trace_llm_call(name="google_gemini_completion", metadata={"ls_provider": "google"})
     def generate_completion(self, prompt: str, system_prompt: str) -> tuple[str, dict]:
+        add_run_metadata({"ls_model_name": self.model})
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -101,6 +114,7 @@ class GoogleProvider(LLMProvider):
                 "output_tokens": response.usage.completion_tokens if response.usage else 0,
                 "total_tokens": response.usage.total_tokens if response.usage else 0
             }
+            add_run_metadata({"usage": usage})
             return content, usage
         except Exception as e:
             logging.exception("Exception during Google Gemini call")
@@ -118,6 +132,7 @@ def get_llm_provider() -> LLMProvider:
 # Singleton instance initialized on module load
 _llm_instance = get_llm_provider()
 
+@trace_llm_call(name="generate_completion")
 def generate_completion(prompt: str, system_prompt: str = "Eres un experto en pedagogía y diseño de instrumentos de evaluación."):
     """
     Calls the configured LLM API (via LLM_PROVIDER env var) for text generation.
@@ -125,6 +140,7 @@ def generate_completion(prompt: str, system_prompt: str = "Eres un experto en pe
     """
     return _llm_instance.generate_completion(prompt, system_prompt)
 
+@trace_llm_call(name="classify_feedback", tags=["feedback-classification"])
 def classify_feedback(feedback_text: str) -> str:
     """
     Classifies if user feedback is a valid pedagogical adjustment request.
@@ -135,6 +151,7 @@ def classify_feedback(feedback_text: str) -> str:
   Si el usuario pide algo fuera de contexto (chistes, insultos, temas no educativos), marca is_valid como false.
   Responde UNICAMENTE con un JSON: {"is_valid": bool, "reason": "breve explicación si es falso"}"""
     
+    add_run_metadata({"feedback_length": len(feedback_text)})
     res, _ = generate_completion(feedback_text, system_prompt)
     return res
 

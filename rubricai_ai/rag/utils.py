@@ -14,8 +14,12 @@ _MODEL = None
 def get_model():
     global _MODEL
     if _MODEL is None:
-        # Standard SentenceTransformers for stability
-        _MODEL = SentenceTransformer("intfloat/multilingual-e5-small")
+        # Try loading locally first (fastest, no online latency)
+        try:
+            _MODEL = SentenceTransformer("intfloat/multilingual-e5-small", local_files_only=True)
+        except Exception:
+            # Fallback to downloading if not cached
+            _MODEL = SentenceTransformer("intfloat/multilingual-e5-small")
     return _MODEL
 
 def extract_pdf(path):

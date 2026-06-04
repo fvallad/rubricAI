@@ -1,0 +1,175 @@
+Actividad: La IAGen y la práctica docente
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+
+  
+ 
+  
+
+
+
+La IAGen y la práctica docente
+    
+
+ 
+
+
+La inteligencia artificial generativa (IAGen) propone múltiples posibilidades y desafíos en el campo educativo. Este módulo invita explorar y reflexionar sobre sus usos éticos, sus límites y su potencial como herramienta para co-crear. Desde el rol docente, se propone una interacción crítica y consciente que permita integrar la IAGen de manera creativa en las prácticas pedagógicas, favoreciendo el desarrollo de nuevas formas de enseñanza y aprendizaje. 
+Te invitamos a recorrer los contenidos y descargar el módulo completo para profundizar en cada uno de los temas.
+
+
+  Descargar módulo 
+
+
+
+
+
+
+ APROXIMACIÓN A LA IAGen
+ OPORTUNIDADES Y DESAFÍOS
+ DESAFÍOS ÉTICOS Y RESPONSABILIDADES
+ LA INTERACCIÓN CON LA IAGen
+ LA CONSTRUCCIÓN DEL DIÁLOGO
+
+ 
+
+
+Aproximación a la IAGen
+
+
+La inteligencia artificial generativa (IAGen) está provocando una transformación profunda en diversos ámbitos como la educación, la economía, la salud y la comunicación, generando cambios comparables, en parte, a los provocados por la llegada de internet en los años 90. Sin embargo, mientras la World Wide Web facilitó el acceso masivo a la información, la IAGen va más allá: no solo procesa datos, sino que también es capaz de crear contenido original en distintos formatos como textos, imágenes o videos (Andreoli et al., 2024).
+
+
+Es importante distinguir entre inteligencia artificial (IA) e inteligencia artificial generativa. Según la UNESCO (2019, citado en 2023a), la IA puede definirse como un conjunto de máquinas que imitan funcionalidades de la inteligencia humana, como el aprendizaje, la percepción, la resolución de problemas y la creatividad. Esta tecnología, basada en algoritmos entrenados con grandes volúmenes de datos, tiene aplicaciones cotidianas como los GPS o los chatbots, que permiten obtener información y resolver consultas de manera automatizada.
+
+La IAGen, por su parte, representa un subtipo de IA especializado en la creación de contenido nuevo a partir del aprendizaje de patrones y estructuras presentes en enormes bases de datos. Utiliza técnicas de aprendizaje profundo y redes neuronales avanzadas para generar textos, imágenes, sonidos o videos, respetando los estilos y patrones de los datos de entrenamiento. Herramientas como ChatGPT (OpenAI), DALL-E, Gemini IA, Claude y Deep Seek son ejemplos destacados de este ecosistema, que está en continua expansión y actualización.
+
+El abanico de posibilidades que ofrece la IAGen es amplio y crece día a día. La interacción con estas herramientas plantea preguntas relevantes: ¿qué tipos de solicitudes realizamos a la IA generativa? ¿Cómo evaluamos la calidad de las respuestas obtenidas?
+
+
+ 
+
+Oportunidades y desafíos
+
+
+La inteligencia artificial generativa (IAGen) está impactando de manera diversa en los distintos campos del conocimiento y en ámbitos educativos. Según Perkins et al. (2024), si bien áreas como la automatización y el análisis de datos han sido beneficiadas, otras que requieren juicio humano matizado experimentan un impacto menor. En el ámbito educativo, la IAGen ofrece oportunidades significativas para mejorar la enseñanza, el aprendizaje, la escritura académica y la investigación (Gómez Cardosa y Garcia Brustenga, 2023).
+Entre los beneficios concretos se destacan la posibilidad de diseñar actividades de aprendizaje variadas, crear materiales educativos innovadores, proponer experiencias interactivas y colaborar en prácticas de escritura e investigación. Aplicaciones de IA pueden sugerir mejoras en la redacción, ayudar a estructurar ideas y facilitar revisiones bibliográficas. Además, permiten enriquecer la exploración y análisis de datos, promoviendo nuevas miradas en los procesos de investigación (UNESCO, 2024).
+Sin embargo, la adopción de la IAGen en la docencia exige una mirada crítica y reflexiva. Aunque estas tecnologías imitan comportamientos humanos, carecen de emociones y experiencia. Estudios recientes (Aubert et al., 2024) muestran que docentes, al interactuar con agentes conversacionales como ChatGPT, experimentaron sentimientos de cercanía, llegando a olvidar la naturaleza no humana de estos programas. Esta interacción genera ambivalencias: mientras algunos docentes valoran el acompañamiento de la IAGen, otros temen que desplace el diálogo genuino entre colegas (Gladkoff et al., 2024).
+La integración de la IAGen en las prácticas educativas es un proceso de aprendizaje continuo que demanda desarrollar habilidades teóricas y prácticas para interactuar de forma crítica y consciente. Aunque su potencial es considerable, también lo son los riesgos de un uso acrítico o excesivamente entusiasta, que podría conducir a una dependencia tecnológica sin evaluar adecuadamente sus implicancias éticas, pedagógicas y sociales.
+
+
+ 
+
+Desafíos éticos y responsabilidades
+
+
+
+El uso de la inteligencia artificial generativa (IAGen) en educación plantea desafíos éticos y metodológicos fundamentales. Entre ellos destacan el riesgo de dependencia tecnológica, la amenaza a la integridad académica, la necesidad de asegurar la veracidad de la información, la detección y mitigación de sesgos y la indeterminación de las fuentes de conocimiento.
+La facilidad de acceso a respuestas automáticas puede fomentar una actitud acrítica en los estudiantes, reforzando la importancia del rol docente como guía en el análisis y evaluación de contenidos generados por IA. La estrategia de la "clase transparente" (De Angelis et al., 2024) propone hacer explícito el uso de estas herramientas en actividades pedagógicas, modelando buenas prácticas y abriendo espacios de reflexión ética sobre sus límites y posibilidades.
+Un desafío relevante es el sesgo inherente a los datos con los que se entrenan los modelos de IAGen. El docente debe garantizar que los materiales generados sean inclusivos y libres de estereotipos, y fomentar en los estudiantes competencias críticas que prioricen el proceso de aprendizaje por sobre la inmediatez del producto final.
+La indeterminación de las fuentes, analizada por Eric Sadin (2020), alerta sobre un riesgo civilizatorio: la posible pérdida de la autoría y el debilitamiento de nuestra relación activa con el lenguaje y la creatividad, lo que exige desarrollar una postura consciente frente al uso de estas tecnologías.
+Además, dado que la IAGen ofrece conocimiento general pero no especializado, el control epistemológico del docente se vuelve crucial, especialmente en disciplinas académicas específicas.
+La IAGen puede actuar como una herramienta que amplifica las capacidades de quienes la utilizan, permitiéndoles alcanzar metas educativas más ambiciosas. Sin embargo, existe el riesgo de una dependencia excesiva, que podría debilitar el desarrollo del pensamiento crítico y creativo (Bellomo, 2023). El equilibrio entre aprovechar el potencial de la IA y mantener la autonomía cognitiva del usuario resulta clave para entender sus múltiples aplicaciones en el ámbito educativo. La IAGen puede funcionar como asistente en tareas específicas, colaborador en la producción de materiales o incluso como un aliado para dialogar y cocrear propuestas pedagógicas innovadoras. Así, la relación con estas tecnologías no se limita a su utilidad técnica, sino que puede transformarse en una experiencia compartida de exploración y construcción de conocimiento.
+La responsabilidad docente implica usar la IAGen de manera consciente, orientando su aplicación en la práctica pedagógica y enseñando a los estudiantes a emplearla para potenciar el aprendizaje autónomo, la evaluación crítica y el comportamiento ético. Según la UNESCO (2023b), una integración adecuada requiere un enfoque multidimensional que contemple aspectos éticos, el desarrollo de habilidades específicas y un compromiso reflexivo en todas las disciplinas.
+
+
+
+ 
+
+La interacción con la IAGen
+
+
+La incorporación de la inteligencia artificial generativa (IAGen) en el ámbito educativo invita a repensar las formas de interacción entre docentes, estudiantes y tecnología. Desde el acompañamiento básico hasta la colaboración creativa, cada nivel de diálogo con estas herramientas ofrece nuevas posibilidades para enriquecer el proceso de enseñanza y aprendizaje. Una comprensión adecuada de estas dinámicas permite abrir oportunidades pedagógicas innovadoras, donde la IA no reemplaza al docente, sino que potencia su tarea.
+La IAGen puede convertirse en una herramienta clave para el diseño de casos de estudio; un recurso que permite plantear escenarios dinámicos y realistas, fomentar el pensamiento crítico de los estudiantes, y habilitar espacios de reflexión y toma de decisiones. Los casos diseñados con el apoyo de la IA pueden ser más variados, desafiantes y adaptables a las necesidades específicas de cada grupo, fortaleciendo así el impacto de las experiencias educativas.
+Un aspecto fundamental es el potencial de la IAGen para convertirse en un interlocutor creativo y colaborativo. A través de un proceso iterativo, donde el docente propone ideas, recibe sugerencias y ajusta los resultados, se enriquece tanto el contenido como su abordaje pedagógico. De esta forma, se promueve una planificación más flexible, variada y ajustada al contexto de aula.
+
+
+
+ 
+
+La construcción del diálogo
+
+
+Interactuar con la inteligencia artificial generativa (IAGen) implica desarrollar habilidades específicas: saber formular consultas claras, entender las capacidades del modelo y reconocer sus limitaciones. A diferencia de la comunicación humana, donde suele haber ambigüedades o significados implícitos, en el diálogo con la IA es fundamental ofrecer instrucciones precisas, un contexto bien definido y un lenguaje claro para obtener respuestas pertinentes y ajustadas a las expectativas.
+Las palabras utilizadas en las instrucciones —prompts— no solo funcionan como órdenes, sino que además establecen un marco contextual que guía la generación de contenido. Dado que la IAGen no solo recupera información, sino que produce textos personalizados según el pedido, es esencial que los prompts contengan todos los elementos necesarios para orientar adecuadamente la respuesta.
+Así como en cualquier conversación humana se aprende a preguntar mejor a medida que se dialoga, también la interacción con la IAGen requiere práctica y ajuste progresivo.
+
+La interacción con la IAGen es un proceso dinámico que se va perfeccionando a través de la práctica continua. Algunas acciones recomendadas son: experimentar con diferentes tipos de prompts, iterar las instrucciones corrigiéndolas en función de los resultados, compartir estrategias y experiencias con otros usuarios, aprovechar la memoria del sistema para enriquecer el diálogo, y explorar distintos modelos de lenguaje para encontrar el que mejor se adapte a cada necesidad.
+
+Desde el rol docente, resulta fundamental acompañar a los estudiantes en el uso crítico de estas tecnologías, ayudándolos a detectar errores, sesgos y limitaciones en las respuestas obtenidas. Así, la IA puede convertirse no solo en una herramienta funcional, sino en un verdadero colaborador creativo que amplíe las fronteras pedagógicas y enriquezca las propuestas educativas. La invitación final es a repensar cómo construir una relación con la IA que potencie el trabajo docente y permita también redescubrir nuevas formas de enseñar y aprender.
+
+
+
+
+
+
+
+  function mostrarContenido(id) {
+    document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+    const activa = document.getElementById(id);
+    if (activa) activa.classList.add('visible');
+
+    const botones = document.querySelectorAll('.item-menu');
+    botones.forEach(boton => boton.classList.remove('activo'));
+    const index = id.replace('contenido', '');
+    const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+    if (botonActivo) botonActivo.classList.add('activo');
+  }
+
+  function mostrarPopup(el, texto) {
+    document.querySelectorAll('.popup-box').forEach(p => p.remove());
+    const popup = document.createElement('div');
+    popup.className = 'popup-box';
+    popup.textContent = texto;
+    document.body.appendChild(popup);
+    const rect = el.getBoundingClientRect();
+    popup.style.left = `${rect.left + window.scrollX}px`;
+    popup.style.top = `${rect.top + window.scrollY - 40}px`;
+    popup.style.display = 'block';
+
+    function cerrarPopup(event) {
+      if (!popup.contains(event.target) && event.target !== el) {
+        popup.remove();
+        document.removeEventListener('click', cerrarPopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
+  }
+function mostrarContenido(id) {
+  document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
+  const activa = document.getElementById(id);
+  if (activa) activa.classList.add('visible');
+
+  const botones = document.querySelectorAll('.item-menu');
+  botones.forEach(boton => boton.classList.remove('activo'));
+  const index = id.replace('contenido', '');
+  const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
+  if (botonActivo) botonActivo.classList.add('activo');
+
+  // Actualiza la URL sin recargar
+  const nuevaUrl = new URL(window.location);
+  nuevaUrl.searchParams.set('seccion', index);
+  window.history.replaceState({}, '', nuevaUrl);
+}
+document.addEventListener('DOMContentLoaded', function () {
+  //  Botón de descarga: foco
+  const btn = document.querySelector('.btn-descarga');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      setTimeout(() => this.blur(), 100);
+    });
+  }
+
+  //  Obtiene el valor del parámetro ?seccion=...
+  const urlParams = new URLSearchParams(window.location.search);
+  const seccion = urlParams.get('seccion') || '1';
+
+  // Activa automáticamente el contenido y el botón correspondiente
+  mostrarContenido('contenido' + seccion);
+});

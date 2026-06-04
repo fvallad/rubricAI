@@ -1,0 +1,35 @@
+Actividad: Estudio de caso/Análisis de casos - AreteIA
+Tipo: assign
+
+Instrucciones de la tarea:
+Análisis crítico y propuesta de solución en gestión de proyectos de inteligencia artificial
+📖 Escenario / Contexto
+El 15 de marzo de 2024, la empresa tecnológica InnovAI, especializada en desarrollos de inteligencia artificial aplicados al sector salud, enfrenta un desafío crítico. El equipo liderado por la gerente de proyectos, Mariana López, está desarrollando un sistema de diagnóstico automatizado basado en algoritmos de aprendizaje profundo. A 6 semanas de la fecha límite para entregar un prototipo funcional, se detectó una caída inesperada en la precisión del modelo durante pruebas con datos del mundo real, que anteriormente mostraba mayor efectividad en entornos controlados. Esta discrepancia pone en riesgo el cumplimiento del contrato con un hospital regional que financia el proyecto con un presupuesto de 500,000 dólares y condiciones estrictas de calidad y confidencialidad.
+Mariana debe coordinar una reunión con su equipo de 8 especialistas, entre ellos data scientists, ingenieros de software y expertos en ética de la IA. Se reportó que los datos nuevos contienen un sesgo inadvertido, generando resultados parcializados hacia ciertos grupos demográficos. Además, el equipo está presionado por la dirección para cumplir el plazo debido a la importancia estratégica del proyecto en la cartera de InnovAI. La tensión aumenta porque algunos miembros plantean extender el plazo y rediseñar el pipeline de datos, mientras otros proponen usar métodos de post-procesamiento para mitigar el sesgo y presentar un informe de limitaciones.
+En esta compleja situación, Mariana debe delimitar el problema con precisión: identificar qué factores técnicos, organizativos y éticos intervienen. Debe analizar las consecuencias de las alternativas propuestas, considerando impactos en la calidad del producto, la reputación de la empresa y el cumplimiento de la normativa vigente en protección de datos personales y equidad en IA, que incluye la Ley 2023-IA-Reg 18. Además, debe valorar la información relevante disponible, así como las lagunas y riesgos asociados. El caso presenta una situación donde la gestión del proyecto, el análisis de datos y las implicaciones éticas convergen en una decisión estratégica.
+Este escenario profesional requiere una comprensión integrada de conceptos técnicos y normativos, capacidad para discriminar información crucial y formular recomendaciones justificada. InnovAI tiene como prioridad resguardar la confianza de sus clientes mediante soluciones responsables, innovadoras y entregadas oportunamente.
+
+Ítem 1 — Ensayo / Respuesta abierta / Tarea de producción (Difícil)
+Te invitamos a reflexionar y analizar críticamente el caso planteado, teniendo en cuenta que los resultados de esta actividad se usarán para ajustar la planificación docente y no para calificarte. Podés responder con sinceridad y marcar 'no sé' si algún aspecto no lo trabajaste anteriormente.
+1) Delimitá claramente el problema central que enfrenta Mariana y su equipo en este proyecto de inteligencia artificial. Explicá por qué considerás que ese problema es el núcleo de la situación. Incluí en tu análisis los factores técnicos, éticos y organizativos que influyen.
+2) Identificá y discriminá los datos relevantes provistos en el escenario que justifican tu delimitación del problema. Indicá también qué información te parece faltante o insuficiente para tomar una decisión informada.
+3) Proponé al menos dos alternativas de solución al problema, fundamentando las ventajas y desventajas de cada una en relación con la calidad del producto, cumplimiento normativo y gestión del equipo.
+Esta tarea es individual. En tu escritura priorizá construir argumentos claros y estructurados que muestren tu capacidad para analizar y evaluar situaciones complejas.
+Objetivos: Obj 1
+Ítem 2 — Ensayo / Respuesta abierta / Tarea de producción (Media)
+Parte de la actividad será un trabajo colaborativo en pequeños grupos (de 3 a 4 integrantes) que analizarán en conjunto el caso. El objetivo es debatir respetuosamente las diferentes percepciones sobre los problemas y posibles soluciones, enriqueciendo sus posturas a través del intercambio.
+Cada grupo elegirá una alternativa propuesta en el ítem anterior, y preparará una presentación breve que argumente por qué esa opción es la más adecuada para InnovAI, tomando en cuenta aspectos técnicos, normativos y humanos.
+Finalmente, en un plenario general, cada grupo expondrá su análisis y responderá preguntas o desafíos de sus compañeros para contrastar visiones y consolidar aprendizajes.
+Esta dinámica busca fortalecer habilidades de discusión crítica, trabajo en equipo y argumentación fundamentada.
+Objetivos: Obj 1
+Ítem 3 — Ensayo / Respuesta abierta / Tarea de producción (Fácil)
+Para facilitar una evaluación constructiva, indicá cómo debería ser evaluada tu respuesta y la de tus compañeros en relación con los siguientes criterios:
+
+Capacidad para delimitar con precisión el problema, mostrando comprensión integrada.
+Identificación y discriminación adecuada de los datos relevantes y las lagunas informativas.
+Propuesta de alternativas de solución con una argumentación clara, fundamentada y equilibrada en sus pros y contras.
+
+Esta reflexión ayudara a ajustar la recepción y valoración de las respuestas, valorizando el proceso de análisis y argumentación más que la simple conclusión o dato puntual.
+Objetivos: Obj 1
+
+Justificación Pedagógica: Este instrumento utiliza un estudio de caso detallado y realista para situar al estudiante en un contexto profesional concreto y complejo, que requiere analizar una situación problemática con múltiples dimensiones (técnica, ética y organizativa). Los ítems propuestos respetan la modalidad individual y grupal del método casos, fomentando la reflexión crítica, el análisis de datos relevantes y la argumentación fundamentada, alineados con niveles de Bloom ANALIZAR, EVALUAR y CREAR. La consigna introductoria motivacional asegura un enfoque no punitivo para evaluar conocimientos previos y facilitar ajuste docente. La estructura acompaña el proceso: primer ítem individual para analizar y proponer; segundo para dinamizar trabajo colaborativo; tercero para reflexión sobre criterios de evaluación, promoviendo metacognición. La selección de preguntas abiertas es adecuada para evaluar contenidos conceptuales complejos y procedimentales, poniendo en práctica comprensión, discernimiento y toma de decisiones ética y técnica en inteligencia artificial aplicada, coherente con los materiales referenciados. Así, el instrumento cumple los requisitos pedagógicos, didácticos y formales especificados.

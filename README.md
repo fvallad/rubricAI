@@ -183,7 +183,7 @@ Crea un archivo `.env` en la raíz del proyecto basándote en el siguiente esque
 ```env
 # Nombre de Proyecto en Docker
 COMPOSE_PROJECT_NAME=rubricai
-COMPOSE_FILE=docker-compose.moodle.yml:docker-compose.python.yml
+COMPOSE_FILE=docker-compose.yml
 
 # Configuración del Aula Virtual Moodle
 MOODLE_VERSION=MOODLE_405_STABLE
@@ -332,8 +332,8 @@ La plataforma RubricAI se divide en tres `Dockerfiles` específicos para cada ca
 
 ## 9. Comandos para Levantar Todo el Ecosistema
 
-Dado que el archivo `.env` declara de forma unificada los dos archivos de Docker Compose:
-`COMPOSE_FILE=docker-compose.moodle.yml:docker-compose.python.yml`
+Dado que el archivo `.env` declara de forma unificada el archivo de Docker Compose:
+`COMPOSE_FILE=docker-compose.yml`
 
 Puedes administrar y levantar **todos** los contenedores con un único comando:
 

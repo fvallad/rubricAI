@@ -1,7 +1,0 @@
-Actividad: Hoja de ruta
-Tipo: page
-
-Descripción:
-
-
-Contenido de la página:

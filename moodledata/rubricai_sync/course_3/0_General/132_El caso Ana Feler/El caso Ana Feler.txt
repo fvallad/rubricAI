@@ -1,0 +1,935 @@
+Actividad: El caso Ana Feler
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+#page-footer {
+    display: none;
+}
+
+
+
+
+  
+    
+   
+    
+  
+  
+  
+  El caso Ana Feler
+      
+  
+   
+  
+  
+  Para poder abordar este curso desde una perspectiva diferente, les vamos a proponer que se “pongan en los zapatos” de Ana Feler.   ¿Y quién es Ana? ¡Les contamos a continuación!
+  
+  
+    Descargar módulo 
+  
+  
+  
+
+  
+  
+  
+   PRESENTACIÓN
+   AVANCES, TEMORES Y OPORTUNIDADES
+   LA ELECCIÓN DE CASOS Y LAS PREGUNTAS
+   LA IAGen Y EL ESTUDIO DE CASOS
+   LAS CONCLUSIONES
+  
+   
+  
+  
+  Presentación
+  
+  
+  Ana es docente de la 
+materia Sociología de la Educación, que se dicta en el primer año de la carrera de Ciencias 
+de la Educación de una universidad pública. Cuenta con una amplia experiencia como 
+docente universitaria y una sólida formación académica. Además, como le interesa 
+particularmente la articulación entre el campo de la educación y el de la sociología, realizó 
+una diplomatura en Sociología de la Educación y actualmente está cursando el doctorado 
+en la facultad de Sociología. 
+  
+  
+  El paso por la pandemia despertó en Ana una serie de inquietudes y preocupaciones. Por un lado, reconoce la necesidad de actualizar sus conocimientos en tecnologías para integrarlas en sus prácticas de enseñanza. Recuerda que, en aquel momento, se sintió algo “huérfana” de recursos y estrategias. Esto la llevó a dedicar tiempo a formarse e interesarse por el campo de la tecnología educativa. Participó en algunas propuestas de formación que ofrece la universidad y avanzó en el diseño de propuestas virtuales. Sin embargo, sigue considerando que todavía tiene mucho por aprender.
+  Por otro lado, al igual que varios de sus colegas, viene observando algunas situaciones muy puntuales y preocupantes en relación con las dificultades de sus estudiantes para la comprensión de ciertos textos, falta de hábitos de estudio y cierto desinterés ante determinadas propuestas de la materia.
+  En la última reunión de cátedra conversaron largamente sobre estas cuestiones y señalaron con cierta preocupación dos situaciones sobre las que han decidido trabajar. Un porcentaje creciente de deserción de estudiantes luego del primer parcial y una cantidad significativa de desaprobados en las primeras evaluaciones. En ese encuentro, Ana expresó:
+  - “La verdad es que comparto la preocupación. Al inicio de la cursada no sé qué hacer… Veo que los estudiantes no terminan de comprender el eje de la materia. Por un lado, comentan que los contenidos son interesantes porque los interpelan y porque se tratan temáticas cercanas a la realidad, pero cuando intentamos profundizar en autores, en los contenidos y en la interpretación de los distintos hechos a partir de las lecturas, comienzan a mostrarse más apáticos o desinteresados.”
+  Entonces, ¿qué hacer? ¿Cómo replantear el enfoque de la materia para que realmente interpele e interese a los estudiantes?
+  Ana recordó que hace unos años, cuando trabajaba junto a una antigua colega, habían utilizado la metodología de estudio de casos, con muy buenos resultados. Esta estrategia les había permitido trabajar en profundidad ciertas ideas potentes y nodales de la materia. Por eso, decidió recuperar aquellos materiales guardados y evaluar nuevas posibilidades. En la última reunión de cátedra propuso retomar esa modalidad de trabajo e invitó a sus colegas a investigar sobre el tema y compartir las experiencias que hubiesen tenido al respecto.
+  
+  PREGUNTAS PARA REFLEXIONAR:
+  
+  ¿Te resuena el planteo que realiza la profesora Ana? ¿De qué modo?
+  
+  
+  Para acompañar y comprender el proceso que realiza la docente, te sugerimos leer el material presentado en el módulo:  "ENSEÑAR CON CASOS" . 
+  
+  
+   
+  
+  Los primeros avances. Temores y oportunidades
+  
+  
+  Ha pasado un cuatrimestre y la cátedra en la que se desempeña Ana organizó varias reuniones para comenzar a trabajar de manera conjunta en la inclusión de la estrategia de estudio de casos.
+  Al principio, Ana se sintió algo inquieta y preocupada. Sin embargo, en esas reuniones se compartieron materiales y ejemplos muy enriquecedores que trajeron los propios colegas. Se distribuyeron lecturas y se comenzó a investigar sobre el tema. Ana también recuperó un caso que había elaborado años atrás en otra institución.
+
+  Aun así, no dejaba de pensar en el tiempo que podía llevarle escribir un caso desde cero o en cómo implementar esta estrategia en una comisión de estudiantes numerosa. Pero, al mismo tiempo, sentía que se trataba de un desafío necesario, y una oportunidad para propiciar un cambio profundo en la forma de enseñar.
+  
+  Este recorrido inicial trajo consigo algunas preocupaciones, pero también muchas buenas ideas.
+ Entre sus inquietudes Ana se preguntaba:
+
+  
+  ¿Podré escribir un caso que resulte potente e interesante? ¿Por dónde empiezo? ¿Cuánto tiempo tendré que invertir en este proceso?
+  ¿Lograré formular preguntas interesantes que no conduzcan a una única respuesta?
+  ¿Será posible hacer uso de aplicaciones y herramientas tecnológicas que me puedan asistir en este proceso? 
+  ¿Cómo se puede hacer un seguimiento del trabajo de los estudiantes en este tipo de actividades? ¿Qué formas de evaluación son coherentes con esta metodología?
+  
+
+  
+  Pero, por otro lado, pensaba que: 
+  
+  Si bien es cierto que, al comienzo, elaborar un caso puede llevar tiempo, una vez que se cuenta con una primera versión, será más fácil reeditarlo, ajustarlo y enriquecerlo.
+  Un caso bien diseñado, que permita poner en discusión los contenidos de algunas unidades, representa una oportunidad valiosa en muchos aspectos. Abordar situaciones reales, cercanas a la experiencia de los estudiantes y que generen interés, puede ser un motivo para que se involucren, investiguen sobre el tema y construyan respuestas.
+  El trabajo en grupo seguramente cobrará mayor sentido.
+  Esta estrategia es también una buena oportunidad para animarme a integrar de manera más articulada todo lo trabajado en los entornos virtuales y presenciales, ya que el caso puede abordarse en ambos espacios.
+  
+  
+  
+  PREGUNTAS PARA REFLEXIONAR:
+  
+  Teniendo en cuenta las preocupaciones que plantea la docente, ¿cuáles te resuenan? ¿Agregarías alguna más?  
+  ¿Qué aspectos potentes y qué limitaciones considerás que podría tener la estrategia de estudio de casos para la enseñanza de tu materia?  
+  
+  
+  Para comprender el proceso que realiza la docente en cuanto al estudio de casos  te sugerimos leer el material presentado en el módulo: "ENSEÑAR CON CASOS". 
+  
+  
+   
+  
+  Las manos en la masa. La elección de casos y las preguntas
+  
+  
+  
+  Ana avanzó con la lectura y empezó a considerar cuáles son los criterios que debe cumplir un buen caso. Revisó uno que había escrito junto con su colega en aquellos viejos tiempos, pero le resultaba difícil identificar un aspecto que es fundamental en el estudio de casos: el equilibrio entre una historia potente, real y rica en situaciones para analizar y su vinculación con los contenidos de la materia. Necesitaba presentar un caso que invitara a la lectura y a la discusión, pero que al mismo tiempo fuera claro y no demasiado complejo.
+  ¿Cómo llevar a cabo un análisis minucioso de ese viejo caso? Si bien podía hacerlo sola, Ana necesitaba contar con la mirada de un colega, un colaborador en quien apoyarse.
+  
+  Había escuchado mucho sobre las ventajas de trabajar con inteligencia artificial. Varios de sus colegas la utilizaban para llevar adelante muchas de las tareas que, como docentes, realizaban a diario, y le habían comentado, sorprendidos, que la velocidad de trabajo de la IA era increíble. Intrigada, comenzó a leer materiales que le habían compartido en la facultad sobre el uso de la IA en la enseñanza universitaria. Le llamaron la atención las numerosas investigaciones que se venían realizando y algunos debates sobre las oportunidades y las limitaciones que su utilización presenta. Sobre todo, le preocupaba el impacto del uso que le daban los estudiantes y las implicancias éticas que se ponían en juego.
+  Decidió explorar algunas herramientas como ChatGPT y se sorprendió por la variedad de tareas que podía realizar. Al principio lo hizo tímidamente, con cautela, sin saber muy bien por dónde comenzar. Si bien tenía claro la importancia de generar buenas instrucciones, sentía que todavía necesitaba mucha práctica para potenciar al máximo sus posibilidades.
+
+  
+  PREGUNTAS PARA REFLEXIONAR:
+  
+  ¿Habías experimentado previamente con el uso de herramientas de IAGen? ¿Encontraste obstáculos en la exploración de su uso? En caso de que sí, ¿cuáles?
+  
+  
+  Para seguir analizando este caso y cómo la docente empieza a explorar el uso de la IAGen en la enseñanza, te invitamos a leer el material presentado en el módulo  "LA IAGEN Y LA PRÁCTICA DOCENTE" 
+  
+  
+   
+  
+  La IAGen y el estudio de casos
+  
+  Como sabemos, Ana decidió explorar el mundo de la inteligencia artificial motivada por una colega que utilizaba ChatGPT. ¿Cómo comenzó? Abrió una cuenta, miró tutoriales y empezó a experimentar. Al principio, sus interacciones eran casi un juego y le resultaban divertidas: pedía cosas diversas y la IA siempre respondía. Esto la llevó a reflexionar sobre dos aspectos: por un lado, advirtió que la IA nunca “se cansa” ni dice "no sé", sin embargo, a veces, sus respuestas, aunque verosímiles, carecían de rigor. Por otro lado, le sorprendió el modo en que ella se dirigía a la IA: olvidaba que era un robot y le decía "por favor" y "gracias", como si estuviera hablando con una persona real.
+  Con el tiempo, Ana notó que la calidad de las respuestas dependía en gran medida de la formulación de sus preguntas, lo que la llevó a investigar sobre el diseño de  prompts. Descubrió, así, que el diálogo con la IA no era estático: cuanto más interactuaba, mejor ajustaba sus preguntas y afinaba sus expectativas. Entendió que más allá de las pautas iniciales, la experiencia se enriquece con la práctica y el aprendizaje continuo.
+  Con esta experiencia, Ana decidió comenzar pidiéndole a la IAGen que analizara un caso que ya tenía diseñado. Abrió el archivo, copió el texto y lo pegó en el chat, acompañado de una pregunta sencilla: ¿Cómo podría mejorar este caso para que sea más desafiante para mis estudiantes? La respuesta la dejó sorprendida.
+  
+A continuación podés acceder al diálogo de Ana con el Chat siguiendo las flechas rosas.
+
+  
+
+  
+
+    
+  
+
+
+
+  
+  
+  
+
+  
+  
+  
+    La IAGen y el estudio de casos - 2
+    
+    
+  Hacé clic en el prompt para leer qué le respondió.
+     
+  
+    
+    
+      
+        
+          Ana: Quiero trabajar con un caso práctico sobre una docente recién recibida que enfrenta temores y desafíos al comenzar su trabajo. Ya tengo el caso redactado y una consigna con preguntas orientadoras, pero me gustaría mejorar el enfoque para que sea más claro y completo. ¿Podrías ayudarme a revisarlo?
+        
+        
+          
+            
+           
+        
+      
+      
+    
+  
+    
+    
+      
+        
+        Ana: Principalmente, me interesa que las consignas sean más explícitas en cuanto a la relación con los conceptos que plantean Gabriela Diker y Flavia Terigi (1997) en el texto La formación de maestros y profesores: hoja de ruta. También quiero asegurarme de que las preguntas sean lo suficientemente abiertas para promover análisis crítico y debate. 
+        
+        
+       
+            
+           
+        
+      
+      
+    
+  
+      
+  
+  
+  La IA no solo ofreció una evaluación detallada de los elementos del caso, señalando sus puntos fuertes y áreas a reforzar, sino que también sugirió incorporar preguntas abiertas que fomentaran el pensamiento crítico y escenarios alternativos para enriquecer el debate. Ante esto, Ana se animó a profundizar: ¿Qué tipo de preguntas abiertas podrían funcionar mejor? Y la IA respondió con ejemplos concretos, como ¿Qué harías si estuvieras en el lugar del protagonista? o ¿Qué otras soluciones posibles podrían plantearse en esta situación?
+   
+
+
+    
+  
+ 
+
+    
+  
+
+  
+  
+  
+  
+    La IAGen y el estudio de casos - 3
+    
+    
+  
+ Motivada por estos avances, Ana fue más allá: pidió a la IA colaboración para diseñar un nuevo caso desde cero, sugiriendo tres núcleos narrativos que abordaran la temática de la transición a la vida universitaria, considerando factores como el entorno familiar, el origen geográfico y el nivel educativo de los padres. La IA presentó propuestas variadas e interesantes: un estudiante del interior que enfrenta el desafío de la adaptación cultural, una joven de primera generación universitaria y un egresado de escuela privada que debe afrontar las dinámicas de la universidad pública.
+   
+  
+  Desarrolla tres núcleos narrativos diferentes que exploren el proceso de afiliación estudiantil y la transición al estatus de estudiante universitario. Estos núcleos deben reflejar la variedad de experiencias que pueden tener los estudiantes al integrarse en la universidad, considerando factores como el origen y entorno social y geográfico, y el grado de escolarización de sus padres. Contexto: cátedra de Sociología de la Educación del primer año de la carrera de Licenciatura en Educación en la Ciudad de Buenos Aires, Argentina, en una universidad pública. El propósito docente es poner en evidencia los condicionamientos sociales que afectan el proceso de afiliación y/o integración a la vida universitaria. Cada núcleo narrativo debe incluir:
+  Personaje principal: Describir un estudiante con características particulares (por ejemplo, contexto familiar, origen social y geográfico) que reflejen situaciones comunes de adaptación y pertenencia en la vida universitaria.
+  Desafíos y obstáculos: Incluir los obstáculos específicos que enfrenta el personaje en su adaptación al contexto universitario, tales como choques culturales, dificultades académicas o problemas de pertenencia.
+  Contexto sociocultural: Integrar elementos del contexto social y cultural del personaje para que el análisis pueda explorar cómo estos factores influyen en el proceso de afiliación y en la experiencia universitaria.
+  
+  
+  
+  El ChatGPT entregó los tres núcleos narrativos tal como fueron solicitados. Si bien Ana se mostró conforme con la propuesta, identificó aspectos que aún requerían ajustes. Notó que los relatos carecían de un cruce más complejo de variables. Creo que sería necesario cruzar más dimensiones de análisis en cada caso, comentó a la IA. La respuesta de la IA fue más precisa, pero aún no lograba integrar de manera adecuada todos los factores sociales y estructurales relevantes. 
+  
+   
+    
+
+      
+     
+   
+
+      
+    
+  
+    
+    
+  
+  
+    La IAGen y el estudio de casos - 4
+    
+    
+  Ana siguió afinando los casos, procurando que el análisis pusiera en relación los elementos teóricos esenciales. 
+  
+  
+    
+    
+      
+        
+  Ana: Estoy sorprendida con la calidad de las experiencias generadas para los tres núcleos narrativos. Son un excelente punto de partida para escribir el caso. Sin embargo, reflexionando desde el marco teórico de la materia, creo que sería necesario cruzar más dimensiones de análisis en cada caso.
+        
+        
+          
+            
+           
+        
+      
+  
+      
+    
+  
+    
+    
+      
+        
+      Ana: Por ejemplo, en el caso que aborda la distancia geográfica, creo que deberíamos cruzar esta variable con el origen social y cultural. La distancia geográfica por sí sola no siempre implica una distancia hacia la cultura universitaria. Un joven que vive lejos pero tiene padres universitarios podría tener un capital cultural que le permita integrarse más fácilmente. Un enfoque multidimensional podría enriquecer el análisis, de modo que en cada caso deberías incluir más de una variable.
+        
+        
+       
+            
+           
+        
+      
+      
+    
+      
+    
+    
+      
+        
+       Ana: Sí, eso es lo que estaba buscando. También sería útil incorporar ejemplos o situaciones concretas para ilustrar estas interacciones”.
+        
+        
+       
+            
+           
+        
+      
+      
+    
+    
+    
+      
+        
+        Ana: Sí, por favor. Eso ayudará a que los casos reflejen mejor la complejidad de las experiencias estudiantiles. Gracias.
+        
+        
+       
+            
+           
+        
+      
+      
+    
+  
+   
+    
+
+      
+     
+ 
+
+      
+   
+  
+    
+    
+  
+  
+    La IAGen y el estudio de casos - 5
+    
+    
+Otro momento clave en la confección del caso fue cuando Ana solicitó a la IAGen la generación de imágenes realistas para los personajes. En ese proceso utilizó el modelo
+ 
+DALL·E 3, integrado a la arquitectura de ChatGPT, lo que le permitió generar imágenes a partir de indicaciones precisas dentro del mismo entorno de conversación. 
+
+
+  Creación de imágenes de los personajes del caso - Primera iteración:
+     
+     
+      
+      
+          
+              
+                Ana: Genera una imagen realista de Lucía. Es una joven estudiante universitaria. Proviene del conurbano bonaerense con recursos económicos limitados. Viajando en transporte público.
+              
+              
+                  
+                    
+                  
+              
+          
+          
+     
+        
+      
+      
+      
+          
+              
+                Ana: Genera una imagen realista de Julián. Muchacho de clase media. De la ciudad de Buenos Aires. Ponlo en situación de estudio en un ambiente. En el ambiente hay distractores como el celular. Y se muestra agotado por proceso de estudio.                
+                  
+                    
+                  
+              
+          
+          
+     
+        
+    
+            
+            
+              
+                  
+                     Ana: Genera una imagen realista de Marta. Estudiante universitaria de condición social y cultural baja. Crea una imagen en la que se vea sentada en un banco en la universidad. Universidad pública de la Ciudad de Buenos Aires. Es evidente el contraste entre ella y el entorno.                   
+                  
+                      
+                        
+                      
+                  
+              
+              
+         
+            
+        
+        
+    
+Sin embargo, las representaciones generadas inicialmente no reflejaban la diversidad de los estudiantes, ya que reproducían estereotipos propios de contextos como el estadounidense. Esto le permitió identificar una limitación relevante de la IA: los sesgos presentes en los datos con los que fue entrenada. 
+    
+  
+
+      
+    
+   
+
+      
+    
+  
+    
+   
+
+  
+  
+    La IAGen y el estudio de casos - 6
+    
+    
+      Creación de imágenes de los personajes del caso:
+Al darse cuenta de esto, Ana asumió un rol más activo, reformulando las descripciones para orientar mejor a la IA y así obtener representaciones más fieles a su contexto, corrigiendo los sesgos y mejorando la calidad del contenido. Como estaba trabajando con la versión gratuita, que permite generar hasta tres imágenes por día, debió esperar al día siguiente para continuar con nuevas iteraciones. Esta experiencia le permitió no solo mejorar la calidad del contenido visual del caso, sino también reflexionar sobre el uso crítico y contextualizado de la IA.
+     
+     
+      
+      
+          
+              
+                  Ana: Genera una imagen realista de Lucía, una joven estudiante universitaria del conurbano bonaerense. Tiene recursos económicos limitados y viaja en transporte público, reflejando las dificultades cotidianas de su vida. Representa un momento cotidiano: Lucía viajando en un tren o colectivo, con una mochila sencilla, vestida con ropa modesta pero prolija. Añade elementos que denoten un trayecto largo, como cansancio en su expresión o materiales de estudio en su regazo.
+              
+              
+                  
+                    
+                  
+              
+          
+          
+     
+        
+      
+      
+      
+          
+              
+                 Ana: Crea una imagen realista de Julián, un estudiante universitario de clase media de la Ciudad de Buenos Aires. Representa a Julián estudiando en su habitación, rodeado de elementos típicos como una computadora, libros abiertos, y un celular que vibra o ilumina la escena como distractor. Su postura debe mostrar cansancio y agotamiento, como si estuviera lidiando con una sesión de estudio prolongada y demandante. El entorno debe incluir detalles cotidianos como una taza de café o una lámpara de escritorio.                
+                  
+                    
+                  
+              
+          
+          
+     
+        
+    
+            
+            
+              
+                  
+                     Ana: Genera una imagen realista de Marta, una estudiante universitaria de un entorno social y cultural desfavorecido. Muestra a Marta sentada sola en un banco de un aula de una universidad pública de la Ciudad de Buenos Aires. Haz evidente el contraste entre ella y el entorno: Marta con ropa modesta, acompañada de un cuaderno gastado, mientras el campus refleja elementos modernos y dinámicos que destacan las diferencias socioeconómicas.                    
+                  
+                      
+                        
+                      
+                  
+              
+              
+         
+            
+        
+        
+    
+   
+
+
+      
+    
+   
+
+      
+    
+  
+  
+  
+  
+      
+        La IAGen y el estudio de casos - 7
+        
+        
+          
+En el proceso de creación del caso,  Ana decidió incluir cuadros comparativos para sistematizar la información. Para esto recurrió a Chat GPT y a Napkin AI.
+Diseño de cuadro comparativo 
+
+          
+              
+              
+                  
+                      
+                         Ana: Organiza la información de los tres núcleos narrativos en un cuadro comparativo. En cada columna, presenta la información correspondiente a los casos de Lucía, Julián y Marta. Las filas deben incluir las siguientes categorías: entorno social, origen social y geográfico, y grado de escolarización de los padres. Asegúrate de que el formato sea limpio, claro y fácil de leer, y que resalte las diferencias y similitudes entre los casos.
+                      
+                      
+                          
+                            
+                          
+                      
+                  
+                  
+             
+                
+              
+          
+Organización del contenido en un gráfico visualmente atractivo
+A partir de un breve texto con el desarrollo de los tres núcleos narrativos, Ana solicitó a Napkin AI el armado del gráfico a partir de los personajes elegidos: Lucia, Julián y Marta.
+Hacé clic en el prompt para ver el gráfico creado por Napkin AI. 
+           
+  
+    
+    
+      
+        Núcleo narrativo 1: El viaje desde la periferia hasta la universidad
+        Resumen: Esta narrativa sigue a Lucía, una joven que proviene de un barrio alejado de la ciudad universitaria y su camino está lleno de desafíos tanto logísticos (distancia, transporte, costos) como emocionales. A medida que avanza en sus estudios, enfrenta momentos de duda sobre si realmente pertenece a ese espacio académico.
+        Episodios clave:
+        
+          Primera visita a la universidad: Lucía llega temprano el primer día, sintiéndose extraña en un espacio desconocido y lleno de personas que le parecen distintas. Observa con nerviosismo cómo los estudiantes se agrupan y se reconocen entre sí.
+          El choque cultural: En clases y conversaciones informales, Lucía se encuentra con términos y referencias que no comprende, lo cual la hace sentir “fuera de lugar”. Empieza a cuestionar si encaja en el mundo universitario o si tiene los conocimientos suficientes.
+        
+
+        Núcleo narrativo 2: Adaptarse al ritmo de la vida universitaria
+        Resumen: Julián, estudiante de 18 años que llega a la universidad con altas expectativas, enfrenta dificultades para adaptarse al nuevo ritmo de estudio que es más exigente, autónomo de lo que esperaba. La narrativa gira en torno a cómo Julián se enfrenta a la gestión del tiempo, las responsabilidades y la libertad.
+        Episodios clave:
+        
+          La rutina inicial y la libertad: Al inicio del semestre, Julián disfruta la libertad de no tener un horario tan estructurado como en la escuela. Sin embargo, esta libertad se convierte en problema cuando da cuenta de que ha dejado muchas tareas pendientes.
+          Crisis de rendimiento académico: Julián empieza a acumular calificaciones bajas y experiencias de fracaso. Se empieza a cuestionar si realmente es capaz de adaptarse al entorno universitario.
+        
+
+        Núcleo narrativo 3: Buscar un sentido de pertenencia en la universidad
+        Resumen: Marta, quien proviene de una familia donde la educación superior no es común, se matricula en la universidad con dudas sobre si pertenece. Sin embargo, no encuentra rápidamente su lugar y atraviesa momentos de soledad y frustración hasta descubrir un grupo de estudiantes con intereses afines.
+        Episodios clave:
+        
+          La incomodidad del comienzo: Durante las primeras semanas, Marta se siente sola y perdida. No conoce a nadie y le cuesta encontrar estudiantes con quienes compartir el sentido de comunidad que tenía en la secundaria.
+          Exploración cultural y académica: Marta asiste a un taller extracurricular donde conoce a otros estudiantes que comparten sus mismos intereses y valores.
+        
+      
+    
+
+    
+    
+      
+    
+  
+
+       
+     
+
+      
+    
+   
+
+      
+    
+      
+         
+        
+       
+      
+      
+        La IAGen y el estudio de casos - 8
+        
+        
+          
+         Una vez definidos los núcleos narrativos, Ana avanzó en la definición de las perspectivas de análisis para el caso. Para ello, procuró que se integraran el marco teórico de la asignatura 
+y el enfoque metodológico que le interesaba trabajar con los estudiantes. Por eso, continuó
+el diálogo con lAGen para revisar en conjunto los marcos analíticos más adecuados para 
+abordar los dilemas que enfrentan los tres estudiantes al ingresar a la universidad, 
+considerando las tensiones y conflictos viculados a su entorno social, origen geográfico y 
+nivel educativo familiar.
+ 
+      
+      
+        
+          
+          Ana: A partir de los casos de Lucía, Julián y Marta, identifica los dilemas específicos que enfrentan como parte de su proceso de afiliación a la vida universitaria. Estos dilemas deben estar estructurados en torno a los siguientes ejes:
+ 
+
+          Entorno social: ¿Qué tensiones surgen entre las expectativas del entorno y las experiencias 
+universitarias?
+
+          Origen social y geográfico: ¿Qué conflictos o adaptaciones enfrentan debido a su lugar de origen
+y contexto cultural?
+
+          Grado de escolarización de sus padres: ¿Cómo influye el nivel educativo de los padres en sus decisiones, 
+expectativas y desafíos?
+            
+              
+          
+         
+              
+             
+          
+        
+        
+      
+    
+Finalmente, Ana recurrió a ChatGPT para la elaboración de preguntas críticas que 
+fomentaran el proceso reflexivo, una etapa clave para el desarrollo del intercambio grupal.
+
+        
+ 
+        
+          
+           A partir de los casos de Lucía, Julián y Marta, genera una lista de preguntas críticas 
+          que permitan: 
+
+          Explorar aspectos no evidentes relacionados con los dilemas individuales de 
+          cada personaje.
+          Conectar conceptos teóricos sobre afiliación e integración estudiantil con las 
+          experiencias narradas.
+          Plantear puntos de vista alternativos que podrían enriquecer el análisis de 
+          sus procesos de adaptación universitaria.
+            Ten en cuenta que las preguntas a generar deben ser una invitación a reflexionar y no exigen respuestas unívocas o que impartan una orden, que las preguntas sean claras y además que no sean muy generales o abstractas o que sugieran la respuesta.
+              
+          
+         
+              
+             
+          
+        
+        
+      
+    
+    
+    
+
+   
+
+          
+      
+
+
+      
+    
+    
+
+      
+    
+      
+         
+        
+       
+       
+        La IAGen y el estudio de casos - 9
+        
+        
+          
+       Tras recuperar y analizar todos los aportes generados en la interacción, Ana consideró 
+fundamental revisar el caso desde la perspectiva de los estudiantes, con el fin de evaluar 
+la claridad del planteo, el grado de estructuración y la adecuación del lenguaje. Para este 
+proceso, también le resultó útil el diálogo con ChatGPT. Dedicó especial atención al modo 
+de formular las instrucciones, y se mostró conforme con las respuestas obtenidas.
+                  
+  
+      
+      
+        
+          
+              Considerando que estos casos han sido diseñados para el trabajo con estudiantes universitarios, revísalos y evalua si:
+              
+              
+Son claros y comprensibles para un estudiante de primer año de la Licenciatura en Educación.
+              Presentan información coherente y bien estructurada.
+              Cumplen con el objetivo de evidenciar cómo los condicionamientos sociales afectan la integración universitaria.
+              Además, sugiere posibles ajustes para mejorar la claridad de las consignas o enriquecer las narrativas si es necesario.   
+              
+              
+          
+         
+              
+             
+          
+        
+        
+      
+    
+        
+    
+    
+          
+       
+
+
+      
+    
+
+      
+         
+        
+       
+       
+        La IAGen y el estudio de casos - 10
+        
+        
+ PREGUNTAS PARA REFLEXIONAR:
+  
+  ¿Cómo describirías el proceso que realiza Ana en su acercamiento a la IA? ¿Qué tipo de uso de la IA está llevando adelante teniendo en cuenta lo planteado en el módulo “Estudio de casos con asistencia de IA generativa”?
+  ¿Qué preocupaciones señala en su recorrido? ¿Qué obstáculos encontró?
+¿Cuál es tu propia experiencia o recorrido? ¿Has tenido obstáculos en su uso para el diseño de casos? ¿Cuáles?
+A partir de lo trabajado en el material, ¿qué sugerencias le darías a Ana respecto a los tipos de diálogo con la IA y a su asistencia? ¿Qué recomendaciones le harías para la formulación de los prompts y la conducción del diálogo??
+  
+  
+  Para seguir analizar y comprender cómo la docente la docente hace uso de la IAg 
+para la puesta en marcha de la enseñanza con casos invitamos a leer el material 
+presentado en el módulo "ESTUDIO DE CASOS CON ASISTENCIA DE LA IAGen"
+
+       
+
+
+      
+    
+
+      
+         
+        
+       
+       
+        La IAGen y el estudio de casos - 11
+        
+        
+          
+       
+
+
+          
+        
+        
+          
+        
+      
+         
+        
+  
+  
+   
+  
+  Las conclusiones de Ana
+  
+  A lo largo del cuatrimestre, Ana fue avanzando en el diseño de su propuesta de estudio de casos, haciendo uso de la inteligencia artificial generativa. Aunque reconoce que aún le queda mucho por aprender, se siente segura y conforme con lo planificado.
+En una reunión de cátedra compartió a algunos de los colegas lo siguiente:
+
+  -	“La verdad es que en este tiempo pude tener un primer acercamiento al funcionamiento de la IAGen, pero debo decir que lo que más me sirvió de este recorrido fue conocer cómo conversar con la IAGen, qué pedirle y cómo. Desde lo más práctico fue muy útil conocer dos aplicaciones súper potentes: una fue ChatGPT y la otra, que me encantó porque puedo hacer unos gráficos maravillosos, es Napkin AI. Igual entiendo que hay otras herramientas interesantes. Tendría que seguir investigando.”
+
+-	“Aprendí a dialogar con la IAGen. Al respecto, les cuento que no hay una única forma de dialogar. Existen pautas claro, pero lo cierto es que en la práctica y en la interacción uno va aprendiendo a afinar los  prompts, y —como verán— ya uso terminología apropiada, ¿vieron? (se ríe). Me quedó claro que la IA puede ser tu asistente, tu copiloto, tu interlocutor… Pero mejor les cuento lo que efectivamente hice con la IAGen.”
+
+-	"Interactuar con la IAGen me permitió dos cosas, por un lado, sacarme algunos miedos sobre la dependencia que puede generar, si el trabajo se encara de modo consciente y reflexivo la IA puede ayudar y mucho y, por otro lado, conocer cómo funciona para proponer actividades a mis estudiantes."
+
+Al cuatrimestre siguiente, Ana comenzó a implementar la propuesta planificada con una comisión de estudiantes que no era muy numerosa, lo que le permitió ensayar y sumar una nueva experiencia en la universidad. Trabajó intensamente en el planteo de las consignas y en cómo proponer el uso de la IA a sus alumnos, con el objetivo de transparentar una inclusión genuina y ética. Definió algunas tareas específicas en las que les pedía que utilizaran la IA, como la sistematización de información o la elaboración de gráficos.
+
+Después de un cuatrimestre trabajando con el estudio de casos e integrando la IA como parte de su estrategia de enseñanza, estas son algunas de las reflexiones que fue elaborando a lo largo de su recorrido como docente: 
+
+-”Estoy en medio del proceso, pero ya puedo llegar a algunas conclusiones. El estudio de casos es una estrategia muy potente que supone una mayor participación de los estudiantes. Pude observar, desde el inicio, que se mostraron más interesados en relación con otras metodologías. La verdad es que me llamó la atención cómo aumentó la participación en los encuentros presenciales y en los foros. Creo que fue clave poder explicitarles qué tipo de uso podían hacer de la IA."
+
+"Eso sí, aprendí a ser muy organizada con las actividades y entregas que debían realizar. Porque, si no, ¡puede ser un verdadero caos! (se ríe). Armé un recorrido inicial a través de una aplicación interactiva que nos permitió ir guiándonos. Y trabajé mucho con ellos en la conformación de los grupos y la distribución de tareas."
+
+"Creo que todavía tengo que seguir pensando en estrategias de evaluación que sean coherentes con esta propuesta más dinámica."
+
+
+  PREGUNTAS PARA REFLEXIONAR:
+  
+  ¿Habías experimentado previamente con la estrategia de estudio de casos? ¿Cuál fue tu proceso para su diseño?
+Considerando las conclusiones presentadas en este fragmento y tu propio recorrido en el diseño de casos en el marco de este curso, ¿encontrás similitudes y/o diferencias con el proceso realizado por la docente? ¿Cuáles serían?
+En función del material y lo planteado respecto al caso,  ¿qué contenidos y habilidades te parece que pueden potenciarse gracias a esta estrategia?
+¿Qué herramientas considerás específicas para la enseñanza de tu disciplina?
+¿Qué herramientas te resultan más pertinentes para trabajar en el diseño de una propuesta de estudio de casos? ¿Qué aspectos te parecen particularmente valiosos
+y cuáles requerirían mayor atención?
+
+¿Qué aspectos del proceso de aprendizaje se podrían enriquecer en tus estudiantes a partir  a partir de la implementación de esta estrategia?  ¿Qué actividades propondrías?
+  
+  
+     
+     
+     
+     
+   Actividad
+  
+  
+  
+
+          
+          
+
+
+// Función unificada para mostrar secciones y sub-secciones
+function mostrarContenido(id) {
+// 1) Ocultar todas las secciones
+document.querySelectorAll('.contenido').forEach(seccion =>
+  seccion.classList.remove('visible')
+);
+
+// 2) Mostrar la solicitada
+const activa = document.getElementById(id);
+if (activa) activa.classList.add('visible');
+
+// 3) Limpiar todos los botones
+document.querySelectorAll('#sidebar .item-menu').forEach(boton =>
+  boton.classList.remove('activo')
+);
+
+// 4) Determinar el índice padre (por ejemplo "4" de "contenido4a")
+const match = id.match(/^contenido(\d+)/); // Extrae el número de sección, ej. "1", "2", "3"...
+const index = match ? parseInt(match[1]) : null;
+if (index) {
+  const botonActivo = document.querySelector(
+    `#sidebar .item-menu:nth-child(${index})`
+  );
+  if (botonActivo) botonActivo.classList.add('activo');
+}
+// 5) Actualizar la URL sin recargar
+const nuevaUrl = new URL(window.location);
+nuevaUrl.searchParams.set('seccion', id.replace('contenido', ''));
+window.history.replaceState({}, '', nuevaUrl);
+}
+
+// Mostrar popup informativo
+function mostrarPopup(el, texto) {
+document.querySelectorAll('.popup-box').forEach(p => p.remove());
+const popup = document.createElement('div');
+popup.className = 'popup-box';
+popup.textContent = texto;
+document.body.appendChild(popup);
+const rect = el.getBoundingClientRect();
+popup.style.left = `${rect.left + window.scrollX}px`;
+popup.style.top = `${rect.top + window.scrollY - 40}px`;
+popup.style.display = 'block';
+
+function cerrarPopup(event) {
+  if (!popup.contains(event.target) && event.target !== el) {
+    popup.remove();
+    document.removeEventListener('click', cerrarPopup);
+  }
+}
+setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+// Botón de descarga: quitar foco tras click
+const btn = document.querySelector('.btn-descarga');
+if (btn) {
+  btn.addEventListener('click', function () {
+    setTimeout(() => this.blur(), 100);
+  });
+}
+
+// 1. Al cargar, mostrar sección por ?seccion=...
+const urlParams = new URLSearchParams(window.location.search);
+const seccion = urlParams.get('seccion') || '1';
+mostrarContenido('contenido' + seccion);
+
+// 2. Interceptar enlaces a subsecciones del tipo ?seccion=4a
+document.querySelectorAll('.enlace-subseccion').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = new URL(link.href, location.origin)
+                      .searchParams.get('seccion');
+    if (target) {
+      mostrarContenido('contenido' + target);
+
+      // Activar el botón del módulo 4 si aplica
+      if (target.startsWith('4')) {
+        document.querySelectorAll('#sidebar .item-menu')
+          .forEach(b => b.classList.remove('activo'));
+        const boton4 = document.querySelector('#sidebar .item-menu:nth-child(4)');
+        if (boton4) boton4.classList.add('activo');
+      }
+    }
+  });
+});
+});
+
+(() => {
+  let typingTimeout;
+  let isTyping = false;
+
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item    = header.parentElement;
+      const content = item.querySelector('.accordion-content');
+      const html    = content.dataset.html;
+      const text    = content.dataset.text || '';
+
+      const alreadyOpen = item.classList.contains('open');
+      const isCurrentlyTyping = content.getAttribute('data-typing') === 'true';
+
+      // Caso 1: Si está abierto y ya terminado => cerrar
+      if (alreadyOpen && !isCurrentlyTyping) {
+        item.classList.remove('open');
+        content.innerHTML = '';
+        return;
+      }
+
+      // Caso 2: Si está abierto y aún tipeando => terminar tipeado y mostrar todo
+      if (alreadyOpen && isCurrentlyTyping) {
+        clearTimeout(typingTimeout);
+        content.innerHTML = text;
+        content.setAttribute('data-typing', 'false');
+        isTyping = false;
+        return;
+      }
+
+      // Caso 3: Cerrar otros solo si están tipeando
+      document.querySelectorAll('.accordion-item.open').forEach(openIt => {
+        const openContent = openIt.querySelector('.accordion-content');
+        if (openContent.getAttribute('data-typing') === 'true') {
+          openIt.classList.remove('open');
+          openContent.innerHTML = '';
+        }
+      });
+
+      // Abrir este
+      item.classList.add('open');
+      clearTimeout(typingTimeout);
+      isTyping = true;
+      content.innerHTML = '';
+      content.setAttribute('data-typing', 'true');
+
+      // Caso 4: Si tiene HTML, insertar directamente
+      if (html) {
+        content.innerHTML = html;
+        content.setAttribute('data-typing', 'false');
+        isTyping = false;
+        return;
+      }
+
+      // Caso 5: Tipeo letra por letra
+      let i = 0;
+      function typeChar() {
+        if (!item.classList.contains('open')) return;
+        if (i < text.length) {
+          content.innerHTML += text.charAt(i++);
+          typingTimeout = setTimeout(typeChar, 30);
+        } else {
+          content.setAttribute('data-typing', 'false');
+          isTyping = false;
+        }
+      }
+      typeChar();
+    });
+  });
+})();
+
+
+  document.querySelectorAll('.napkin-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const content = header.nextElementSibling;
+      content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+    });
+  });

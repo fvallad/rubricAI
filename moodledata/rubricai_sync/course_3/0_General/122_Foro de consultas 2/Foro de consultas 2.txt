@@ -1,0 +1,6 @@
+Actividad: Foro de consultas 2
+Tipo: forum
+
+Descripción del foro:
+
+Prueba de escritura

@@ -1,0 +1,7 @@
+Actividad: ¡Les damos la bienvenida a este curso!
+A lo largo...
+Tipo: label
+
+Contenido de la etiqueta:
+¡Les damos la bienvenida a este curso!
+A lo largo de este curso de tres semanas, exploraremos las bases materiales e inmateriales y los fundamentos teóricos del desarrollo de modelos de Inteligencia Artificial. Partiremos de los cables submarinos que conectan continentes a los datos que generamos en línea para preguntarnos: ¿cómo la infraestructura material de internet influye en la manera en que se recopilan, almacenan y procesan los datos que luego son utilizados para alimentar modelos de IA? ¿cuál es la importancia de la independencia digital? Desde la captura de las interacciones digitales hasta la creación de modelos, indagaremos los fundamentos teóricos y conceptuales subyacentes en la creación de herramientas de procesamiento para resaltar la importancia de la interdisciplina en la mitigación de sesgos. A partir de este recorrido, se apunta a problematizar: ¿de qué modos estas herramientas se construyen y utilizan en Educación Superior?

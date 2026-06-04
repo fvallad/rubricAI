@@ -1,0 +1,40 @@
+Actividad: Cuestionario - 2024
+Tipo: quiz
+
+Descripción del cuestionario:
+
+
+Preguntas:
+- Consinga: Descubriendo funciones desde los datosIntroducciónPara quienes no lo recuerden, podemos definir una función (matemática) como una transformación de ciertos valores a otros. Hay muchas propiedades y formalidades, pero no vamos a entrar en tanto detalle. Nos alcanza decir que una función transforma un valor X a otro valor al que llamaremos Y.En esta actividad intentaremos descubrir funciones sencillas que hagan la transformación de los datos acorde a lo que vemos en las tablas de ejemplo.Analicemos los datos de la siguiente tabla:
+
+Una función de la cuál podrían venir los datos de la tabla es:
+Y = 1 + 2 * X
+Si no se convencen, comprueben que reemplazando cada X de la tabla obtenemos el valor de Y correspondiente. Ej: 1 + 2 * (3) = 7 → El par X=3 Y=7 se corresponde con la segunda fila de la tabla.Idea: Si resulta cómodo podés usar Excel para poner ambas columnas y otra con la fórmula propuesta para ver si funciona. ;-)Veamos otro ejemplo:
+
+En este caso, podemos decir que una función de la cuál podrían venir los datos es:
+Y = 35 + (-1) * X
+Pueden comprobar nuevamente que dicha función se corresponde con los valores de la tabla.&nbsp;En definitiva, las funciones asociadas a las tablas de los ejemplos son una forma de relacionar sus dos columnas que cumplan la transformación que dado X nos permita obtener Y como resultado.
+- Pregunta N° 1: ConsignaLa actividad que proponemos en relación a lo que vimos en los ejemplos consiste de varias partes para pensar y responder.1- Dada la siguiente tabla, dar una función, similar a la de los ejemplos anteriores, que explique la relación entre los datos de X e Y
+
+Una vez que tengan la función, verifiquen que efectivamente se cumplan los valores. Llamaremos a esta función F1.
+- Pregunta N° 2: 2- Repitamos el ejercicio con otra tabla:
+
+Una vez que tengan la función, verifiquen que efectivamente se cumplan los valores. Llamaremos a esta función F2.
+- Pregunta N° 3: 3- Para pensar:&nbsp;¿Sirve F1 para los valores de la segunda tabla? ¿Sirve F2 para los valores de la primera? ¿Por qué? ¿Aciertan siempre, a veces o nunca?&nbsp;Si erran, ¿siempre erran por lo mismo?
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Pregunta N° 4: 4- Esta tercera tabla tiene datos del mismo origen que las dos tablas anteriores:
+
+a- ¿Cuál de las 2 funciones, F1 ó F2, se inclinarían a usar en esta tabla?b- ¿Cuántos casos acierta de manera exacta F1 y cuántos F2?&nbsp;
+- Pregunta N° 5: 5- Si les decimos que X es el año de nacimiento, y que Y es la edad, ¿Qué interpretación le pueden dar a F1 y F2?

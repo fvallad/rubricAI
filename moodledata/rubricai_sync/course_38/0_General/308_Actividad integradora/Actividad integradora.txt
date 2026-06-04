@@ -1,0 +1,116 @@
+Actividad: Actividad integradora
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+
+#page-wrapper #page {
+    background-color: #191a1c;
+}
+#region-main {
+    background-color: #191a1c;
+}
+#page.drawers .main-inner {  
+    background-color: #191a1c;
+}
+.secondary-navigation+#page-content #region-main {
+    background-color: #191a1c;
+}
+.editing .section .activity .contentwithoutlink, .editing .section .activity .activityinstance {
+    padding-right: 30px;
+}
+#page-navbar .breadcrumb li .no-link {
+    background-color: #111216;
+}
+#embedgenially { 
+  width:100%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#geniallycontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 100%;
+margin-top: 40px;
+margin-right: 5px;
+margin-bottom: 10px;
+padding: 50px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+h2 {
+    display: none !important;
+}
+#embedyoutube { 
+  width:90%;
+  display: flex;
+  justify-content: center;
+margin: auto;
+}
+
+#youtubecontainer {
+font-family: 'Open Sans', sans-serif;
+font-size: 18px;
+width: 90%;
+margin: 40px;
+padding: 10px;
+border-style: solid;
+border-width: 2px;
+border-color: #f1cb85;
+border-radius: 20px;
+text-align:justify;
+color: #fff;
+  overflow: hidden;
+-webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+-moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
+}
+.parrafo {
+font-family: 'Open Sans', sans-serif;
+color:#fff;
+font-size: 18px;
+text-align:left;
+margin: 20px;
+padding-left:20px;
+padding-right:20px;
+}
+
+
+
+
+
+CONSIGNA¡Transitamos las tres semanas de este curso! Cuántas reflexiones interesantes compartimos entre actividades y encuentros.
+
+
+Les proponemos una última actividad, integradora y potente. Ahora somos responsables de comunicar estos nuevos conocimientos a nuestros estudiantes. El objetivo es crear una campaña de concientización con los puntos más importantes que debemos tener en cuenta al interactuar con la Inteligencia Artificial.
+
+
+Para esto, los y las invitamos a ingresar a esta
+presentación  de Google Slides. En una diapositiva vacía, les pedimos que plasmen ideas relevantes, interrogantes y sugerencias que les fueron surgiendo a partir de la cursada. Pueden volver a sus respuestas al inicio del curso y sacar conclusiones de sus ideas iniciales y si ahora se han transformado o complejizado.
+
+
+El formato esperado es una infografía, es decir, una presentación de los temas, ideas y/o conceptos de manera sencilla, dinámica y atractiva.
+
+
+ ¿Qué elementos no pueden faltar?
+
+ Título.
+Información escrita.
+Elementos gráficos.
+ OPTATIVO: También pueden incluir un video o audio breve de producción propia.
+
+¡No olviden agregar su nombre y apellido!
+Tienen tiempo de completar la actividad hasta el lunes 20/05/2024 a las 23:59hs.

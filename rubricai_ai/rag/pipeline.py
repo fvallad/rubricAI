@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from rag.store import save_index
 from rag.utils import extract_pdf, extract_docx, extract_pptx, embed_text_chunks
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 BASE_PATH = os.getenv("RUBRICAI_SYNC_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "sync"))
 
 

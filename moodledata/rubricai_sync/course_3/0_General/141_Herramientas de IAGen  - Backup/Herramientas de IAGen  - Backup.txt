@@ -1,0 +1,147 @@
+Actividad: Herramientas de IAGen  - Backup
+Tipo: page
+
+Descripción:
+
+
+Contenido de la página:
+
+    .columnas {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+padding-top:20px;
+margin-bottom: 30px;
+        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+       .rectangle {
+            width: 200px; /* Ancho del rectángulo */
+            height: 200px; /* Alto del rectángulo */
+            background-color: white; /* Color de fondo del rectángulo */
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            position: relative; /* Para posicionar el borde inferior */
+            border-radius: 20px; /* Esquinas redondeadas */
+        }
+
+        .bottom-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px; /* Alto del borde */
+            background-color: #40b99d; /* Color del borde */
+            border-bottom-left-radius: 20px; /* Esquina inferior izquierda redondeada */
+            border-bottom-right-radius: 20px; /* Esquina inferior derecha redondeada */
+        }
+.titulo {
+color: #40b99d;
+font-size:18px;
+font-weight: bold;
+padding-top:20px;
+padding-left: 30px;
+height:20px;
+}
+
+.enlace {
+color: #green;
+font-size:14px;
+padding-top:20px;
+padding-left: 30px;
+height:20px;
+}
+
+    .columnatitulos {
+        max-width: 1000px;
+        margin: 0 auto;
+padding-top:20px;
+padding-left: 30px;
+margin-bottom: 30px;
+        gap: 10px;
+        grid-template-rows: repeat(auto-fit, minmax(1fr));
+    }
+.titverde {
+color:#40b99d;
+font-size:20px;
+font-weight: bold;
+height:20px;
+}
+.titgris {
+color: #3c3939;
+font-size:20px;
+font-weight: bold;
+height:20px;
+}
+
+div.modified {
+    display: none;
+}
+
+
+
+    
+      
+     
+     
+
+    
+    
+    
+    Herramientas de IAGen
+        
+    
+     
+
+En el marco de este curso propondremos el uso de las herramientas de la IAGen con las cuales les parezca más cómodo trabajar, según la experiencia que vienen trayendo. En el material de lectura y en el caso podrán ver que incluimos a modo de ejemplo la utilización del ChatGpt y Napkin AI por estar muy generalizada su incorporación, pero consideramos que existen muchas otras herramientas que pueden ser útiles para la práctica docente. 
+
+
+Herramientas conversacionales
+
+        
+        Gemini
+Visitar sitio
+        
+    
+        
+        Hugging Chat
+Visitar sitio
+        
+    
+    
+        Claude
+Visitar sitio
+        
+    
+    
+        DeepSeek
+Visitar sitio
+        
+    
+
+Herramientas  para la creación de mapas conceptuales
+
+
+    
+        Lucid Chart
+Visitar sitio
+        
+    
+    
+        Mindomo
+Visitar sitio
+        
+    
+    
+        Xmind
+Visitar sitio
+        
+    
+    
+        Mindmeister
+Visitar sitio
+        
+    
+    
+        Mapify IA
+Visitar sitio

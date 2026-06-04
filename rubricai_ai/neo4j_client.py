@@ -2,6 +2,7 @@ import os
 import logging
 from datetime import datetime
 from neo4j import GraphDatabase
+from tracing import trace_db, add_run_metadata
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -43,7 +44,15 @@ class Neo4jClient:
             self.driver.close()
             logger.info("Neo4j connection closed.")
 
+    @trace_db(name="neo4j_query")
     def query(self, cypher, parameters=None):
+        # Add query metadata for LangSmith tracing
+        add_run_metadata({
+            "cypher": cypher[:500] if cypher else "",
+            "has_parameters": parameters is not None,
+            "parameter_keys": list((parameters or {}).keys()),
+        })
+
         if not self.initialized or not self.driver:
             logger.error("Neo4j driver is not initialized.")
             return []
@@ -51,7 +60,9 @@ class Neo4jClient:
         with self.driver.session(database=self.database) as session:
             try:
                 result = session.run(cypher, parameters)
-                return [record.data() for record in result]
+                records = [record.data() for record in result]
+                add_run_metadata({"result_count": len(records)})
+                return records
             except Exception as e:
                 logger.error(f"Error executing Cypher query: {e}\nQuery: {cypher}")
                 raise e
@@ -101,12 +112,19 @@ class Neo4jClient:
 
     # --- Rubric Persistence Methods ---
 
+    @trace_db(name="neo4j_save_rubric")
     def save_rubric(self, rubric_data: dict) -> str:
         """Saves a rubric dictionary to Neo4j as a structured graph."""
         rubric_id = rubric_data.get("id") or f"rubric_{int(datetime.now().timestamp())}"
         title = rubric_data.get("title", "Sin título")
         description = rubric_data.get("description", "")
         criteria = rubric_data.get("criteria", [])
+
+        add_run_metadata({
+            "rubric_id": rubric_id,
+            "title": title,
+            "n_criteria": len(criteria),
+        })
         
         # 0. Delete ALL existing rubrics, criteria, and levels to ensure only ONE active rubric exists
         self.query(
@@ -202,8 +220,11 @@ class Neo4jClient:
                 
         return rubric_id
 
+    @trace_db(name="neo4j_get_rubric")
     def get_rubric(self, rubric_id: str) -> dict:
         """Retrieves a full rubric from Neo4j."""
+        add_run_metadata({"rubric_id": rubric_id})
+
         rubric_res = self.query("MATCH (r:Rubric {id: $id}) RETURN r", {"id": rubric_id})
         if not rubric_res:
             return None
@@ -245,6 +266,8 @@ class Neo4jClient:
                 "dimension": dimension,
                 "levels": levels
             })
+
+        add_run_metadata({"n_criteria_found": len(criteria)})
             
         return {
             "id": r_node["id"],
@@ -253,15 +276,25 @@ class Neo4jClient:
             "criteria": criteria
         }
 
+    @trace_db(name="neo4j_list_rubrics")
     def list_rubrics(self) -> list:
         """Lists all rubrics in the database (summary mode)."""
         results = self.query("MATCH (r:Rubric) RETURN r.id as id, r.title as title, r.description as description")
+        add_run_metadata({"rubrics_count": len(results)})
         return results
 
     # --- Course Graphing Methods ---
 
+    @trace_db(name="neo4j_sync_course_data")
     def sync_course_data(self, course_id: int, course_name: str, activities: list, resources: list):
         """Creates nodes for a Moodle Course, its activities, and its resources."""
+        add_run_metadata({
+            "course_id": course_id,
+            "course_name": course_name,
+            "n_activities": len(activities),
+            "n_resources": len(resources),
+        })
+
         # 1. Merge Course
         self.query(
             "MERGE (c:Course {id: $id}) SET c.name = $name",
@@ -322,6 +355,7 @@ class Neo4jClient:
 
     # --- Ontology Export for Frontend Visualization ---
 
+    @trace_db(name="neo4j_get_ontology_graph")
     def get_ontology_graph(self) -> dict:
         """Returns nodes and edges for visualizing the ontology/rubric space in Cytoscape/D3."""
         # 1. Fetch BloomLevels
@@ -380,6 +414,11 @@ class Neo4jClient:
             if "similarity" in e and e["similarity"] is not None:
                 edge["similarity"] = float(e["similarity"])
             edges.append(edge)
+
+        add_run_metadata({
+            "n_nodes": len(nodes),
+            "n_edges": len(edges),
+        })
 
         return {"nodes": nodes, "edges": edges}
 

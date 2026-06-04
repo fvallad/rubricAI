@@ -6,5 +6,7 @@ __pycache__/
 .git
 .gitignore
 node_modules/
-moodledata/
 venv/
+.venv/
+data/
+.fastembed_cache/
