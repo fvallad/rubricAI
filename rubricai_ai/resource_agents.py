@@ -273,7 +273,7 @@ class YouTubeAgent:
         add_run_metadata({"n_youtube_videos": len(youtube_videos)})
 
         if not youtube_videos:
-            return "No se detectaron videos de YouTube en los recursos del curso."
+            return "No se detectaron videos de YouTube en los recursos del curso. Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
         # Fetch transcripts for each video
         video_analyses = []
@@ -344,7 +344,7 @@ class URLResourceAgent:
         add_run_metadata({"n_external_urls": len(non_youtube_urls)})
 
         if not non_youtube_urls:
-            return "No se encontraron enlaces a recursos externos (no YouTube) en el curso."
+            return "No se encontraron enlaces a recursos externos (no YouTube) en el curso. Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
         url_details = []
         for r in non_youtube_urls:

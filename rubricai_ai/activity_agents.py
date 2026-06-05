@@ -189,7 +189,7 @@ class QuizAgent:
         add_run_metadata({"n_quizzes": len(quizzes)})
 
         if not quizzes:
-            return "No se encontraron cuestionarios (quizzes) en el curso."
+            return "Este curso no incluye cuestionarios. Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
         # Extract settings details for each quiz
         quiz_details = []
@@ -348,7 +348,7 @@ class ForumAgent:
         })
 
         if not filtered_forums:
-            return "No se encontraron foros pedagógicos en el curso (se excluyeron los foros de avisos/novedades)."
+            return "Este curso no incluye foros pedagógicos (se excluyeron los foros de avisos/novedades). Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
         forum_details = []
         for f in filtered_forums:

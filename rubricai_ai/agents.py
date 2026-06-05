@@ -9,6 +9,12 @@ from tracing import trace_agent, add_run_metadata, add_run_tags
 
 logger = logging.getLogger(__name__)
 
+# Types considered as static resources (not interactive activities)
+_RESOURCE_TYPES = {"resource", "folder", "page", "url", "book", "label"}
+# Default announcement forum names to ignore
+_ANNOUNCEMENT_FORUMS = {"avisos", "announcements", "novedades", "news forum"}
+
+
 def check_has_content(course_data: dict) -> bool:
     """Checks if the course has any actual pedagogical/evaluable content,
     ignoring default forums like 'Avisos', 'Novedades', or 'Announcements'."""
@@ -19,10 +25,273 @@ def check_has_content(course_data: dict) -> bool:
             name_lower = act.get("name", "").lower()
             type_lower = act.get("type", "").lower()
             # Ignore Moodle default announcement forums
-            if type_lower == "forum" and (name_lower in ["avisos", "announcements", "novedades", "news forum"]):
+            if type_lower == "forum" and (name_lower in _ANNOUNCEMENT_FORUMS):
                 continue
             evaluable_activities.append(act)
     return len(evaluable_activities) > 0
+
+
+def _get_evaluable_activities(course_data: dict) -> List[dict]:
+    """Return all non-resource, non-announcement activities with their settings."""
+    results = []
+    for section in course_data.get("sections", []):
+        for act in section.get("activities", []):
+            act_type = act.get("type", "").lower()
+            name_lower = act.get("name", "").lower()
+            if act_type in _RESOURCE_TYPES:
+                continue
+            if act_type == "forum" and name_lower in _ANNOUNCEMENT_FORUMS:
+                continue
+            results.append(act)
+    return results
+
+
+def _get_resources(course_data: dict) -> List[dict]:
+    """Return all resource-type items from the course."""
+    results = []
+    for section in course_data.get("sections", []):
+        for act in section.get("activities", []):
+            if act.get("type", "").lower() in _RESOURCE_TYPES:
+                results.append(act)
+    return results
+
+
+def compute_quantitative_score(course_data: dict) -> Dict:
+    """
+    Compute an algorithmic quantitative score (0-100) based on measurable
+    properties of the course activities and resources.
+
+    Returns a dict with:
+      - total_score: weighted composite score (0-100)
+      - sub_scores: dict of category -> {score, weight, details}
+      - severity_summary: list of issues classified by severity
+    """
+    activities = _get_evaluable_activities(course_data)
+    resources = _get_resources(course_data)
+
+    if not activities and not resources:
+        return {
+            "total_score": 0.0,
+            "sub_scores": {},
+            "severity_summary": [{"severity": "bloqueante", "issue": "El curso está completamente vacío."}],
+        }
+
+    severity_issues = []
+
+    # ── 1. Critical Configuration (30%) ────────────────────────────────
+    # Checks: assignments have submission types enabled, activities have grades > 0
+    crit_scores = []
+    assignments = [a for a in activities if a.get("type", "").lower() == "assign"]
+    for a in assignments:
+        settings = a.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        file_enabled = settings.get("assignsubmission_file_enabled", 0)
+        text_enabled = settings.get("assignsubmission_onlinetext_enabled", 0)
+        has_submission = int(file_enabled) > 0 or int(text_enabled) > 0
+        grade = a.get("grade", settings.get("grade", 0))
+        has_grade = (float(grade) if grade else 0) > 0
+
+        if not has_submission:
+            crit_scores.append(0)  # Bloqueante: no se puede entregar
+            severity_issues.append({
+                "severity": "bloqueante",
+                "element": a.get("name", "Tarea"),
+                "issue": "Tipos de envío deshabilitados: los estudiantes no pueden entregar."
+            })
+        elif not has_grade:
+            crit_scores.append(50)  # Significativo: se puede entregar pero sin calificación
+            severity_issues.append({
+                "severity": "significativo",
+                "element": a.get("name", "Tarea"),
+                "issue": "No tiene calificación máxima configurada."
+            })
+        else:
+            crit_scores.append(100)
+
+    # Quizzes: check they have questions
+    quizzes = [a for a in activities if a.get("type", "").lower() == "quiz"]
+    for q in quizzes:
+        questions = q.get("questions", [])
+        if not questions:
+            crit_scores.append(25)
+            severity_issues.append({
+                "severity": "significativo",
+                "element": q.get("name", "Cuestionario"),
+                "issue": "Cuestionario sin preguntas configuradas."
+            })
+        else:
+            crit_scores.append(100)
+
+    crit_config_score = (sum(crit_scores) / len(crit_scores)) if crit_scores else 100.0
+
+    # ── 2. Descriptive Completeness (25%) ──────────────────────────────
+    # Checks: activities have non-empty descriptions (> 50 chars)
+    desc_scores = []
+    for a in activities:
+        intro = a.get("intro", "") or a.get("description", "") or ""
+        # Strip HTML tags for length check
+        clean = re.sub(r'<[^>]+>', ' ', intro).strip()
+        if not clean or len(clean) < 10:
+            desc_scores.append(0)  # Empty
+            severity_issues.append({
+                "severity": "significativo",
+                "element": a.get("name", "Actividad"),
+                "issue": "Descripción vacía o insuficiente."
+            })
+        elif len(clean) < 50:
+            desc_scores.append(50)  # Very short
+            severity_issues.append({
+                "severity": "menor",
+                "element": a.get("name", "Actividad"),
+                "issue": "Descripción muy breve (menos de 50 caracteres)."
+            })
+        else:
+            desc_scores.append(100)
+
+    desc_completeness_score = (sum(desc_scores) / len(desc_scores)) if desc_scores else 100.0
+
+    # ── 3. Evaluation Configuration (20%) ──────────────────────────────
+    # Checks: assignments have cutoff dates, advanced grading, forums have grading
+    eval_scores = []
+    for a in assignments:
+        settings = a.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        has_cutoff = int(settings.get("cutoffdate", 0)) > 0
+        has_duedate = int(settings.get("duedate", 0)) > 0
+        has_rubric = bool(a.get("advancedgradingmethod", ""))
+
+        item_score = 100
+        if not has_duedate:
+            item_score -= 30
+            severity_issues.append({
+                "severity": "menor",
+                "element": a.get("name", "Tarea"),
+                "issue": "Sin fecha de vencimiento configurada."
+            })
+        if not has_cutoff:
+            item_score -= 20
+            # Only flag if there IS a due date (cutoff without due date is less meaningful)
+            if has_duedate:
+                severity_issues.append({
+                    "severity": "menor",
+                    "element": a.get("name", "Tarea"),
+                    "issue": "Sin fecha de corte (cutoff) configurada."
+                })
+        if not has_rubric:
+            item_score -= 15
+            severity_issues.append({
+                "severity": "menor",
+                "element": a.get("name", "Tarea"),
+                "issue": "Sin rúbrica de calificación avanzada."
+            })
+        eval_scores.append(max(item_score, 0))
+
+    # Forums grading
+    forums = [a for a in activities if a.get("type", "").lower() == "forum"]
+    for f in forums:
+        settings = f.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        assessed = int(settings.get("assessed", 0))
+        max_grade = float(f.get("grade", settings.get("grade", 0)) or 0)
+        if assessed > 0 or max_grade > 0:
+            eval_scores.append(100)
+        else:
+            eval_scores.append(75)  # Ungraded forum is minor
+            severity_issues.append({
+                "severity": "menor",
+                "element": f.get("name", "Foro"),
+                "issue": "Foro no calificado; podría no motivar participación de calidad."
+            })
+
+    eval_config_score = (sum(eval_scores) / len(eval_scores)) if eval_scores else 100.0
+
+    # ── 4. Resources & Materials (15%) ─────────────────────────────────
+    # Checks: presence of documents, variety of types
+    resource_types_present = set()
+    for r in resources:
+        resource_types_present.add(r.get("type", "").lower())
+
+    if not resources:
+        # No resources is only mildly concerning — the course might rely on activities
+        resources_score = 60.0
+    else:
+        # Base 70 for having resources, +10 for each additional type (max 100)
+        variety_bonus = min(len(resource_types_present) * 10, 30)
+        resources_score = min(70.0 + variety_bonus, 100.0)
+
+    # ── 5. Multimedia Elements (10%) ───────────────────────────────────
+    # Checks: images, tables, links in descriptions
+    total_images = 0
+    total_links = 0
+    total_tables = 0
+    for a in activities:
+        intro = a.get("intro", "") or a.get("description", "") or ""
+        if intro:
+            total_images += len(re.findall(r'<img\b', intro, re.IGNORECASE))
+            total_links += len(re.findall(r'<a\b[^>]+href', intro, re.IGNORECASE))
+            total_tables += len(re.findall(r'<table\b', intro, re.IGNORECASE))
+
+    if total_images + total_links + total_tables == 0:
+        multimedia_score = 50.0  # No multimedia is a minor concern
+        severity_issues.append({
+            "severity": "menor",
+            "element": "General",
+            "issue": "Ausencia de elementos multimedia (imágenes, tablas, enlaces) en las descripciones."
+        })
+    else:
+        # Scale based on how many elements are present
+        element_count = total_images + total_links + total_tables
+        multimedia_score = min(50.0 + element_count * 10, 100.0)
+
+    # ── Weighted Composite ─────────────────────────────────────────────
+    weights = {
+        "configuracion_critica": 0.30,
+        "completitud_descriptiva": 0.25,
+        "configuracion_evaluacion": 0.20,
+        "recursos_materiales": 0.15,
+        "elementos_multimedia": 0.10,
+    }
+
+    sub_scores = {
+        "configuracion_critica": {"score": round(crit_config_score, 1), "weight": weights["configuracion_critica"]},
+        "completitud_descriptiva": {"score": round(desc_completeness_score, 1), "weight": weights["completitud_descriptiva"]},
+        "configuracion_evaluacion": {"score": round(eval_config_score, 1), "weight": weights["configuracion_evaluacion"]},
+        "recursos_materiales": {"score": round(resources_score, 1), "weight": weights["recursos_materiales"]},
+        "elementos_multimedia": {"score": round(multimedia_score, 1), "weight": weights["elementos_multimedia"]},
+    }
+
+    total_score = sum(
+        sub_scores[k]["score"] * sub_scores[k]["weight"]
+        for k in sub_scores
+    )
+
+    # Count severities
+    n_bloqueante = sum(1 for s in severity_issues if s["severity"] == "bloqueante")
+    n_significativo = sum(1 for s in severity_issues if s["severity"] == "significativo")
+    n_menor = sum(1 for s in severity_issues if s["severity"] == "menor")
+
+    return {
+        "total_score": round(total_score, 1),
+        "sub_scores": sub_scores,
+        "severity_summary": severity_issues,
+        "severity_counts": {
+            "bloqueante": n_bloqueante,
+            "significativo": n_significativo,
+            "menor": n_menor,
+        },
+        "stats": {
+            "n_activities": len(activities),
+            "n_assignments": len(assignments),
+            "n_quizzes": len(quizzes),
+            "n_forums": len(forums),
+            "n_resources": len(resources),
+            "n_resource_types": len(resource_types_present),
+            "n_multimedia_elements": total_images + total_links + total_tables,
+        }
+    }
 
 class PedagogicalHolisticAgent:
     """Agent in charge of assessing pedagogical alignment, Bloom taxonomy matching, and overall content coherence."""
@@ -360,13 +629,14 @@ class SynthesisAgent:
     """Agent in charge of consolidating all reports and creating the structured EvaluateResponse."""
     
     @trace_agent(name="synthesis_agent")
-    def synthesize(self, course_id: int, rubric_id: str, holistic_report: str, format_report: str, ontology_analysis: dict = None) -> dict:
+    def synthesize(self, course_id: int, rubric_id: str, holistic_report: str, format_report: str, ontology_analysis: dict = None, course_data: dict = None) -> dict:
         add_run_metadata({
             "course_id": course_id,
             "rubric_id": rubric_id,
             "holistic_report_length": len(holistic_report or ""),
             "format_report_length": len(format_report or ""),
             "has_ontology_analysis": ontology_analysis is not None,
+            "has_course_data": course_data is not None,
         })
 
         is_empty = "CRITICAL WARNING" in (holistic_report or "") or "CRITICAL WARNING" in (format_report or "")
@@ -388,6 +658,45 @@ class SynthesisAgent:
                 ]
             }
 
+        # ── Compute quantitative score anchor ──────────────────────────
+        quant_result = None
+        quant_anchor_str = ""
+        if course_data:
+            quant_result = compute_quantitative_score(course_data)
+            add_run_metadata({
+                "quantitative_score": quant_result["total_score"],
+                "severity_counts": quant_result["severity_counts"],
+            })
+
+            # Build anchor text for the LLM
+            q = quant_result
+            sub = q["sub_scores"]
+            sev = q["severity_counts"]
+            quant_anchor_str = f"""
+        ### SCORE CUANTITATIVO PRE-CALCULADO (ANCLA OBLIGATORIA):
+        El sistema ha calculado algorítmicamente un score cuantitativo basado en datos medibles del curso.
+        Tu puntuación cualitativa (overall_score) DEBE estar dentro de un rango de ±15 puntos respecto a este valor.
+        Si consideras que debe estar fuera de ese rango, justifícalo explícitamente en holistic_evaluation.
+
+        **Score cuantitativo: {q['total_score']:.1f} / 100**
+        - Configuración Crítica (30%): {sub['configuracion_critica']['score']:.1f}/100
+        - Completitud Descriptiva (25%): {sub['completitud_descriptiva']['score']:.1f}/100
+        - Configuración de Evaluación (20%): {sub['configuracion_evaluacion']['score']:.1f}/100
+        - Recursos y Materiales (15%): {sub['recursos_materiales']['score']:.1f}/100
+        - Elementos Multimedia (10%): {sub['elementos_multimedia']['score']:.1f}/100
+
+        **Resumen de severidad de problemas detectados:**
+        - 🔴 Bloqueantes (impiden funcionalidad): {sev['bloqueante']}
+        - 🟡 Significativos (afectan experiencia): {sev['significativo']}
+        - 🟢 Menores (mejoras deseables): {sev['menor']}
+
+        **REGLAS DE CALIBRACIÓN:**
+        - Un problema 🔴 BLOQUEANTE resta ~15-25 puntos del score del ítem afectado.
+        - Un problema 🟡 SIGNIFICATIVO resta ~5-10 puntos.
+        - Un problema 🟢 MENOR resta ~2-5 puntos.
+        - La AUSENCIA de un tipo de recurso (ej: no hay videos, no hay quizzes) NO es automáticamente una deficiencia si el diseño pedagógico no lo requiere.
+            """
+
         ontology_str = ""
         if ontology_analysis:
             ontology_str = "\n### ANÁLISIS DE COBERTURA ONTOLÓGICA (Similitud Semántica Actividad -> Criterio):\n"
@@ -402,8 +711,10 @@ class SynthesisAgent:
 
         system_prompt = (
             "Eres el Agente Consolidador de RubricAI. Tu tarea es recibir las evaluaciones de formato "
-            "y holísticas, además de los datos de cobertura ontológica, y generar una respuesta JSON final estrictamente estructurada que contenga el puntaje global, "
-            "resúmenes de informes y una lista estructurada de recomendaciones accionables de cambio."
+            "y holísticas, además de los datos de cobertura ontológica y un score cuantitativo pre-calculado, "
+            "y generar una respuesta JSON final estrictamente estructurada que contenga el puntaje global, "
+            "resúmenes de informes y una lista estructurada de recomendaciones accionables de cambio. "
+            "IMPORTANTE: Tu puntuación debe calibrarse usando el score cuantitativo como ancla."
         )
         
         prompt = f"""
@@ -415,10 +726,12 @@ class SynthesisAgent:
         ### REPORTE DE FORMATO:
         {format_report}
         {ontology_str}
+        {quant_anchor_str}
         
         ### TAREA:
-        1. Calcula una puntuación global de alineación (overall_score) de 0.0 a 100.0 basada en la severidad de los problemas detectados en ambos reportes y en qué tan bien cubren las actividades los criterios de la rúbrica.
-        2. Redacta una lista estructurada de recomendaciones específicas para el docente. Cada recomendación debe tener:
+        1. Calcula una puntuación global de alineación (overall_score) de 0.0 a 100.0. Usa el score cuantitativo como ancla principal y ajústalo según tu análisis cualitativo de los reportes. Tu score debe estar dentro de ±15 puntos del score cuantitativo salvo justificación explícita.
+        2. Clasifica cada problema como bloqueante (impide funcionalidad), significativo (afecta experiencia) o menor (mejora deseable). No trates la ausencia de un tipo de recurso como deficiencia automática.
+        3. Redacta una lista estructurada de recomendaciones específicas para el docente. Cada recomendación debe tener:
            - `element`: la actividad/recurso específica (ej: "Foro N°1" o "General" si aplica a todo).
            - `type`: el tipo de problema, estrictamente uno de los siguientes: "holistic" o "format".
            - `issue`: explicación breve de qué está mal o falta.
@@ -444,6 +757,21 @@ class SynthesisAgent:
         if res is None:
             raise Exception("El modelo de lenguaje (LLM) no devolvió ninguna respuesta (puede ser por Rate Limit/cuota o API key incorrecta). Verifica la configuración de tu archivo .env.")
         
+        def _blend_score(res_data: dict) -> dict:
+            if quant_result:
+                quant_score = quant_result["total_score"]
+                raw_llm_score = res_data.get("overall_score")
+                try:
+                    llm_score = float(raw_llm_score) if raw_llm_score is not None else 75.0
+                except (ValueError, TypeError):
+                    llm_score = 75.0
+                # Hybrid score: 60% quantitative + 40% LLM qualitative
+                hybrid_score = round(0.6 * quant_score + 0.4 * llm_score, 1)
+                res_data["overall_score"] = hybrid_score
+                res_data["quantitative_score"] = quant_score
+                res_data["qualitative_score"] = llm_score
+            return res_data
+
         try:
             # Squeeze to find JSON object
             start_idx = res.find('{')
@@ -463,6 +791,8 @@ class SynthesisAgent:
             
             data["course_id"] = course_id
             data["rubric_id"] = rubric_id
+
+            data = _blend_score(data)
 
             add_run_metadata({
                 "overall_score": data["overall_score"],
@@ -500,7 +830,9 @@ class SynthesisAgent:
                         data["course_id"] = course_id
                         data["rubric_id"] = rubric_id
 
-                        add_run_metadata({"json_repaired": True})
+                        data = _blend_score(data)
+
+                        add_run_metadata({"json_repaired": True, "overall_score": data["overall_score"]})
                         return data
             except Exception as e_repair:
                 logger.error(f"Repair attempt failed: {e_repair}")
@@ -513,7 +845,7 @@ class SynthesisAgent:
 
             add_run_metadata({"json_fallback": True, "fallback_score": fallback_score})
             
-            return {
+            fallback_dict = {
                 "course_id": course_id,
                 "rubric_id": rubric_id,
                 "overall_score": fallback_score,
@@ -528,6 +860,7 @@ class SynthesisAgent:
                     }
                 ]
             }
+            return _blend_score(fallback_dict)
 
 class MultiAgentCoordinator:
     """Coordinator that orchestrates the entire evaluation workflow via LangGraph."""

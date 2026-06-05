@@ -279,6 +279,7 @@ def synthesis_node(state: EvaluationState) -> dict:
         holistic_report=activity_report,
         format_report=resource_report,
         ontology_analysis=state.get("ontology_analysis"),
+        course_data=state.get("course_data"),
     )
 
     logger.info(f"[Synthesis] Final score: {result.get('overall_score', 'N/A')}")
