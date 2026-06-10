@@ -2,7 +2,3 @@ Actividad: Foro - Actividad 2
 Tipo: forum
 
 Descripción del foro:
-
-h2 {
-    display: none;
-}

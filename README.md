@@ -237,26 +237,66 @@ A continuación se detallan todos los comandos necesarios para desplegar, apagar
   docker compose ps
   ```
 
-### 7.2. Monitoreo de Logs en Tiempo Real
+### 7.2. Monitoreo de Logs y Diagnóstico
 
-* **Ver logs de todos los servicios**:
+Para depurar y entender el comportamiento del sistema (como los tiempos de respuesta de los agentes de IA, errores de base de datos o llamadas a la API de Gemini), puedes monitorear los logs de los contenedores Docker de dos maneras:
+
+#### A) Utilizando Docker Compose (Recomendado, ejecutado desde la raíz del proyecto)
+
+Puedes usar los nombres de los **servicios** definidos en `docker-compose.yml`:
+
+| Servicio | Comando para ver Logs en Tiempo Real | Propósito |
+| :--- | :--- | :--- |
+| **Todos** | `docker compose logs -f` | Monitorear la actividad completa de todo el ecosistema. |
+| **`python_rag`** | `docker compose logs -f python_rag` | Logs de FastAPI, ejecución de agentes LangGraph, RAG y FAISS. |
+| **`moodle`** | `docker compose logs -f moodle` | Logs de Moodle (PHP-FPM) y callbacks de ejecución del plugin local. |
+| **`frontend`** | `docker compose logs -f frontend` | Logs de la interfaz Astro y el servidor Vite. |
+| **`db`** | `docker compose logs -f db` | Logs del servidor PostgreSQL. |
+| **`redis`** | `docker compose logs -f redis` | Logs de almacenamiento en caché y sesiones Redis. |
+
+#### B) Utilizando comandos nativos de Docker (Desde cualquier directorio)
+
+Si prefieres usar los comandos estándar de Docker, debes referirte a los nombres de los **contenedores** (`container_name`):
+
+* **Logs del Motor de IA (FastAPI)**:
   ```bash
-  docker compose logs -f
+  docker logs -f python_rag
+  ```
+* **Logs del Servidor PHP/Moodle**:
+  ```bash
+  docker logs -f moodle_app
+  ```
+* **Logs del Dashboard de Astro**:
+  ```bash
+  docker logs -f astro_frontend
   ```
 
-* **Ver logs del microservicio RAG (FastAPI/Python)**:
+#### C) Comandos Útiles de Diagnóstico
+
+* **Ver las últimas $N$ líneas de un servicio**:
+  Para evitar cargar todo el historial, puedes usar el parámetro `--tail`:
   ```bash
-  docker compose logs -f python_rag
+  # Ver las últimas 100 líneas del servicio de IA
+  docker compose logs --tail=100 python_rag
+  
+  # Ver las últimas 50 líneas del contenedor de Moodle
+  docker logs --tail 50 moodle_app
   ```
 
-* **Ver logs del frontend Astro (Vite/Node)**:
+* **Filtrar logs para buscar errores específicos**:
+  Puedes combinar la salida con `grep` para buscar excepciones o códigos de estado:
   ```bash
-  docker compose logs -f frontend
+  # Buscar errores HTTP 4xx o 5xx en el motor de IA
+  docker compose logs python_rag | grep -E "HTTP/[0-9.]+ [45][0-9][0-9]"
+
+  # Buscar errores de tasa de límite (Rate limit / Error 429) o de API Key (Error 403)
+  docker compose logs python_rag | grep -iE "(rate_limit|quota|limit|429|403)"
   ```
 
-* **Ver logs del contenedor de Moodle (PHP-FPM)**:
+* **Limpiar el archivo de logs de un contenedor**:
+  Si los logs crecen demasiado y deseas vaciarlos sin reiniciar el contenedor, puedes truncar el archivo de logs directamente en el host (requiere privilegios `sudo`):
   ```bash
-  docker compose logs -f moodle
+  sudo truncate -s 0 $(docker inspect --format='{{.LogPath}}' python_rag)
   ```
 
 ### 7.3. Comandos de Administración de Moodle

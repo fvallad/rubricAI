@@ -2,5 +2,4 @@ Actividad: Casos con asistencia algorítmica - Actividad
 Tipo: forum
 
 Descripción del foro:
-
 Avisos y novedades generales

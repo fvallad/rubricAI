@@ -275,17 +275,22 @@ class YouTubeAgent:
         if not youtube_videos:
             return "No se detectaron videos de YouTube en los recursos del curso. Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
-        # Fetch transcripts for each video
-        video_analyses = []
-        for video in youtube_videos:
+        # Fetch transcripts for each video in parallel
+        import concurrent.futures
+        
+        def _process_video(video):
             transcript = _get_youtube_transcript(video["video_id"])
-            video_analyses.append({
+            return {
                 "name": video["name"],
                 "section": video["section"],
                 "url": video["url"],
                 "has_transcript": transcript is not None,
                 "transcript_excerpt": transcript[:1000] if transcript else "(Transcripción no disponible)",
-            })
+            }
+
+        logger.info(f"Fetching transcripts for {len(youtube_videos)} YouTube video(s) in parallel...")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(5, len(youtube_videos))) as executor:
+            video_analyses = list(executor.map(_process_video, youtube_videos))
 
         add_run_metadata({
             "videos_with_transcript": sum(1 for v in video_analyses if v["has_transcript"]),
@@ -346,22 +351,25 @@ class URLResourceAgent:
         if not non_youtube_urls:
             return "No se encontraron enlaces a recursos externos (no YouTube) en el curso. Esto no constituye una deficiencia si el diseño pedagógico del curso no los requiere."
 
-        url_details = []
-        for r in non_youtube_urls:
+        # Fetch external URL contents in parallel
+        import concurrent.futures
+        
+        def _process_url(r):
             url = r.get("externalurl", "") or r.get("url", "")
             intro = r.get("intro", "")
-
-            # Fetch the actual content of the web page
             scraped_content = _scrape_url(url)
             scraped_excerpt = scraped_content[:2000] if scraped_content else "(No se pudo extraer el texto de la página o sitio bloqueado)"
-
-            url_details.append({
+            return {
                 "name": r.get("name", "Sin nombre"),
                 "section": r.get("section_name", ""),
                 "url": url,
                 "description": _clean_html_basic(intro)[:300] if intro else "(Sin descripción)",
                 "scraped_text_excerpt": scraped_excerpt
-            })
+            }
+
+        logger.info(f"Scraping {len(non_youtube_urls)} external URL(s) in parallel...")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(5, len(non_youtube_urls))) as executor:
+            url_details = list(executor.map(_process_url, non_youtube_urls))
 
         url_str = json.dumps(url_details, indent=2, ensure_ascii=False)
         rubric_str = json.dumps(rubric_data, indent=2, ensure_ascii=False)

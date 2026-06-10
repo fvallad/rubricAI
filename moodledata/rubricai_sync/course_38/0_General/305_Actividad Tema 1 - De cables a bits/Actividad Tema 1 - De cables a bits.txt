@@ -5,80 +5,6 @@ Descripción:
 
 
 Contenido de la página:
-
-
-.editing .section .activity .contentwithoutlink, .editing .section .activity .activityinstance {
-    padding-right: 30px;
-}
-#page-navbar .breadcrumb li .no-link {
-    background-color: #111216;
-}
-#embedgenially { 
-  width:90%;
-  display: flex;
-  justify-content: center;
-margin: auto;
-}
-
-#geniallycontainer {
-font-family: 'Open Sans', sans-serif;
-font-size: 18px;
-width: 100%;
-margin-top: 40px;
-margin-right: 5px;
-margin-bottom: 10px;
-padding: 50px;
-border-style: solid;
-border-width: 2px;
-border-color: #f1cb85;
-border-radius: 20px;
-text-align:justify;
-color: #fff;
-  overflow: hidden;
--webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
--moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
-}
-h2 {
-    display: none !important;
-}
-#embedyoutube { 
-  width:90%;
-  display: flex;
-  justify-content: center;
-margin: auto;
-}
-
-#youtubecontainer {
-font-family: 'Open Sans', sans-serif;
-font-size: 18px;
-width: 90%;
-margin: 40px;
-padding: 10px;
-border-style: solid;
-border-width: 2px;
-border-color: #f1cb85;
-border-radius: 20px;
-text-align:justify;
-color: #fff;
-  overflow: hidden;
--webkit-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
--moz-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
-box-shadow: 0px 2px 28px 6px rgba(215,136,66,1);
-}
-.parrafo {
-font-family: 'Open Sans', sans-serif;
-color:#fff;
-font-size: 18px;
-text-align:left;
-margin: 20px;
-padding-left:20px;
-padding-right:20px;
-}
-
-
-
-
 ACTIVIDADES - DE CABLES A BITS
 CONSIGNA 1Luego de haber recorrido los materiales disponibles, les proponemos que: 
 
@@ -92,8 +18,8 @@ Miren el siguiente video
 
 
 
-a. A partir de las preguntas disparadoras planteadas en el video, les pedimos que compartan en el padlet a continuaci&oacute;n: &iquest;Qu&eacute; consecuencias imaginan que puede traer la situaci&oacute;n problematizada? 
+a. A partir de las preguntas disparadoras planteadas en el video, les pedimos que compartan en el padlet a continuación: ¿Qué consecuencias imaginan que puede traer la situación problematizada? 
 
-b. Una vez que ya sumaron su aporte, les pedimos que lean lo escrito por otros participantes y comenten debajo de al menos uno.&nbsp;
+b. Una vez que ya sumaron su aporte, les pedimos que lean lo escrito por otros participantes y comenten debajo de al menos uno. 
 
 RECUERDEN PONER SU NOMBRE Y APELLIDO EN AMBAS PARTICIPACIONES.

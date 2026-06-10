@@ -137,25 +137,24 @@ def activity_analysis_node(state: EvaluationState) -> dict:
             "forum_analysis": empty_msg,
         }
 
-    # 1. HTML Content Analysis
-    logger.info("[Activities Group] Running HTMLContentAgent...")
+    # Run all activity agents in parallel
+    import concurrent.futures
+    logger.info("[Activities Group] Running activity agents in parallel...")
     html_agent = HTMLContentAgent()
-    html_result = html_agent.analyze(course_data, rubric_data)
-
-    # 2. Quiz Analysis
-    logger.info("[Activities Group] Running QuizAgent...")
     quiz_agent = QuizAgent()
-    quiz_result = quiz_agent.analyze(course_data, rubric_data)
-
-    # 3. Assignment Analysis
-    logger.info("[Activities Group] Running AssignmentAgent...")
     assign_agent = AssignmentAgent()
-    assign_result = assign_agent.analyze(course_data, rubric_data)
-
-    # 4. Forum Analysis
-    logger.info("[Activities Group] Running ForumAgent...")
     forum_agent = ForumAgent()
-    forum_result = forum_agent.analyze(course_data, rubric_data)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        future_html = executor.submit(html_agent.analyze, course_data, rubric_data)
+        future_quiz = executor.submit(quiz_agent.analyze, course_data, rubric_data)
+        future_assign = executor.submit(assign_agent.analyze, course_data, rubric_data)
+        future_forum = executor.submit(forum_agent.analyze, course_data, rubric_data)
+
+        html_result = future_html.result()
+        quiz_result = future_quiz.result()
+        assign_result = future_assign.result()
+        forum_result = future_forum.result()
 
     logger.info("[Activities Group] All activity agents completed.")
 
@@ -179,20 +178,21 @@ def resource_analysis_node(state: EvaluationState) -> dict:
 
     logger.info("[Resources Group] Starting resource analysis...")
 
-    # 1. Document Analysis (RAG-based)
-    logger.info("[Resources Group] Running DocumentAgent...")
+    # Run all resource agents in parallel
+    import concurrent.futures
+    logger.info("[Resources Group] Running resource agents in parallel...")
     doc_agent = DocumentAgent()
-    doc_result = doc_agent.analyze(course_data, rubric_data, course_id)
-
-    # 2. YouTube Video Analysis
-    logger.info("[Resources Group] Running YouTubeAgent...")
     yt_agent = YouTubeAgent()
-    yt_result = yt_agent.analyze(course_data, rubric_data)
-
-    # 3. External URL Analysis
-    logger.info("[Resources Group] Running URLResourceAgent...")
     url_agent = URLResourceAgent()
-    url_result = url_agent.analyze(course_data, rubric_data)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        future_doc = executor.submit(doc_agent.analyze, course_data, rubric_data, course_id)
+        future_yt = executor.submit(yt_agent.analyze, course_data, rubric_data)
+        future_url = executor.submit(url_agent.analyze, course_data, rubric_data)
+
+        doc_result = future_doc.result()
+        yt_result = future_yt.result()
+        url_result = future_url.result()
 
     logger.info("[Resources Group] All resource agents completed.")
 

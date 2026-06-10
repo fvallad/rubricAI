@@ -5,27 +5,5 @@ Descripción:
 
 
 Contenido de la página:
-
-.boton-volver {
-    width: 100%;
-    max-width: 250px;
-    height: 50px;
-    background-color: #000;
-    color: #fff;
-    font-size: 18px;
-    font-family: monospace;
-    text-align: center;
-    line-height: 50px;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.boton-volver:hover {
-    background-color: #333;
-}
-
 UNIDAD 2:Apertura 14/10Encuentro sincrónico: 16/10 -18:30 hs.
 Volver

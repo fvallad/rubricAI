@@ -4,17 +4,7 @@ Tipo: page
 Descripción:
 
 
-
 Contenido de la página:
-
-
-
-  
- 
-  
-
-
-
 La IAGen y la práctica docente
     
 
@@ -104,73 +94,3 @@ Así como en cualquier conversación humana se aprende a preguntar mejor a medid
 La interacción con la IAGen es un proceso dinámico que se va perfeccionando a través de la práctica continua. Algunas acciones recomendadas son: experimentar con diferentes tipos de prompts, iterar las instrucciones corrigiéndolas en función de los resultados, compartir estrategias y experiencias con otros usuarios, aprovechar la memoria del sistema para enriquecer el diálogo, y explorar distintos modelos de lenguaje para encontrar el que mejor se adapte a cada necesidad.
 
 Desde el rol docente, resulta fundamental acompañar a los estudiantes en el uso crítico de estas tecnologías, ayudándolos a detectar errores, sesgos y limitaciones en las respuestas obtenidas. Así, la IA puede convertirse no solo en una herramienta funcional, sino en un verdadero colaborador creativo que amplíe las fronteras pedagógicas y enriquezca las propuestas educativas. La invitación final es a repensar cómo construir una relación con la IA que potencie el trabajo docente y permita también redescubrir nuevas formas de enseñar y aprender.
-
-
-
-
-
-
-
-  function mostrarContenido(id) {
-    document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
-    const activa = document.getElementById(id);
-    if (activa) activa.classList.add('visible');
-
-    const botones = document.querySelectorAll('.item-menu');
-    botones.forEach(boton => boton.classList.remove('activo'));
-    const index = id.replace('contenido', '');
-    const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
-    if (botonActivo) botonActivo.classList.add('activo');
-  }
-
-  function mostrarPopup(el, texto) {
-    document.querySelectorAll('.popup-box').forEach(p => p.remove());
-    const popup = document.createElement('div');
-    popup.className = 'popup-box';
-    popup.textContent = texto;
-    document.body.appendChild(popup);
-    const rect = el.getBoundingClientRect();
-    popup.style.left = `${rect.left + window.scrollX}px`;
-    popup.style.top = `${rect.top + window.scrollY - 40}px`;
-    popup.style.display = 'block';
-
-    function cerrarPopup(event) {
-      if (!popup.contains(event.target) && event.target !== el) {
-        popup.remove();
-        document.removeEventListener('click', cerrarPopup);
-      }
-    }
-    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
-  }
-function mostrarContenido(id) {
-  document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
-  const activa = document.getElementById(id);
-  if (activa) activa.classList.add('visible');
-
-  const botones = document.querySelectorAll('.item-menu');
-  botones.forEach(boton => boton.classList.remove('activo'));
-  const index = id.replace('contenido', '');
-  const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
-  if (botonActivo) botonActivo.classList.add('activo');
-
-  // Actualiza la URL sin recargar
-  const nuevaUrl = new URL(window.location);
-  nuevaUrl.searchParams.set('seccion', index);
-  window.history.replaceState({}, '', nuevaUrl);
-}
-document.addEventListener('DOMContentLoaded', function () {
-  //  Botón de descarga: foco
-  const btn = document.querySelector('.btn-descarga');
-  if (btn) {
-    btn.addEventListener('click', function () {
-      setTimeout(() => this.blur(), 100);
-    });
-  }
-
-  //  Obtiene el valor del parámetro ?seccion=...
-  const urlParams = new URLSearchParams(window.location.search);
-  const seccion = urlParams.get('seccion') || '1';
-
-  // Activa automáticamente el contenido y el botón correspondiente
-  mostrarContenido('contenido' + seccion);
-});

@@ -5,15 +5,6 @@ Descripción:
 
 
 Contenido de la página:
-
-
-
-  
- 
-  
-
-
-
 Enseñar con casos
     
 
@@ -208,74 +199,3 @@ No solo tenemos que pensar a los docentes como autores de las preguntas, sino ta
 Uno de los aspectos centrales en la metodología de casos, además de la escritura de relatos consistentes y atrapantes, es el planteo de buenas preguntas que inviten al análisis, al reconocimiento de los diferentes elementos involucrados y a la comprensión de la situación. La definición de preguntas críticas es una de las tareas más importantes del docente en este tipo de propuestas. 
 El planteo de preguntas críticas tiene como objetivo que los estudiantes revisen sus ideas iniciales, analicen nociones y problemas relacionados con el caso. Se focaliza en la comprensión, la aplicación de conocimientos en el análisis del caso y en la formulación de propuestas de resolución de problemas. En este sentido, no será prioritario incluir preguntas que inviten a recordar datos o evocar o recordar información.
 Las preguntas deben invitar a reflexionar, ser claras y evitar sugerir respuestas. La escritura de buenas preguntas requiere de reescrituras y evaluación. Las preguntas críticas permiten un análisis progresivo, comenzando por aspectos superficiales y avanzando hacia lo complejo. También es clave que los casos presenten núcleos o “grandes ideas” para orientar la formulación de las preguntas. Se debe evitar la búsqueda de una única respuesta correcta, promoviendo distintas perspectivas y enfoques de análisis (Wassermann,  1999).
-
-
-
-
-
-
-
-
-  function mostrarContenido(id) {
-    document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
-    const activa = document.getElementById(id);
-    if (activa) activa.classList.add('visible');
-
-    const botones = document.querySelectorAll('.item-menu');
-    botones.forEach(boton => boton.classList.remove('activo'));
-    const index = id.replace('contenido', '');
-    const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
-    if (botonActivo) botonActivo.classList.add('activo');
-  }
-
-  function mostrarPopup(el, texto) {
-    document.querySelectorAll('.popup-box').forEach(p => p.remove());
-    const popup = document.createElement('div');
-    popup.className = 'popup-box';
-    popup.textContent = texto;
-    document.body.appendChild(popup);
-    const rect = el.getBoundingClientRect();
-    popup.style.left = `${rect.left + window.scrollX}px`;
-    popup.style.top = `${rect.top + window.scrollY - 40}px`;
-    popup.style.display = 'block';
-
-    function cerrarPopup(event) {
-      if (!popup.contains(event.target) && event.target !== el) {
-        popup.remove();
-        document.removeEventListener('click', cerrarPopup);
-      }
-    }
-    setTimeout(() => document.addEventListener('click', cerrarPopup), 10);
-  }
-function mostrarContenido(id) {
-  document.querySelectorAll('.contenido').forEach(seccion => seccion.classList.remove('visible'));
-  const activa = document.getElementById(id);
-  if (activa) activa.classList.add('visible');
-
-  const botones = document.querySelectorAll('.item-menu');
-  botones.forEach(boton => boton.classList.remove('activo'));
-  const index = id.replace('contenido', '');
-  const botonActivo = document.querySelector(`#sidebar .item-menu:nth-child(${index})`);
-  if (botonActivo) botonActivo.classList.add('activo');
-
-  // Actualiza la URL sin recargar
-  const nuevaUrl = new URL(window.location);
-  nuevaUrl.searchParams.set('seccion', index);
-  window.history.replaceState({}, '', nuevaUrl);
-}
-document.addEventListener('DOMContentLoaded', function () {
-  //  Botón de descarga: foco
-  const btn = document.querySelector('.btn-descarga');
-  if (btn) {
-    btn.addEventListener('click', function () {
-      setTimeout(() => this.blur(), 100);
-    });
-  }
-
-  //  Obtiene el valor del parámetro ?seccion=...
-  const urlParams = new URLSearchParams(window.location.search);
-  const seccion = urlParams.get('seccion') || '1';
-
-  // Activa automáticamente el contenido y el botón correspondiente
-  mostrarContenido('contenido' + seccion);
-});

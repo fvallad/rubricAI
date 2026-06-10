@@ -2,23 +2,4 @@ Actividad: Foro de Novedades
 Tipo: forum
 
 Descripción del foro:
-
-h2 {
-    display: none;
-}
-
-
-
-
-       
-            
-        
-
-
-
-
-
-
-
-
 Avisos y novedades generales

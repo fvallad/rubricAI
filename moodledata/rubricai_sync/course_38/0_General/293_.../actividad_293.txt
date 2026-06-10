@@ -2,15 +2,4 @@ Actividad: ...
 Tipo: label
 
 Contenido de la etiqueta:
-
-        
-        
-        
-        
-        
-        
-                  
-               
-       
-    
 br>
