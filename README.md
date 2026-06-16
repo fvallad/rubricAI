@@ -327,4 +327,81 @@ docker compose up -d --build
 docker compose down
 ```
 
+---
+
+## 10. Despliegue Híbrido en Producción (Moodle en LAMP + Backend de IA)
+
+Esta arquitectura híbrida es ideal para entornos de producción donde **Moodle ya corre nativamente en un servidor LAMP** (Linux, Apache, MySQL/MariaDB/PostgreSQL, PHP) y se desea externalizar o levantar el procesamiento de Inteligencia Artificial (Python) de forma independiente.
+
+Dado que la comunicación entre Moodle y el microservicio de IA se realiza **100% mediante HTTP** (incluyendo la transferencia de archivos de cursos para el RAG mediante subida HTTP Multipart), **no se requiere compartir carpetas físicas en disco** entre ambos sistemas.
+
+### 10.1. ¿Por qué el archivo `.env` no se incluye en el `.zip` del plugin?
+El archivo `.env` contiene credenciales privadas críticas (como tu API Key de Gemini, contraseñas de bases de datos y tokens de Neo4j).
+1. **Seguridad**: Si se incluyeran estas credenciales en el archivo `.zip`, cualquier administrador del Moodle LMS podría verlas o descargarlas.
+2. **Separación de Capas**: Moodle actúa únicamente como cliente. Quien consume y requiere las credenciales del `.env` para conectarse a Gemini y Neo4j es el microservicio de Python (`rubricai_ai`).
+
+### 10.2. Paso a Paso para el Despliegue Híbrido en el Mismo Servidor
+
+Si decides alojar tu Moodle (LAMP) y el backend de Python en la misma máquina física, sigue estos pasos:
+
+#### Paso 1: Configurar y Levantar el Backend de Python (`rubricai_ai`)
+
+Clona el repositorio en tu servidor y elige uno de los siguientes métodos para correr el servicio de IA:
+
+##### Opción A: Usando Docker (Recomendado)
+Este método encapsula todas las dependencias complejas (como FAISS y HuggingFace transformers) sin ensuciar el sistema operativo host.
+1. Conserva en el servidor únicamente:
+   * La carpeta `rubricai_ai/` (con su código y Dockerfile).
+   * El archivo `docker-compose.python.yml`.
+   * El archivo `.env` con tus claves reales.
+2. Levanta el microservicio en segundo plano:
+   ```bash
+   docker compose -f docker-compose.python.yml up -d --build
+   ```
+   *Esto expondrá el backend de Python en el puerto `8000` de tu máquina.*
+
+##### Opción B: Ejecución Nativa (Sin Docker)
+1. Asegúrate de contar con Python 3.11 en el sistema operativo y ve a la carpeta `rubricai_ai/`.
+2. Instala las dependencias necesarias:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Configura tus variables de entorno en el sistema operativo (p. ej., a través de un servicio de systemd o exportándolas en tu terminal):
+   ```bash
+   export GOOGLE_API_KEY="tu-clave-gemini"
+   export NEO4J_URI="tu-uri-neo4j"
+   export NEO4J_USERNAME="tu-usuario-neo4j"
+   export NEO4J_PASSWORD="tu-contrasena-neo4j"
+   ```
+4. Levanta el servidor uvicorn:
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port 8000
+   ```
+
+---
+
+#### Paso 2: Instalar el Plugin en Moodle (LAMP)
+1. Instala el plugin subiendo el archivo `rubricai_plugin.zip` desde la interfaz de administración de Moodle (*Administración del sitio > Plugins > Instalar plugins*) o descomprimiéndolo directamente en la ruta `local/rubricai/` de tu Moodle nativo.
+2. Otorga al usuario del servidor web (por ejemplo, `www-data` en Debian/Ubuntu) los permisos adecuados de lectura y escritura sobre la carpeta `local/rubricai/`.
+
+---
+
+#### Paso 3: Configurar la Conexión en Moodle
+Como el Moodle nativo y el backend de IA residen en la misma máquina física, la comunicación local es directa a través de `localhost`:
+1. Ve al directorio del plugin en Moodle:
+   ```bash
+   cd local/rubricai/
+   ```
+2. Crea tu archivo de configuración a partir del ejemplo:
+   ```bash
+   cp rubricai.ini.example rubricai.ini
+   ```
+3. Edita `rubricai.ini` y define la URL del microservicio local:
+   ```ini
+   ; Archivo de configuración para el plugin RubricAI
+   rubricai_ai_url = "http://localhost:8000"
+   ```
+
+Una vez realizados estos pasos, Moodle podrá comunicarse localmente y de forma segura con el microservicio de IA.
+
 

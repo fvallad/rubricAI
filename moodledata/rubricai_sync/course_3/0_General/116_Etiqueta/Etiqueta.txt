@@ -1,4 +1,0 @@
-Actividad: Etiqueta
-Tipo: label
-
-Contenido de la etiqueta:
