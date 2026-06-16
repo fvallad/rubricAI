@@ -1,2 +1,0 @@
-Actividad: Recursos
-Tipo: folder

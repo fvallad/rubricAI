@@ -2,6 +2,7 @@ import os
 import logging
 import time
 import threading
+import re
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 from tracing import trace_llm_call, get_traced_openai_client, add_run_metadata
@@ -47,6 +48,16 @@ class _RateLimiter:
                 )
                 time.sleep(sleep_time)
             self._last_request_time = time.monotonic()
+
+    def update_rpm(self, rpm: int):
+        """Update the rate limit dynamically when keys are added or rotated."""
+        with self._lock:
+            safety_margin = 1.0  # extra second of buffer
+            self._min_interval = (60.0 / rpm) + safety_margin
+            logger.info(
+                f"Rate limiter RPM updated to {rpm} → "
+                f"{self._min_interval:.1f}s min gap between requests"
+            )
 
 
 # Singleton — shared across all agents / threads
@@ -134,14 +145,35 @@ class OpenAIProvider(LLMProvider):
 class GoogleProvider(LLMProvider):
     def __init__(self):
         import openai
-        # Use standard OpenAI client configured for Google Gemini API endpoint
-        base_client = openai.OpenAI(
-            api_key=os.getenv("GOOGLE_API_KEY"),
-            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        )
-        # Wrap with LangSmith tracing — auto-captures all LLM call details
-        self.client = get_traced_openai_client(base_client)
+        # Support comma-separated list of keys for rotation
+        raw_keys = os.getenv("GOOGLE_API_KEY", "")
+        self.api_keys = [k.strip().strip('"').strip("'") for k in raw_keys.split(",") if k.strip()]
+        if not self.api_keys:
+            # Fallback to empty if not configured
+            self.api_keys = [""]
+            
+        self.clients = []
+        for key in self.api_keys:
+            base_client = openai.OpenAI(
+                api_key=key,
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+            )
+            # Wrap each with LangSmith tracing
+            self.clients.append(get_traced_openai_client(base_client))
+
         self.model = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
+        self.current_key_index = 0
+        self._keys_lock = threading.Lock()
+        
+        # Scale the rate limiter RPM based on the number of keys
+        base_rpm = int(os.getenv("GEMINI_RPM_LIMIT", "10"))
+        total_rpm = base_rpm * len(self.api_keys)
+        _rate_limiter.update_rpm(total_rpm)
+        
+        logger.info(
+            f"GoogleProvider initialized with {len(self.api_keys)} API key(s) for rotation. "
+            f"Collective rate limit set to {total_rpm} RPM."
+        )
 
     @trace_llm_call(name="google_gemini_completion", metadata={"ls_provider": "google"})
     def generate_completion(self, prompt: str, system_prompt: str) -> tuple[str, dict]:
@@ -149,14 +181,34 @@ class GoogleProvider(LLMProvider):
         import random
         add_run_metadata({"ls_model_name": self.model})
         
-        max_retries = 8
+        def _parse_retry_delay(error_msg: str) -> float | None:
+            # Match "Please retry in 45.376218325s" or similar
+            match = re.search(r"retry in\s+([0-9.]+)\s*s", error_msg, re.IGNORECASE)
+            if match:
+                return float(match.group(1))
+            # Match "retryDelay: '45s'" or "retryDelay: 45" or similar
+            match2 = re.search(r"retryDelay[\'\"]?\s*:\s*[\'\"]?([0-9.]+)", error_msg, re.IGNORECASE)
+            if match2:
+                return float(match2.group(1))
+            return None
+
+        num_keys = len(self.clients)
+        max_retries = max(8, num_keys * 2)
         backoff_factor = 2.0
         
         for attempt in range(max_retries):
+            with self._keys_lock:
+                active_idx = self.current_key_index % num_keys
+                client = self.clients[active_idx]
+                active_key = self.api_keys[active_idx]
+                masked_key = active_key[:8] + "..." + active_key[-4:] if len(active_key) > 12 else "invalid/empty"
+
             try:
                 # Proactive throttle: wait until RPM budget allows a new request
                 _rate_limiter.wait()
-                response = self.client.chat.completions.create(
+                
+                logger.info(f"Using Google API Key index {active_idx} ({masked_key})")
+                response = client.chat.completions.create(
                     model=self.model,
                     messages=[
                         {"role": "system", "content": system_prompt},
@@ -169,20 +221,65 @@ class GoogleProvider(LLMProvider):
                     "output_tokens": response.usage.completion_tokens if response.usage else 0,
                     "total_tokens": response.usage.total_tokens if response.usage else 0
                 }
-                add_run_metadata({"usage": usage})
+                add_run_metadata({"usage": usage, "api_key_index_used": active_idx, "api_keys_count": num_keys})
                 return content, usage
             except (RateLimitError, InternalServerError, APIConnectionError, APITimeoutError) as e:
+                # Rotate the index to the next key on failure
+                with self._keys_lock:
+                    self.current_key_index = (self.current_key_index + 1) % num_keys
+                    new_idx = self.current_key_index
+                    new_key = self.api_keys[new_idx]
+                    new_masked = new_key[:8] + "..." + new_key[-4:] if len(new_key) > 12 else "invalid/empty"
+                    logger.warning(
+                        f"Request failed with key index {active_idx} ({type(e).__name__}). "
+                        f"Rotating to key index {new_idx} ({new_masked})."
+                    )
+
                 if attempt == max_retries - 1:
                     logger.error(f"Max retries reached for Google Gemini transient error: {e}")
                     raise e
-                # Wait with exponential backoff + jitter to handle parallel agents, rate limits, or high demand
-                sleep_time = (backoff_factor ** attempt) + random.uniform(1.0, 3.0)
-                err_name = type(e).__name__
-                status_str = f"status={e.status_code}" if hasattr(e, "status_code") else "connection/timeout"
-                logger.warning(f"Gemini API transient error ({err_name}, {status_str}). Retrying in {sleep_time:.2f}s... (Attempt {attempt+1}/{max_retries})")
+                
+                # Default backoff: if we have multiple keys, try the next key quickly (0.5 to 1.5s)
+                if num_keys > 1 and attempt < num_keys:
+                    sleep_time = random.uniform(0.5, 1.5)
+                else:
+                    sleep_time = (backoff_factor ** (attempt - num_keys + 1)) + random.uniform(1.0, 3.0)
+                
+                # If it's a RateLimitError, check if we parsed a specific delay
+                if isinstance(e, RateLimitError):
+                    error_msg = str(e)
+                    parsed_delay = _parse_retry_delay(error_msg)
+                    if parsed_delay:
+                        if num_keys > 1 and attempt < num_keys:
+                            sleep_time = random.uniform(0.5, 1.5)
+                        else:
+                            sleep_time = parsed_delay + 2.0
+                        logger.warning(
+                            f"Gemini API Quota/Rate Limit hit for key {active_idx}. Google suggested retrying in {parsed_delay:.2f}s. "
+                            f"Sleeping for {sleep_time:.2f}s... (Attempt {attempt+1}/{max_retries})"
+                        )
+                    else:
+                        if num_keys > 1 and attempt < num_keys:
+                            sleep_time = random.uniform(0.5, 1.5)
+                        else:
+                            sleep_time = max(sleep_time, 15.0 * (attempt - num_keys + 2))
+                        logger.warning(
+                            f"Gemini API Quota/Rate Limit hit for key {active_idx}. Sleeping for {sleep_time:.2f}s... "
+                            f"(Attempt {attempt+1}/{max_retries})"
+                        )
+                else:
+                    err_name = type(e).__name__
+                    status_str = f"status={e.status_code}" if hasattr(e, "status_code") else "connection/timeout"
+                    logger.warning(
+                        f"Gemini API transient error ({err_name}, {status_str}) for key {active_idx}. "
+                        f"Retrying in {sleep_time:.2f}s... (Attempt {attempt+1}/{max_retries})"
+                    )
+                
                 time.sleep(sleep_time)
             except Exception as e:
-                logging.exception("Exception during Google Gemini call")
+                logging.exception(f"Exception during Google Gemini call with key index {active_idx}")
+                with self._keys_lock:
+                    self.current_key_index = (self.current_key_index + 1) % num_keys
                 return None, None
 
 def get_llm_provider() -> LLMProvider:

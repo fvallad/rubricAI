@@ -78,143 +78,168 @@ def compute_quantitative_score(course_data: dict) -> Dict:
 
     severity_issues = []
 
+    # Get all items in the course sections (both activities and resources)
+    all_items = []
+    for section in course_data.get("sections", []):
+        for act in section.get("activities", []):
+            all_items.append(act)
+    total_items_count = len(all_items)
+    if total_items_count == 0:
+        total_items_count = 1
+
     # ── 1. Critical Configuration (30%) ────────────────────────────────
-    # Checks: assignments have submission types enabled, activities have grades > 0
+    # Checks: assignments have submission types enabled, activities have grades > 0, quizzes have questions.
+    # Non-applicable items default to 100.
     crit_scores = []
-    assignments = [a for a in activities if a.get("type", "").lower() == "assign"]
-    for a in assignments:
-        settings = a.get("settings", {})
-        if not isinstance(settings, dict):
-            settings = {}
-        file_enabled = settings.get("assignsubmission_file_enabled", 0)
-        text_enabled = settings.get("assignsubmission_onlinetext_enabled", 0)
-        has_submission = int(file_enabled) > 0 or int(text_enabled) > 0
-        grade = a.get("grade", settings.get("grade", 0))
-        has_grade = (float(grade) if grade else 0) > 0
+    for item in all_items:
+        item_type = item.get("type", "").lower()
+        if item_type == "assign":
+            settings = item.get("settings", {})
+            if not isinstance(settings, dict):
+                settings = {}
+            file_enabled = settings.get("assignsubmission_file_enabled", 0)
+            text_enabled = settings.get("assignsubmission_onlinetext_enabled", 0)
+            has_submission = int(file_enabled) > 0 or int(text_enabled) > 0
+            grade = item.get("grade", settings.get("grade", 0))
+            has_grade = (float(grade) if grade else 0) > 0
 
-        if not has_submission:
-            crit_scores.append(0)  # Bloqueante: no se puede entregar
-            severity_issues.append({
-                "severity": "bloqueante",
-                "element": a.get("name", "Tarea"),
-                "issue": "Tipos de envío deshabilitados: los estudiantes no pueden entregar."
-            })
-        elif not has_grade:
-            crit_scores.append(50)  # Significativo: se puede entregar pero sin calificación
-            severity_issues.append({
-                "severity": "significativo",
-                "element": a.get("name", "Tarea"),
-                "issue": "No tiene calificación máxima configurada."
-            })
-        else:
-            crit_scores.append(100)
-
-    # Quizzes: check they have questions
-    quizzes = [a for a in activities if a.get("type", "").lower() == "quiz"]
-    for q in quizzes:
-        questions = q.get("questions", [])
-        if not questions:
-            crit_scores.append(25)
-            severity_issues.append({
-                "severity": "significativo",
-                "element": q.get("name", "Cuestionario"),
-                "issue": "Cuestionario sin preguntas configuradas."
-            })
+            if not has_submission:
+                crit_scores.append(0)  # Bloqueante: no se puede entregar
+                severity_issues.append({
+                    "severity": "bloqueante",
+                    "element": item.get("name", "Tarea"),
+                    "issue": "Tipos de envío deshabilitados: los estudiantes no pueden entregar."
+                })
+            elif not has_grade:
+                crit_scores.append(50)  # Significativo: se puede entregar pero sin calificación
+                severity_issues.append({
+                    "severity": "significativo",
+                    "element": item.get("name", "Tarea"),
+                    "issue": "No tiene calificación máxima configurada."
+                })
+            else:
+                crit_scores.append(100)
+        elif item_type == "quiz":
+            questions = item.get("questions", [])
+            if not questions:
+                crit_scores.append(25)
+                severity_issues.append({
+                    "severity": "significativo",
+                    "element": item.get("name", "Cuestionario"),
+                    "issue": "Cuestionario sin preguntas configuradas."
+                })
+            else:
+                crit_scores.append(100)
         else:
             crit_scores.append(100)
 
     crit_config_score = (sum(crit_scores) / len(crit_scores)) if crit_scores else 100.0
 
     # ── 2. Descriptive Completeness (25%) ──────────────────────────────
-    # Checks: activities have non-empty descriptions (> 50 chars)
+    # Checks: activities (excluding resources and default announcements) have non-empty descriptions (> 50 chars).
+    # Non-applicable items default to 100.
     desc_scores = []
-    for a in activities:
-        intro = a.get("intro", "") or a.get("description", "") or ""
-        # Strip HTML tags for length check
-        clean = re.sub(r'<[^>]+>', ' ', intro).strip()
-        if not clean or len(clean) < 10:
-            desc_scores.append(0)  # Empty
-            severity_issues.append({
-                "severity": "significativo",
-                "element": a.get("name", "Actividad"),
-                "issue": "Descripción vacía o insuficiente."
-            })
-        elif len(clean) < 50:
-            desc_scores.append(50)  # Very short
-            severity_issues.append({
-                "severity": "menor",
-                "element": a.get("name", "Actividad"),
-                "issue": "Descripción muy breve (menos de 50 caracteres)."
-            })
-        else:
+    for item in all_items:
+        item_type = item.get("type", "").lower()
+        name_lower = item.get("name", "").lower()
+        is_resource = item_type in _RESOURCE_TYPES
+        is_announcement = item_type == "forum" and name_lower in _ANNOUNCEMENT_FORUMS
+        
+        if is_resource or is_announcement:
             desc_scores.append(100)
+        else:
+            intro = item.get("intro", "") or item.get("description", "") or ""
+            # Strip HTML tags for length check
+            clean = re.sub(r'<[^>]+>', ' ', intro).strip()
+            if not clean or len(clean) < 10:
+                desc_scores.append(0)  # Empty
+                severity_issues.append({
+                    "severity": "significativo",
+                    "element": item.get("name", "Actividad"),
+                    "issue": "Descripción vacía o insuficiente."
+                })
+            elif len(clean) < 50:
+                desc_scores.append(50)  # Very short
+                severity_issues.append({
+                    "severity": "menor",
+                    "element": item.get("name", "Actividad"),
+                    "issue": "Descripción muy breve (menos de 50 caracteres)."
+                })
+            else:
+                desc_scores.append(100)
 
     desc_completeness_score = (sum(desc_scores) / len(desc_scores)) if desc_scores else 100.0
 
     # ── 3. Evaluation Configuration (20%) ──────────────────────────────
-    # Checks: assignments have cutoff dates, advanced grading, forums have grading
+    # Checks: assignments have cutoff dates, advanced grading, forums have grading.
+    # Non-applicable items default to 100.
     eval_scores = []
-    for a in assignments:
-        settings = a.get("settings", {})
-        if not isinstance(settings, dict):
-            settings = {}
-        has_cutoff = int(settings.get("cutoffdate", 0)) > 0
-        has_duedate = int(settings.get("duedate", 0)) > 0
-        has_rubric = bool(a.get("advancedgradingmethod", ""))
+    for item in all_items:
+        item_type = item.get("type", "").lower()
+        if item_type == "assign":
+            settings = item.get("settings", {})
+            if not isinstance(settings, dict):
+                settings = {}
+            has_cutoff = int(settings.get("cutoffdate", 0)) > 0
+            has_duedate = int(settings.get("duedate", 0)) > 0
+            has_rubric = bool(item.get("advancedgradingmethod", ""))
 
-        item_score = 100
-        if not has_duedate:
-            item_score -= 30
-            severity_issues.append({
-                "severity": "menor",
-                "element": a.get("name", "Tarea"),
-                "issue": "Sin fecha de vencimiento configurada."
-            })
-        if not has_cutoff:
-            item_score -= 20
-            # Only flag if there IS a due date (cutoff without due date is less meaningful)
-            if has_duedate:
+            item_score = 100
+            if not has_duedate:
+                item_score -= 30
                 severity_issues.append({
                     "severity": "menor",
-                    "element": a.get("name", "Tarea"),
-                    "issue": "Sin fecha de corte (cutoff) configurada."
+                    "element": item.get("name", "Tarea"),
+                    "issue": "Sin fecha de vencimiento configurada."
                 })
-        if not has_rubric:
-            item_score -= 15
-            severity_issues.append({
-                "severity": "menor",
-                "element": a.get("name", "Tarea"),
-                "issue": "Sin rúbrica de calificación avanzada."
-            })
-        eval_scores.append(max(item_score, 0))
-
-    # Forums grading
-    forums = [a for a in activities if a.get("type", "").lower() == "forum"]
-    for f in forums:
-        settings = f.get("settings", {})
-        if not isinstance(settings, dict):
-            settings = {}
-        assessed = int(settings.get("assessed", 0))
-        max_grade = float(f.get("grade", settings.get("grade", 0)) or 0)
-        if assessed > 0 or max_grade > 0:
-            eval_scores.append(100)
+            if not has_cutoff:
+                item_score -= 20
+                if has_duedate:
+                    severity_issues.append({
+                        "severity": "menor",
+                        "element": item.get("name", "Tarea"),
+                        "issue": "Sin fecha de corte (cutoff) configurada."
+                    })
+            if not has_rubric:
+                item_score -= 15
+                severity_issues.append({
+                    "severity": "menor",
+                    "element": item.get("name", "Tarea"),
+                    "issue": "Sin rúbrica de calificación avanzada."
+                })
+            eval_scores.append(max(item_score, 0))
+        elif item_type == "forum":
+            name_lower = item.get("name", "").lower()
+            if name_lower in _ANNOUNCEMENT_FORUMS:
+                eval_scores.append(100)
+            else:
+                settings = item.get("settings", {})
+                if not isinstance(settings, dict):
+                    settings = {}
+                assessed = int(settings.get("assessed", 0))
+                max_grade = float(item.get("grade", settings.get("grade", 0)) or 0)
+                if assessed > 0 or max_grade > 0:
+                    eval_scores.append(100)
+                else:
+                    eval_scores.append(75)  # Ungraded forum is minor
+                    severity_issues.append({
+                        "severity": "menor",
+                        "element": item.get("name", "Foro"),
+                        "issue": "Foro no calificado; podría no motivar participación de calidad."
+                    })
         else:
-            eval_scores.append(75)  # Ungraded forum is minor
-            severity_issues.append({
-                "severity": "menor",
-                "element": f.get("name", "Foro"),
-                "issue": "Foro no calificado; podría no motivar participación de calidad."
-            })
+            eval_scores.append(100)
 
     eval_config_score = (sum(eval_scores) / len(eval_scores)) if eval_scores else 100.0
 
     # ── 4. Resources & Materials (15%) ─────────────────────────────────
     # Checks: presence of documents, variety of types
+    resource_items = [i for i in all_items if i.get("type", "").lower() in _RESOURCE_TYPES]
     resource_types_present = set()
-    for r in resources:
+    for r in resource_items:
         resource_types_present.add(r.get("type", "").lower())
 
-    if not resources:
+    if not resource_items:
         # No resources is only mildly concerning — the course might rely on activities
         resources_score = 60.0
     else:
@@ -227,7 +252,7 @@ def compute_quantitative_score(course_data: dict) -> Dict:
     total_images = 0
     total_links = 0
     total_tables = 0
-    for a in activities:
+    for a in all_items:
         intro = a.get("intro", "") or a.get("description", "") or ""
         if intro:
             total_images += len(re.findall(r'<img\b', intro, re.IGNORECASE))
@@ -283,12 +308,13 @@ def compute_quantitative_score(course_data: dict) -> Dict:
             "menor": n_menor,
         },
         "stats": {
-            "n_activities": len(activities),
-            "n_assignments": len(assignments),
-            "n_quizzes": len(quizzes),
-            "n_forums": len(forums),
-            "n_resources": len(resources),
+            "n_activities": sum(1 for i in all_items if i.get("type", "").lower() not in _RESOURCE_TYPES),
+            "n_assignments": sum(1 for i in all_items if i.get("type", "").lower() == "assign"),
+            "n_quizzes": sum(1 for i in all_items if i.get("type", "").lower() == "quiz"),
+            "n_forums": sum(1 for i in all_items if i.get("type", "").lower() == "forum"),
+            "n_resources": sum(1 for i in all_items if i.get("type", "").lower() in _RESOURCE_TYPES),
             "n_resource_types": len(resource_types_present),
+            "n_total_items": total_items_count,
             "n_multimedia_elements": total_images + total_links + total_tables,
         }
     }
@@ -345,7 +371,10 @@ class PedagogicalHolisticAgent:
         
         system_prompt = (
             "Eres el Agente Holístico Pedagógico. Tu tarea es analizar de forma profunda y educativa "
-            "la alineación constructiva entre todos los recursos y actividades del curso frente a una rúbrica de referencia."
+            "la alineación constructiva entre todos los recursos y actividades del curso frente a una rúbrica de referencia. "
+            "IMPORTANTE: Exprésate siempre con un tono profesional, sumamente educado, constructivo y empático, "
+            "como si un docente experto en pedagogía y diseño curricular se dirigiera con total respeto a otro par docente (colega). "
+            "Evita usar adjetivos rudos, destructivos o sentencias descalificadoras. Refiérete a los problemas como 'oportunidades de mejora' o 'adecuaciones recomendadas'."
         )
         
         prompt = f"""
@@ -395,7 +424,10 @@ class FormatStructureAgent:
         
         system_prompt = (
             "Eres el Agente de Formato y Estructura. Tu tarea es auditar las configuraciones técnicas, "
-            "completitud, configuraciones de cuestionarios, fechas, ponderaciones y estructura general del aula virtual de Moodle."
+            "completitud, configuraciones de cuestionarios, fechas, ponderaciones y estructura general del aula virtual de Moodle. "
+            "IMPORTANTE: Exprésate siempre con un tono profesional, sumamente educado, constructivo y empático, "
+            "como si un docente experto en tecnología educativa se dirigiera a otro par docente (colega) de forma colaborativa y respetuosa. "
+            "Evita calificar el curso de 'deficiente', 'malo' o 'inoperable'; prefiere sugerencias de ajuste, completación o enriquecimiento técnico."
         )
         
         prompt = f"""
@@ -714,7 +746,10 @@ class SynthesisAgent:
             "y holísticas, además de los datos de cobertura ontológica y un score cuantitativo pre-calculado, "
             "y generar una respuesta JSON final estrictamente estructurada que contenga el puntaje global, "
             "resúmenes de informes y una lista estructurada de recomendaciones accionables de cambio. "
-            "IMPORTANTE: Tu puntuación debe calibrarse usando el score cuantitativo como ancla."
+            "IMPORTANTE: Tu puntuación debe calibrarse usando el score cuantitativo como ancla. "
+            "Además, asegúrate de que todos los textos redactados en 'holistic_evaluation', 'format_evaluation' "
+            "y las explicaciones dentro de 'recommendations' (campos 'issue' y 'change') estén expresados de manera muy educada, "
+            "constructiva y empática, con el tono de un docente experto dirigiéndose con respeto a otro colega (par docente)."
         )
         
         prompt = f"""

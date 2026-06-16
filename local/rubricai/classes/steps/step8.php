@@ -22,6 +22,114 @@ class step8 {
         $courseid = $ctx['id'];
         $course_name = $ctx['summary']['fullname'] ?? 'Curso';
 
+        // Estilos específicos para impresión en PDF.
+        echo '
+        <style>
+        @media print {
+            /* Ocultar elementos de navegación y cabecera de Moodle */
+            #page-header,
+            #page-footer,
+            .navbar,
+            .drawer,
+            .secondary-navigation,
+            #nav-drawer,
+            #block-region-side-pre,
+            #block-region-side-post,
+            .activity-navigation,
+            .rubricai-header-bar,
+            .rubricai-tabs,
+            .rubricai-progress,
+            .rubricai-nav,
+            .rubricai-astro-box,
+            .rubricai-btn,
+            .alert {
+                display: none !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+            }
+            
+            #page {
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            #region-main {
+                background-color: #ffffff !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .rubricai-card {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            h2, h3, th, td, div, p, strong, span {
+                color: #000000 !important;
+            }
+
+            .rubricai-results-dashboard {
+                display: grid !important;
+                grid-template-columns: 1fr 2fr !important;
+                gap: 20px !important;
+                margin-bottom: 30px !important;
+                page-break-inside: avoid;
+            }
+
+            .rubricai-score-card {
+                background: #f9f9f9 !important;
+                border: 1px solid #ccc !important;
+                padding: 20px !important;
+                border-radius: 12px !important;
+            }
+
+            .rubricai-summary-card {
+                background: #f9f9f9 !important;
+                border: 1px solid #ccc !important;
+                padding: 20px !important;
+                border-radius: 12px !important;
+            }
+
+            table.table {
+                background: #ffffff !important;
+                border: 1px solid #ccc !important;
+                width: 100% !important;
+                margin-top: 15px !important;
+            }
+            
+            table.table tr {
+                background: #ffffff !important;
+                border-bottom: 1px solid #ddd !important;
+                page-break-inside: avoid;
+            }
+
+            table.table th {
+                background: #f1f1f1 !important;
+                color: #000000 !important;
+                border-bottom: 2px solid #ccc !important;
+                padding: 10px !important;
+            }
+
+            table.table td {
+                color: #000000 !important;
+                padding: 10px !important;
+            }
+        }
+        </style>
+        ';
+
         // Fetch rubrics
         $base_url = 'http://host.docker.internal:8000'; // Fallback
         $ini_path = __DIR__ . '/../../rubricai.ini';
@@ -178,17 +286,19 @@ class step8 {
             echo html_writer::end_tag('div');
         }
 
-        // Render external link to Astro Dashboard
-        $astro_url = "http://localhost:4321/evaluate?course_id={$courseid}&course_name=" . urlencode($course_name);
-        
-        echo html_writer::start_tag('div', ['class' => 'rubricai-astro-box', 'style' => 'margin-top: 30px; text-align:center; padding: 25px; background: linear-gradient(135deg, rgba(108, 99, 255, 0.08), rgba(255, 94, 58, 0.08)); border-radius: 12px; border: 1px solid rgba(108, 99, 255, 0.15);']);
-        echo html_writer::tag('h3', '✨ Panel Premium de RubricAI (Astro)', ['style' => 'margin-top:0; margin-bottom:10px; color:#8881ff; font-weight:bold; font-size:16px;']);
-        echo html_writer::tag('p', 'Accede a la interfaz interactiva para subir rúbricas, visualizar la ontología pedagógica en grafos interactivos 2D/3D y gestionar tus reportes de auditoría.', ['style' => 'font-size:13px; color:#aaa; margin-bottom:20px; line-height:1.4;']);
+        // Render print to PDF button
+        echo html_writer::start_tag('div', ['class' => 'rubricai-astro-box', 'style' => 'margin-top: 30px; text-align:center; padding: 25px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);']);
+        echo html_writer::tag('h3', '🖨️ Exportar Reporte de Auditoría', ['style' => 'margin-top:0; margin-bottom:10px; color:#fff; font-weight:bold; font-size:16px;']);
+        echo html_writer::tag('p', 'Guarda o imprime este reporte completo de alineación pedagógica y formato en un documento PDF con la misma presentación que en pantalla.', ['style' => 'font-size:13px; color:#aaa; margin-bottom:20px; line-height:1.4;']);
         
         echo html_writer::link(
-            $astro_url,
-            'Abrir Dashboard RubricAI 🔗',
-            ['class' => 'rubricai-btn', 'target' => '_blank', 'style' => 'background:#ff5e3a; color:#fff; font-weight:bold; border-radius:8px; padding:10px 20px; text-decoration:none; display:inline-block; border:none; box-shadow: 0 4px 15px rgba(255, 94, 58, 0.2);']
+            '#',
+            'Imprimir PDF 📄',
+            [
+                'class' => 'rubricai-btn rubricai-btn-print',
+                'onclick' => 'window.print(); return false;',
+                'style' => 'background:#ff5e3a; color:#fff; font-weight:bold; border-radius:8px; padding:10px 20px; text-decoration:none; display:inline-block; border:none; box-shadow: 0 4px 15px rgba(255, 94, 58, 0.2); cursor:pointer;'
+            ]
         );
         echo html_writer::end_tag('div');
 
