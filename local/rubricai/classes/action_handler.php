@@ -526,7 +526,7 @@ class action_handler {
             error_log("RubricAI Audit Completed - Course: $course_id, Rubric: $rubric_id, Score: $score");
 
             // Save to Moodle database (config_plugins)
-            session_manager::save_audit_results($course_id, $score, $holistic, $format, $recs, $rubric_id);
+            session_manager::save_audit_results($course_id, $score, $holistic, $format, $recs, $rubric_id, time());
 
             // Clear previous errors if any
             session_manager::unset_key('compare_error_' . $course_id);

@@ -175,12 +175,13 @@ class session_manager {
     /**
      * Saves course-specific audit results to the Moodle database (config_plugins table).
      */
-    public static function save_audit_results(int $course_id, float $score, string $holistic, string $format, array $recommendations, string $rubric_id): void {
+    public static function save_audit_results(int $course_id, float $score, string $holistic, string $format, array $recommendations, string $rubric_id, int $generated_at = 0): void {
         set_config('compare_score_' . $course_id, $score, 'local_rubricai');
         set_config('compare_holistic_' . $course_id, $holistic, 'local_rubricai');
         set_config('compare_format_' . $course_id, $format, 'local_rubricai');
         set_config('compare_recommendations_' . $course_id, json_encode($recommendations), 'local_rubricai');
         set_config('compare_rubric_id_' . $course_id, $rubric_id, 'local_rubricai');
+        set_config('compare_generated_at_' . $course_id, $generated_at ?: time(), 'local_rubricai');
     }
 
     /**
@@ -199,6 +200,7 @@ class session_manager {
             'format' => get_config('local_rubricai', 'compare_format_' . $course_id) ?: '',
             'recommendations' => json_decode(get_config('local_rubricai', 'compare_recommendations_' . $course_id) ?: '[]', true),
             'rubric_id' => get_config('local_rubricai', 'compare_rubric_id_' . $course_id) ?: '',
+            'generated_at' => (int)(get_config('local_rubricai', 'compare_generated_at_' . $course_id) ?: 0),
         ];
     }
 
@@ -211,5 +213,6 @@ class session_manager {
         unset_config('compare_format_' . $course_id, 'local_rubricai');
         unset_config('compare_recommendations_' . $course_id, 'local_rubricai');
         unset_config('compare_rubric_id_' . $course_id, 'local_rubricai');
+        unset_config('compare_generated_at_' . $course_id, 'local_rubricai');
     }
 }

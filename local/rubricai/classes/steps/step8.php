@@ -80,6 +80,25 @@ class step8 {
                 color: #000000 !important;
             }
 
+            .rubricai-report-header {
+                background: #f5f5f5 !important;
+                border: 1px solid #ddd !important;
+                border-radius: 8px !important;
+                padding: 14px 18px !important;
+                margin-bottom: 20px !important;
+                color: #000 !important;
+            }
+
+            .rubricai-report-header h2 {
+                font-size: 18px !important;
+                margin: 4px 0 !important;
+                color: #000 !important;
+            }
+
+            .rubricai-report-header div, .rubricai-report-header span {
+                color: #333 !important;
+            }
+
             .rubricai-results-dashboard {
                 display: grid !important;
                 grid-template-columns: 1fr 2fr !important;
@@ -175,6 +194,7 @@ class step8 {
             $format_desc = $db_results['format'];
             $recs = $db_results['recommendations'];
             $rubric_id = $db_results['rubric_id'];
+            $generated_at = $db_results['generated_at'] ?? 0;
             $compared = true;
         } else {
             $compared = (session_manager::get('compare_score_' . $courseid) !== null);
@@ -184,10 +204,25 @@ class step8 {
                 $format_desc = session_manager::get('compare_format_' . $courseid, '');
                 $recs = json_decode(session_manager::get('compare_recommendations_' . $courseid, '[]'), true);
                 $rubric_id = session_manager::get('compare_rubric_id_' . $courseid, '');
+                $generated_at = 0;
             }
         }
 
         if ($compared) {
+
+            // Report header — course name, rubric and generation timestamp (always Argentina time)
+            $tz_arg = new \DateTimeZone('America/Argentina/Buenos_Aires');
+            $ts = $generated_at ?: time();
+            $fecha_hora = (new \DateTime('@' . $ts))->setTimezone($tz_arg)->format('d/m/Y H:i');
+
+            echo html_writer::start_tag('div', ['class' => 'rubricai-report-header', 'style' => 'margin-bottom:24px; padding:16px 20px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.08);']);
+            echo html_writer::tag('div', 'Informe de Auditoría Pedagógica — RubricAI', ['style' => 'font-size:11px; text-transform:uppercase; letter-spacing:2px; color:#888; margin-bottom:6px;']);
+            echo html_writer::tag('h2', htmlspecialchars($course_name), ['style' => 'margin:0 0 6px 0; font-size:20px; font-weight:700; color:#fff;']);
+            echo html_writer::start_tag('div', ['style' => 'display:flex; gap:24px; flex-wrap:wrap; font-size:12px; color:#aaa;']);
+            echo html_writer::tag('span', '🗂️ Rúbrica: ' . htmlspecialchars($rubric_id));
+            echo html_writer::tag('span', '🕐 Generado: ' . $fecha_hora . ' (Argentina)');
+            echo html_writer::end_tag('div');
+            echo html_writer::end_tag('div');
 
             // Render score card
             echo html_writer::start_tag('div', ['class' => 'rubricai-results-dashboard', 'style' => 'display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 30px;']);
