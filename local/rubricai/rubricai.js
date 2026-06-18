@@ -21,7 +21,7 @@ document.addEventListener("click", e => {
     if (!link || link.classList.contains("external")) return;
 
     // Skip the ingest and publish buttons — handled natively for security (sesskey)
-    if (link.id === 'confirm-ingest-btn' || link.id === 'btn-publish-quiz') return;
+    if (link.id === 'confirm-ingest-btn') return;
 
     // Handle confirmation if needed
     if (link.dataset.confirm && !confirm(link.dataset.confirm)) {
@@ -83,9 +83,8 @@ document.addEventListener("click", e => {
 
     // Prepare body for POST if it's a form or a specific action
     const isIngest = url.searchParams.get("action") === "ingest";
-    const isInject = url.searchParams.get("action") === "inject_quiz";
 
-    if (url.searchParams.has("d2_json") || isIngest || isInject || isFormSubmit) {
+    if (url.searchParams.has("d2_json") || isIngest || isFormSubmit) {
 
         // Guard: if ingestion, ensure at least one file is selected (Step 1)
         if (isIngest) {

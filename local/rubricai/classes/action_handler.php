@@ -4,7 +4,7 @@ namespace local_rubricai;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Handles the three server-side actions that redirect: sync, ingest, export.
+ * Handles server-side actions that redirect: sync, ingest, delete_rag, preview, run_compare.
  *
  * Each action processes data, then issues a Moodle redirect().
  * After calling handle(), the script never continues (redirect dies).
@@ -16,7 +16,7 @@ class action_handler {
      * (so the caller can continue rendering). On recognized actions, this method
      * never returns — it calls redirect() which dies.
      *
-     * @param string     $action    One of: 'sync', 'ingest', 'export'
+     * @param string     $action    One of: 'sync', 'ingest', 'delete_rag', 'preview', 'run_compare'
      * @param int        $course_id
      * @param \moodle_url $base_url  The current $PAGE->url
      * @param bool       $is_ajax
@@ -33,11 +33,6 @@ class action_handler {
                 self::handle_ingest($course_id, $base_url, $is_ajax);
                 return true;
 
-            case 'export':
-                require_sesskey();
-                self::handle_export($course_id, $base_url, $is_ajax);
-                return true;
-
             case 'delete_rag':
                 require_sesskey();
                 self::handle_delete_rag($course_id, $base_url, $is_ajax);
@@ -45,21 +40,6 @@ class action_handler {
 
             case 'preview':
                 self::handle_preview($course_id);
-                return true;
-
-            case 'inject_quiz':
-                require_sesskey();
-                self::handle_inject_quiz($course_id, $base_url, $is_ajax);
-                return true;
-
-            case 'inject_assign':
-                require_sesskey();
-                self::handle_inject_assign($course_id, $base_url, $is_ajax);
-                return true;
-
-            case 'inject_forum':
-                require_sesskey();
-                self::handle_inject_forum($course_id, $base_url, $is_ajax);
                 return true;
 
             case 'run_compare':
@@ -184,285 +164,6 @@ class action_handler {
             $redir->param('ajax', 1);
         }
         redirect($redir);
-    }
-
-    /**
-     * Export the generated instrument + rubric as a Moodle Assign activity.
-     */
-    private static function handle_export(int $course_id, \moodle_url $base_url, bool $is_ajax): void {
-        $inst_name = session_manager::get('instrument', '') . ' - RubricAI';
-        $final_desc = session_manager::get('inst_content', '');
-
-        $rubric = session_manager::get('rubric_content', '');
-        if (!empty($rubric)) {
-            $final_desc .= "\n\n### Rúbrica\n" . $rubric;
-        }
-
-        if (!$inst_name) {
-            $inst_name = 'Evaluación RubricAI';
-        }
-        if (!$final_desc) {
-            $final_desc = 'Instrumento generado por RubricAI.';
-        }
-
-        $moduleinfo = \local_rubricai\data_provider::create_assign_activity($course_id, $inst_name, $final_desc);
-
-        // Force a valid tab action to avoid infinite redirect loop
-        $action = optional_param('action', 'eval', PARAM_ALPHA);
-        if ($action === 'export') {
-            $action = 'eval';
-        }
-
-        $redir = new \moodle_url($base_url, [
-            'step'     => 7,
-            'exported' => 1,
-            'cmid'     => $moduleinfo->coursemodule,
-            'action'   => $action,
-        ]);
-        if ($is_ajax) {
-            $redir->param('ajax', 1);
-        }
-        redirect($redir);
-    }
-
-    private static function handle_inject_quiz(int $course_id, \moodle_url $base_url, bool $is_ajax): void {
-        $section_num = optional_param('section_num', 0, PARAM_INT);
-
-        // 1. Obtener el puntaje total máximo solicitado (Ej: 7.0 o 100.0)
-        $max_grade = optional_param('max_grade', 100.0, PARAM_FLOAT);
-
-        // LEER DESDE SESIÓN: Ya no dependemos del payload pesado por POST
-        $raw_selection = session_manager::get('final_selection_json', '');
-
-        $questions = [];
-        if (!empty($raw_selection)) {
-            $parsed = json_decode($raw_selection, true);
-            if (is_array($parsed) && !empty($parsed['items'])) {
-                $questions = $parsed['items'];
-                
-                // Read point distribution securely from POST directly
-                $item_points = optional_param_array('item_points', [], PARAM_RAW);
-                foreach ($questions as $idx => &$q) {
-                    if (isset($item_points[$idx])) {
-                        $weight_percentage = (float)$item_points[$idx];
-                        $q['weight'] = $weight_percentage; // Persist the percentage weight
-                        $q['points'] = round(($weight_percentage / 100.0) * $max_grade, 2); // Calculate absolute points
-                    }
-                }
-                unset($q); // break reference
-                
-                // Actualizar la sesión con los pesos finales configurados por el usuario antes de inyectar
-                $parsed['items'] = $questions;
-                session_manager::set('final_selection_json', json_encode($parsed));
-            }
-        }
-
-        // 2. Si no hay preguntas, error
-        if (empty($questions)) {
-            $redir = new \moodle_url($base_url, [
-                'step'         => 5,
-                'quiz_error'   => 1,
-                'message'      => 'No se detectó una selección válida de ítems.'
-            ]);
-            redirect($redir);
-        }
-
-        try {
-            // Se pasa el max_grade además de name (si se desea uno por defecto se pasa null o string custom)
-            $result = \local_rubricai\data_provider::create_quiz_activity($course_id, $section_num, $questions, 'Cuestionario RubricAI', $max_grade);
-            if (!$result || !isset($result['coursemodule'])) {
-                throw new \moodle_exception('error_creating_quiz', 'local_rubricai', '', null, 'Result is empty or invalid');
-            }
-            $quiz_cmid = $result['coursemodule'];
-        } catch (\Throwable $e) {
-            error_log('[RubricAI] inject_quiz error in course ' . $course_id . ': ' . $e->getMessage() . "\n" . $e->getTraceAsString());
-            $redir = new \moodle_url($base_url, [
-                'step'         => 7,
-                'action'       => 'eval',
-                'quiz_error'   => 1,
-            ]);
-            redirect($redir);
-        }
-
-        $redir = new \moodle_url($base_url, [
-            'step'         => 7,
-            'action'       => 'eval',
-            'quiz_injected'=> 1,
-            'quiz_cmid'    => $quiz_cmid,
-        ]);
-        if ($is_ajax) {
-            $redir->param('ajax', 1);
-        }
-        redirect($redir);
-    }
-
-    /**
-     * Returns the fake questions for quiz injection.
-     * Moved from step7 to action_handler for better availability.
-     */
-    public static function get_fake_questions(): array {
-        return [
-            [
-                'type'    => 'multichoice',
-                'text'    => 'Cual de los siguientes es un ejemplo de evaluacion formativa?',
-                'options' => [
-                    'Examen final del semestre',
-                    'Retroalimentacion continua durante el proceso de aprendizaje',
-                    'Prueba de admision universitaria',
-                    'Calificacion numerica trimestral',
-                ],
-                'correct' => 1,
-            ],
-            [
-                'type'    => 'truefalse',
-                'text'    => 'La taxonomia de Bloom clasifica los objetivos de aprendizaje en niveles cognitivos jerarquicos.',
-                'correct' => true,
-            ],
-            [
-                'type' => 'essay',
-                'text' => 'Describe como diseñarias una evaluacion autentica para tu asignatura. Fundamenta tu respuesta considerando el contexto pedagogico del curso.',
-            ],
-        ];
-    }
-
-    /**
-     * Export the generated instrument as an Assign activity (with section selection).
-     */
-    private static function handle_inject_assign(int $course_id, \moodle_url $base_url, bool $is_ajax): void {
-        $section_num = optional_param('section_num', 0, PARAM_INT);
-        $inst_name = session_manager::get('instrument', '') . ' - RubricAI';
-        $inst_content = session_manager::get('inst_content', '');
-        $rubric_content = session_manager::get('rubric_content', '');
-
-        // Build a rich description from the instrument items
-        $description = self::build_activity_description($inst_content, $rubric_content);
-
-        if (!$inst_name || $inst_name === ' - RubricAI') {
-            $inst_name = 'Evaluación RubricAI';
-        }
-
-        try {
-            $moduleinfo = data_provider::create_assign_activity($course_id, $inst_name, $description, $section_num);
-            $cmid = $moduleinfo->coursemodule;
-        } catch (\Throwable $e) {
-            error_log('[RubricAI] inject_assign error: ' . $e->getMessage());
-            $redir = new \moodle_url($base_url, [
-                'step'       => 7,
-                'action'     => 'eval',
-                'export_error' => 1,
-            ]);
-            redirect($redir);
-        }
-
-        $redir = new \moodle_url($base_url, [
-            'step'          => 7,
-            'action'        => 'eval',
-            'assign_injected' => 1,
-            'assign_cmid'   => $cmid,
-        ]);
-        if ($is_ajax) {
-            $redir->param('ajax', 1);
-        }
-        redirect($redir);
-    }
-
-    /**
-     * Export the generated instrument as a Forum activity (with section selection).
-     */
-    private static function handle_inject_forum(int $course_id, \moodle_url $base_url, bool $is_ajax): void {
-        $section_num = optional_param('section_num', 0, PARAM_INT);
-        $inst_name = session_manager::get('instrument', '') . ' - RubricAI';
-        $inst_content = session_manager::get('inst_content', '');
-        $rubric_content = session_manager::get('rubric_content', '');
-
-        $description = self::build_activity_description($inst_content, $rubric_content);
-
-        if (!$inst_name || $inst_name === ' - RubricAI') {
-            $inst_name = 'Debate RubricAI';
-        }
-
-        try {
-            $moduleinfo = data_provider::create_forum_activity($course_id, $inst_name, $description, $section_num);
-            $cmid = $moduleinfo->coursemodule;
-        } catch (\Throwable $e) {
-            error_log('[RubricAI] inject_forum error: ' . $e->getMessage());
-            $redir = new \moodle_url($base_url, [
-                'step'       => 7,
-                'action'     => 'eval',
-                'export_error' => 1,
-            ]);
-            redirect($redir);
-        }
-
-        $redir = new \moodle_url($base_url, [
-            'step'          => 7,
-            'action'        => 'eval',
-            'forum_injected' => 1,
-            'forum_cmid'    => $cmid,
-        ]);
-        if ($is_ajax) {
-            $redir->param('ajax', 1);
-        }
-        redirect($redir);
-    }
-
-    /**
-     * Build a rich Markdown description from the structured instrument content.
-     */
-    private static function build_activity_description(string $inst_content, string $rubric_content): string {
-        $parts = [];
-        $data = @json_decode($inst_content, true);
-
-        if (is_array($data)) {
-            if (!empty($data['title'])) {
-                $parts[] = '## ' . $data['title'];
-            }
-
-            foreach (($data['items'] ?? []) as $idx => $item) {
-                $num = $idx + 1;
-                $type_label = $item['type'] ?? 'Ítem';
-                $difficulty = $item['difficulty'] ?? '';
-                $header = "### Ítem {$num} — {$type_label}";
-                if ($difficulty) {
-                    $header .= " ({$difficulty})";
-                }
-                $parts[] = $header;
-                $parts[] = $item['consiga'] ?? $item['text'] ?? '';
-
-                // Add options if present (for reference)
-                if (!empty($item['alternativas'])) {
-                    $parts[] = '';
-                    foreach ($item['alternativas'] as $oi => $opt) {
-                        $letter = chr(65 + $oi); // A, B, C, ...
-                        $parts[] = "{$letter}. {$opt}";
-                    }
-                }
-
-                // Add objectives
-                if (!empty($item['objectives'])) {
-                    $parts[] = '';
-                    $parts[] = '**Objetivos:** ' . implode(', ', $item['objectives']);
-                }
-                $parts[] = ''; // spacer
-            }
-
-            if (!empty($data['justification'])) {
-                $parts[] = '---';
-                $parts[] = '**Justificación Pedagógica:** ' . $data['justification'];
-            }
-        } else {
-            // Fallback: use raw content as-is
-            $parts[] = $inst_content ?: 'Instrumento generado por RubricAI.';
-        }
-
-        if (!empty($rubric_content)) {
-            $parts[] = '';
-            $parts[] = '---';
-            $parts[] = '## Rúbrica';
-            $parts[] = $rubric_content;
-        }
-
-        return implode("\n", $parts);
     }
 
     /**

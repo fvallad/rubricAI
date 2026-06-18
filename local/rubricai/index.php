@@ -25,7 +25,7 @@ $action = optional_param('action', 'lib', PARAM_ALPHANUMEXT);
 $step   = optional_param('step', -1, PARAM_INT); // -1 to detect if not provided
 
 // Allow server-side redirect actions to bypass tab validation
-$server_actions = ['sync', 'ingest', 'export', 'delete_rag', 'preview', 'inject_quiz', 'inject_assign', 'inject_forum', 'run_compare'];
+$server_actions = ['sync', 'ingest', 'delete_rag', 'preview', 'run_compare'];
 if (!isset(\local_rubricai\step_renderer::ACTIONS[$action]) && !in_array($action, $server_actions)) {
     $action = 'lib';
 }
@@ -48,7 +48,6 @@ if (!$id) {
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/course/lib.php');
-require_once($CFG->libdir . '/questionlib.php');
 
 $context = context_course::instance($id);
 $PAGE->set_url(new moodle_url('/local/rubricai/index.php', [
