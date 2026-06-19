@@ -238,8 +238,8 @@ class step8 {
 
         if ($compared) {
 
-            // Report header — course name, rubric and generation timestamp (always Argentina time)
-            $tz_arg = new \DateTimeZone('America/Argentina/Buenos_Aires');
+            // Report header — course name, rubric and generation timestamp (Moodle site timezone)
+            $tz_arg = \core_date::get_user_timezone_object();
             $ts = $generated_at ?: time();
             $fecha_hora = (new \DateTime('@' . $ts))->setTimezone($tz_arg)->format('d/m/Y H:i');
 
@@ -248,7 +248,7 @@ class step8 {
             echo html_writer::tag('h2', htmlspecialchars($course_name), ['style' => 'margin:0 0 6px 0; font-size:20px; font-weight:700; color:#fff;']);
             echo html_writer::start_tag('div', ['style' => 'display:flex; gap:24px; flex-wrap:wrap; font-size:12px; color:#aaa;']);
             echo html_writer::tag('span', '🗂️ Rúbrica: ' . htmlspecialchars($rubric_id));
-            echo html_writer::tag('span', '🕐 Generado: ' . $fecha_hora . ' (Argentina)');
+            echo html_writer::tag('span', '🕐 Generado: ' . $fecha_hora);
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('div');
 
