@@ -54,7 +54,30 @@ Nueva página de configuración en Administración del sitio → Plugins → Loc
 
 `rag_client.php` migra de leer `rubricai.ini` a leer `get_config('local_rubricai', 'service_url')`.
 
-**2. Privacy Provider** (`privacy/provider.php`)
+**2. Gestión de rúbricas desde Moodle** (`rubrics.php`, `db/fixtures/rubric_generic.json`)
+
+Para que cualquier institución pueda empezar a trabajar sin configuración adicional:
+
+**C) Rúbrica genérica preinstalada**
+
+- Archivo `db/fixtures/rubric_generic.json` incluido en el plugin con una rúbrica neutral basada en principios pedagógicos universales (alineación constructiva, evaluación formativa, recursos digitales) — sin referencias a CONEAU ni a ningún sistema de acreditación específico
+- `db/install.php` la importa automáticamente al instalar si el backend Python ya está configurado
+- Si el backend no está disponible al instalar, aparece un botón en admin settings: **"Importar rúbrica de ejemplo"** que ejecuta la importación cuando el backend esté listo
+
+**B) Gestión de rúbricas dentro de Moodle**
+
+Nueva página en Administración del sitio → Plugins → Local → RubricAI → Rúbricas:
+- **Listar** rúbricas existentes (consume `/rubrics` del Python API)
+- **Crear** rúbrica con formulario: título, descripción, criterios con nombre/descripción/peso
+- **Editar** rúbrica existente
+- **Eliminar** rúbrica con confirmación
+- **Importar** desde archivo JSON (para migrar rúbricas existentes o cargar desde plantillas)
+
+Reemplaza la necesidad del frontend Astro para gestión de rúbricas — todo queda dentro de Moodle. El frontend Astro queda como herramienta opcional avanzada.
+
+Archivos nuevos: `admin/rubrics.php`, `db/fixtures/rubric_generic.json`, actualización de `db/install.php`.
+
+**3. Privacy Provider** (`privacy/provider.php`)
 
 El plugin almacena resultados de auditoría en `mdl_config_plugins` con claves `compare_score_{courseid}`, `compare_holistic_{courseid}`, etc. Estos datos son por curso, no identifican a usuarios individuales.
 
@@ -167,6 +190,9 @@ Usa `moodlehq/moodle-plugin-ci`. Corre en push y PR:
 ```
 local/rubricai/settings.php
 local/rubricai/db/access.php
+local/rubricai/db/install.php
+local/rubricai/db/fixtures/rubric_generic.json
+local/rubricai/admin/rubrics.php
 local/rubricai/privacy/provider.php
 local/rubricai/lang/es/local_rubricai.php
 ```
