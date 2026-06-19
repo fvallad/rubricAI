@@ -214,6 +214,10 @@ class action_handler {
         // 1. Gather all course resources and activities
         $payload = data_provider::get_course_full_evaluation_payload($course_id);
 
+        // Release session lock before the long-running Python call so other
+        // requests from the same user don't block waiting 120s for the lock.
+        \core\session\manager::write_close();
+
         // 2. Call python RAG service evaluate endpoint
         $result = rag_client::evaluate($course_id, $rubric_id, $payload);
 

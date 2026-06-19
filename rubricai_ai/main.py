@@ -82,6 +82,10 @@ class SyncRequest(BaseModel):
 # Thread-safe (mostly) dictionary to track background task progress
 INGESTION_PROGRESS = {}
 
+# Tracks active evaluate calls: {course_id: {"started_at": float}}
+EVALUATION_IN_PROGRESS = {}
+EVALUATION_TIMEOUT = 600  # 10 minutes
+
 class IngestRequest(BaseModel):
     course_id: int
     selected_files: list[str] = []
@@ -523,11 +527,26 @@ def check_status(course_id: int):
                     "selected_files": prog.get("selected_files", [])
                 }
 
+        # 2. Check active evaluation
+        import time
+        evaluation_in_progress = False
+        evaluation_elapsed = 0
+        eval_info = EVALUATION_IN_PROGRESS.get(course_id)
+        if eval_info:
+            elapsed = int(time.time() - eval_info["started_at"])
+            if elapsed < EVALUATION_TIMEOUT:
+                evaluation_in_progress = True
+                evaluation_elapsed = elapsed
+            else:
+                EVALUATION_IN_PROGRESS.pop(course_id, None)
+
         return {
             "status": "success",
             "embedding_exists": exists,
             "chunks": chunks,
             "selected_files": selected_files,
+            "evaluation_in_progress": evaluation_in_progress,
+            "evaluation_elapsed": evaluation_elapsed,
             "data": {
                 "progress": 100 if exists else 0,
                 "message": "Completado" if exists else "Pendiente",
@@ -629,11 +648,14 @@ def evaluate_course(request: EvaluateRequest):
         "rubric_id": request.rubric_id,
     })
 
+    import time
     from agents import MultiAgentCoordinator
+    course_id = request.course_id
+    EVALUATION_IN_PROGRESS[course_id] = {"started_at": time.time()}
     try:
         coordinator = MultiAgentCoordinator()
         result = coordinator.evaluate_course(
-            course_id=request.course_id,
+            course_id=course_id,
             rubric_id=request.rubric_id,
             course_data=request.course_data
         )
@@ -642,6 +664,8 @@ def evaluate_course(request: EvaluateRequest):
     except Exception as e:
         logging.exception("Error in /evaluate endpoint")
         return {"status": "error", "message": str(e)}
+    finally:
+        EVALUATION_IN_PROGRESS.pop(course_id, None)
 
 
 @app.get("/ontology")

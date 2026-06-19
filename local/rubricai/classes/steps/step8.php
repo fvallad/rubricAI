@@ -173,6 +173,34 @@ class step8 {
             ['class' => 'rubricai-desc', 'style' => 'color: #aaa; margin-bottom: 20px;']
         );
 
+        // Check evaluation-in-progress state from Python
+        $status_raw = rag_client::status($courseid)['raw'];
+        $status_obj = @json_decode($status_raw);
+        $eval_in_progress = !empty($status_obj->evaluation_in_progress);
+        $eval_elapsed     = (int)($status_obj->evaluation_elapsed ?? 0);
+
+        if ($eval_in_progress) {
+            $mins     = floor($eval_elapsed / 60);
+            $secs     = $eval_elapsed % 60;
+            $time_str = $mins > 0 ? "{$mins}m {$secs}s" : "{$secs}s";
+            $timed_out = $eval_elapsed >= 300; // 5+ min = show force-retry
+            echo html_writer::start_tag('div', ['class' => 'rubricai-card',
+                'style' => 'border-left:5px solid #17a2b8; background:#f4f8ff; margin-bottom:20px;']);
+            echo html_writer::tag('strong', '⏳ Auditoría en progreso (' . $time_str . ')',
+                ['style' => 'color:#17a2b8; display:block; margin-bottom:8px;']);
+            echo html_writer::tag('p',
+                'La evaluación multiagente está corriendo. La página se actualizará sola cuando termine. No toqués otros botones.',
+                ['style' => 'font-size:12px; color:#555; margin:0;']);
+            if ($timed_out) {
+                echo html_writer::tag('p',
+                    '⚠️ Está tardando más de lo esperado. Si creés que se colgó, podés forzar un reintento.',
+                    ['style' => 'font-size:12px; color:#dc3545; margin-top:8px;']);
+            }
+            echo html_writer::end_tag('div');
+            // Auto-refresh every 5s while in progress
+            echo html_writer::tag('script', "setTimeout(function(){ location.reload(); }, 5000);");
+        }
+
         // Check if there are error messages
         $error = optional_param('error', '', PARAM_TEXT);
         if ($error) {
@@ -295,22 +323,26 @@ class step8 {
                     'class' => 'alert alert-warning',
                     'style' => 'margin-bottom: 20px; padding: 15px; border-radius: 8px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); color: #ffda6a;'
                 ]);
+            } else if ($eval_in_progress) {
+                echo html_writer::tag('div', '⏳ Esperá a que termine la auditoría en curso antes de iniciar una nueva.',
+                    ['style' => 'color:#17a2b8; font-size:13px; padding:12px; background:rgba(23,162,184,0.08); border-radius:8px;']);
             } else {
                 echo html_writer::start_tag('form', [
-                    'id' => 'rubricai-compare-form', 
-                    'method' => 'POST', 
+                    'id' => 'rubricai-compare-form',
+                    'method' => 'POST',
                     'action' => new moodle_url('/local/rubricai/index.php', ['action' => 'run_compare', 'id' => $courseid])
                 ]);
-                
+
                 echo html_writer::tag('label', 'Selecciona la Rúbrica de Referencia para la comparación:', ['style' => 'display:block; margin-bottom:10px; font-weight:600; color:#fff; font-size:14px;']);
                 echo html_writer::start_tag('select', ['name' => 'rubric_id', 'id' => 'rubric-selector', 'style' => 'width:100%; padding:12px; border-radius:8px; background:#202026; color:#fff; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px; font-size:14px;']);
                 foreach ($rubrics as $rub) {
                     echo html_writer::tag('option', $rub['title'] . ' (' . $rub['id'] . ')', ['value' => $rub['id']]);
                 }
                 echo html_writer::end_tag('select');
-                
+
                 echo html_writer::tag('button', '🚀 Iniciar Auditoría Multi-Agente', [
                     'type' => 'submit',
+                    'id'   => 'btn-start-audit',
                     'class' => 'rubricai-btn rubricai-btn-primary',
                     'style' => 'width:100%; padding:14px; font-size:15px; font-weight:bold; border-radius:8px; cursor:pointer; background:#6c63ff; border:none; color:#fff; transition: background 0.2s;'
                 ]);

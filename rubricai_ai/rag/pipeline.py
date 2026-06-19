@@ -78,6 +78,7 @@ def run_ingestion(course_id: int,  chunk_size=1000, overlap=250, progress_callba
     total_chunks = len(all_chunks)
     all_embeddings = []
     
+    logging.info(f"[Course {course_id}] Archivos procesables: {total_files}, chunks: {total_chunks}")
     if total_chunks > 0:
         update_p(50, f"Generando vectores para {total_chunks} fragmentos...")
         
@@ -111,6 +112,6 @@ def run_ingestion(course_id: int,  chunk_size=1000, overlap=250, progress_callba
         update_p(100, "¡Biblioteca construida con éxito!")
         return total_chunks
     else:
-        update_p(0, "Error: No se encontró texto para procesar")
+        update_p(0, f"Error: No se encontró texto para procesar ({total_files} archivo(s) recibido(s))")
         return 0
 

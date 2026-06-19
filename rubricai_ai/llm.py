@@ -282,12 +282,45 @@ class GoogleProvider(LLMProvider):
                     self.current_key_index = (self.current_key_index + 1) % num_keys
                 return None, None
 
+class OllamaProvider(LLMProvider):
+    def __init__(self):
+        import openai
+        base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434") + "/v1"
+        self.client = openai.OpenAI(api_key="ollama", base_url=base_url)
+        self.model = os.getenv("OLLAMA_MODEL", "gemma3:latest")
+
+    @trace_llm_call(name="ollama_completion", metadata={"ls_provider": "ollama"})
+    def generate_completion(self, prompt: str, system_prompt: str) -> tuple[str, dict]:
+        add_run_metadata({"ls_model_name": self.model})
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            content = response.choices[0].message.content
+            usage = {
+                "input_tokens": response.usage.prompt_tokens if response.usage else 0,
+                "output_tokens": response.usage.completion_tokens if response.usage else 0,
+                "total_tokens": response.usage.total_tokens if response.usage else 0,
+            }
+            add_run_metadata({"usage": usage})
+            return content, usage
+        except Exception as e:
+            logging.exception("Exception during Ollama call")
+            return None, None
+
+
 def get_llm_provider() -> LLMProvider:
     provider_name = os.getenv("LLM_PROVIDER", "dashscope").lower()
     if provider_name == "openai":
         return OpenAIProvider()
     if provider_name == "google" or provider_name == "gemini":
         return GoogleProvider()
+    if provider_name == "ollama":
+        return OllamaProvider()
     # Default to DashScope
     return DashScopeProvider()
 

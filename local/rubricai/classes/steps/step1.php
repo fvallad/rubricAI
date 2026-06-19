@@ -58,6 +58,21 @@ class step1 {
             $prev_selected = $status_obj->selected_files;
         }
 
+        // Banner: evaluation in progress — warn before rebuilding library
+        $eval_in_progress = !empty($status_obj->evaluation_in_progress);
+        $eval_elapsed     = (int)($status_obj->evaluation_elapsed ?? 0);
+        if ($eval_in_progress) {
+            $mins = floor($eval_elapsed / 60);
+            $secs = $eval_elapsed % 60;
+            $time_str = $mins > 0 ? "{$mins}m {$secs}s" : "{$secs}s";
+            echo html_writer::tag('div',
+                '⚠️ Hay una <strong>Auditoría en progreso</strong> para este curso (' . $time_str . ' transcurridos). ' .
+                'Reconstruir la biblioteca mientras corre puede corromper los resultados.',
+                ['class' => 'rubricai-card', 'style' =>
+                    'border-left:5px solid #ff9800; background:#fff8f0; color:#7a4e00; margin-bottom:16px;']
+            );
+        }
+
         if ($use_moodle) {
             self::render_moodle_fields($id, $summary, $files, $already_ingested, $service_down, $status_data, $prev_selected);
         } else {
@@ -66,7 +81,7 @@ class step1 {
 
         // Bottom section depends on ingestion state
         $ingested = optional_param('ingested', 0, PARAM_INT);
-        self::render_ingestion_status($id, $ingested, $already_ingested, $service_down);
+        self::render_ingestion_status($id, $ingested, $already_ingested, $service_down, $eval_in_progress);
     }
 
     // ------------------------------------------------------------------
@@ -224,11 +239,12 @@ if (!$already_ingested) {
         int $id,
         int $ingested,
         bool $already_ingested,
-        bool $service_down
+        bool $service_down,
+        bool $eval_in_progress = false
     ): void {
         global $PAGE;
 
-        $prev_url = new moodle_url($PAGE->url, ['step' => 0]);
+        $prev_url = new moodle_url($PAGE->url, ['step' => 0, 'force_step' => 0]);
 
         if ($already_ingested || $ingested == 1) {
             // Success
@@ -246,12 +262,19 @@ if (!$already_ingested) {
             );
             echo html_writer::end_tag('div');
 
-            $delete_url = new moodle_url($PAGE->url, ['step' => 1, 'action' => 'delete_rag', 'sesskey' => sesskey()]);
-            echo html_writer::link($delete_url, 'Reconstruir Biblioteca', [
-                'class' => 'rubricai-btn', 
-                'style' => 'background: #fff; color: #dc3545; border: 1px solid #dc3545; font-size: 12px; padding: 6px 12px;',
-                'data-confirm' => '¿Estás seguro de que deseas eliminar y reconstruir la biblioteca? Tendrás que volver a procesar los documentos.',
-            ]);
+            if ($eval_in_progress) {
+                echo html_writer::tag('span', '⏳ Auditoría en curso...', [
+                    'class' => 'rubricai-btn',
+                    'style' => 'background:#fff; color:#ff9800; border:1px solid #ff9800; font-size:12px; padding:6px 12px; opacity:0.7; cursor:not-allowed;',
+                ]);
+            } else {
+                $delete_url = new moodle_url($PAGE->url, ['step' => 1, 'action' => 'delete_rag', 'sesskey' => sesskey()]);
+                echo html_writer::link($delete_url, 'Reconstruir Biblioteca', [
+                    'class' => 'rubricai-btn',
+                    'style' => 'background: #fff; color: #dc3545; border: 1px solid #dc3545; font-size: 12px; padding: 6px 12px;',
+                    'data-confirm' => '¿Estás seguro de que deseas eliminar y reconstruir la biblioteca? Tendrás que volver a procesar los documentos.',
+                ]);
+            }
             echo html_writer::end_tag('div');
             step_renderer::render_nav(1, $prev_url, new moodle_url($PAGE->url, ['step' => 8, 'action' => 'compare']), 'Ir a Auditoría RubricAI →');
         } else if ($ingested == 2) {

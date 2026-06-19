@@ -23,6 +23,15 @@ document.addEventListener("click", e => {
     // Skip the ingest and publish buttons — handled natively for security (sesskey)
     if (link.id === 'confirm-ingest-btn') return;
 
+    // Prevent double-submit on audit button
+    if (link.id === 'btn-start-audit') {
+        if (link.disabled) return;
+        link.disabled = true;
+        link.textContent = '⏳ Iniciando auditoría...';
+        link.style.opacity = '0.7';
+        link.style.cursor = 'wait';
+    }
+
     // Handle confirmation if needed
     if (link.dataset.confirm && !confirm(link.dataset.confirm)) {
         e.preventDefault();
@@ -693,7 +702,6 @@ function initIngestionPoller(courseid) {
                 // Case 1: active progress tracking (during build)
                 if (res.status === 'success' && res.data && typeof res.data.progress !== 'undefined') {
                     const data = res.data;
-                    // Update UI
                     const p = data.progress || 0;
                     bar.style.width = p + '%';
                     percentText.innerHTML = p + '%';
@@ -701,6 +709,20 @@ function initIngestionPoller(courseid) {
 
                     if (p >= 100) {
                         redirectToSuccess();
+                        return;
+                    }
+
+                    // Error sentinel: progress stays at 0 with an error message
+                    if (p <= 0 && data.message && data.message.startsWith('Error:')) {
+                        clearInterval(interval);
+                        statusText.style.color = '#dc3545';
+                        setTimeout(() => {
+                            const base = window.location.href.split('?')[0];
+                            const params = new URLSearchParams(window.location.search);
+                            params.set('ingested', '2');
+                            params.delete('ajax');
+                            window.location.href = base + '?' + params.toString();
+                        }, 2500);
                     }
                     return;
                 }
