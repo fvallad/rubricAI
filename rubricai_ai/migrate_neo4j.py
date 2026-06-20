@@ -30,20 +30,25 @@ def export_rels(session):
 
 
 def import_nodes(session, nodes):
-    for node in nodes:
-        labels_str = ":".join(node["labels"])
-        props = {**node["props"], "_mig_id": node["eid"]}
-        session.run(f"CREATE (n:{labels_str} $props)", props=props)
+    with session.begin_transaction() as tx:
+        for node in nodes:
+            labels_str = ":".join(f"`{lbl}`" for lbl in node["labels"])
+            props = {**node["props"], "_mig_id": node["eid"]}
+            tx.run(f"CREATE (n:{labels_str} $props)", props=props)
+        tx.commit()
     log.info("Imported %d nodes", len(nodes))
 
 
 def import_rels(session, rels):
-    for rel in rels:
-        cypher = (
-            f"MATCH (a {{_mig_id: $src}}), (b {{_mig_id: $tgt}}) "
-            f"CREATE (a)-[r:{rel['rel_type']} $props]->(b)"
-        )
-        session.run(cypher, src=rel["src"], tgt=rel["tgt"], props=rel["props"])
+    with session.begin_transaction() as tx:
+        for rel in rels:
+            rel_type = f"`{rel['rel_type']}`"
+            cypher = (
+                f"MATCH (a {{_mig_id: $src}}), (b {{_mig_id: $tgt}}) "
+                f"CREATE (a)-[r:{rel_type} $props]->(b)"
+            )
+            tx.run(cypher, src=rel["src"], tgt=rel["tgt"], props=rel["props"])
+        tx.commit()
     log.info("Imported %d relationships", len(rels))
 
 
@@ -73,6 +78,13 @@ def main():
         log.info("Source connection OK")
         tgt_driver.verify_connectivity()
         log.info("Target connection OK")
+
+        # Guard: ensure target database is empty
+        with tgt_driver.session() as session:
+            count = session.run("MATCH (n) RETURN count(n) AS cnt").single()["cnt"]
+            if count > 0:
+                log.error("Target database is not empty (%d nodes). Aborting to prevent duplicates.", count)
+                return
 
         log.info("Exporting nodes from Aura...")
         with src_driver.session() as session:
