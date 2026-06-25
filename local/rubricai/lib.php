@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param context_course $context The course context
  */
 function local_rubricai_extend_navigation_course(navigation_node $navigation, $course, $context) {
-    if (has_capability('moodle/course:update', $context)) {
+    if (has_any_capability(['local/rubricai:use', 'local/rubricai:viewaudit'], $context)) {
         $url = new moodle_url('/local/rubricai/index.php', ['id' => $course->id]);
         $node = navigation_node::create(
             'RubricAI',

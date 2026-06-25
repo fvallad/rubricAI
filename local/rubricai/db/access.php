@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Capability definitions for local_rubricai.
+ *
  * @package    local_rubricai
  * @copyright  2024 Vicente Astorga (areteIA original)
  * @copyright  2026 Fernando Valladares, Diego Racero
@@ -23,8 +25,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_rubricai';
-$plugin->version   = 2026062500;
-$plugin->requires  = 2024100700; // Moodle 4.5
-$plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '0.2.0';
+$capabilities = [
+    'local/rubricai:use' => [
+        'captype'      => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes'   => [
+            'editingteacher' => CAP_ALLOW,
+            'manager'        => CAP_ALLOW,
+        ],
+    ],
+    'local/rubricai:viewaudit' => [
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes'   => [
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+        ],
+    ],
+];
