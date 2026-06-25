@@ -48,9 +48,9 @@ if ($hassiteconfig) {
         get_string('llm_provider_desc', 'local_rubricai'),
         'openai',
         [
-            'openai' => 'OpenAI',
-            'google' => 'Google Gemini',
-            'ollama' => 'Ollama (local)',
+            'openai' => get_string('provider_openai', 'local_rubricai'),
+            'google' => get_string('provider_google', 'local_rubricai'),
+            'ollama' => get_string('provider_ollama', 'local_rubricai'),
         ]
     ));
 
