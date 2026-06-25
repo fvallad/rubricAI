@@ -13,7 +13,11 @@ class rag_client {
 
     /** @var string Base URL of the Python service. */
     private static function get_base_url(): string {
-        // 1. Try to read from a local .ini file (easier to manage for the user)
+        $url = get_config('local_rubricai', 'service_url');
+        if ($url) {
+            return rtrim($url, '/');
+        }
+        // Legacy fallback: ini file (deprecated — remove after Fase 2)
         $ini_path = __DIR__ . '/../rubricai.ini';
         if (file_exists($ini_path)) {
             $config = parse_ini_file($ini_path);
@@ -21,14 +25,6 @@ class rag_client {
                 return rtrim($config['rubricai_ai_url'], '/');
             }
         }
-
-        // 2. Fallback to Environment Variable
-        $env_url = getenv('RUBRICAI_AI_URL');
-        if ($env_url) {
-            return rtrim($env_url, '/');
-        }
-
-        // 3. Last resort default for Docker environments
         return 'http://host.docker.internal:8000';
     }
 
