@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-if ($hassiteconfig) {
+if ($hassiteconfig && $settings) {
 
     // --- Connection settings ---
     $settings->add(new admin_setting_heading(
