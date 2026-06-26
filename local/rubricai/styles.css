@@ -1,18 +1,22 @@
 /* RubricAI Plugin Styles - Premium Dark Theme */
 
-/* Target Moodle Boost's main region to set the dark theme canvas */
-body.path-local-rubricai #region-main-box {
-    background: #0f0f13 !important;
-}
-
+/* Dark canvas only on the actual content region — not on region-main-box,
+   which also contains the Moodle page heading and would create a large empty dark area. */
 body#page-local-rubricai-index #region-main {
     background: #0f0f13 !important;
     min-height: 0;
-    padding: 25px;
-    border-radius: 16px;
+    padding: 20px;
+    border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
     color: #e2e8f0 !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Hide the Moodle-generated page heading — plugin has its own header bar */
+body.path-local-rubricai .page-header-headings,
+body.path-local-rubricai [data-region="page-content-header-notifications"],
+body.path-local-rubricai #region-main > h1:first-child {
+    display: none;
 }
 
 /* Wrapper - just a centered column, no extra background needed */
