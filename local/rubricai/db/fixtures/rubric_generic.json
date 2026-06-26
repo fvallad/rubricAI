@@ -1,0 +1,55 @@
+{
+  "id": "rubric_pedagogico_generico",
+  "title": "Evaluación Pedagógica General",
+  "description": "Rúbrica basada en principios universales de diseño instruccional: alineación constructiva, aprendizaje activo, diversidad de recursos y evaluación formativa. Aplicable a cualquier asignatura universitaria.",
+  "criteria": [
+    {
+      "name": "Alineación constructiva",
+      "description": "Coherencia entre objetivos de aprendizaje declarados, actividades propuestas y criterios de evaluación",
+      "weight": 25,
+      "dimension": "Diseño instruccional",
+      "levels": [
+        {"label": "Excelente", "score": 4, "description": "Los objetivos, actividades y evaluaciones están explícitamente alineados y se refuerzan mutuamente."},
+        {"label": "Bueno",     "score": 3, "description": "La mayoría de objetivos tienen correspondencia clara con actividades y evaluaciones."},
+        {"label": "En desarrollo", "score": 2, "description": "Existe alguna correspondencia pero con inconsistencias notables."},
+        {"label": "Incipiente", "score": 1, "description": "No se observa alineación entre objetivos, actividades y evaluaciones."}
+      ]
+    },
+    {
+      "name": "Diversidad de recursos digitales",
+      "description": "Variedad y calidad de materiales de aprendizaje que enriquecen el acceso al conocimiento",
+      "weight": 25,
+      "dimension": "Recursos",
+      "levels": [
+        {"label": "Excelente", "score": 4, "description": "Múltiples tipos de recursos (video, texto, interactivos, externos) organizados por tema y propósito pedagógico."},
+        {"label": "Bueno",     "score": 3, "description": "Variedad de recursos con organización clara, aunque algunos temas tienen cobertura limitada."},
+        {"label": "En desarrollo", "score": 2, "description": "Recursos presentes pero con poca variedad de formatos o sin organización evidente."},
+        {"label": "Incipiente", "score": 1, "description": "Escasez de recursos o materiales sin relación directa con los objetivos."}
+      ]
+    },
+    {
+      "name": "Actividades de aprendizaje activo",
+      "description": "Presencia de tareas y actividades que promueven la participación activa del estudiante",
+      "weight": 25,
+      "dimension": "Actividades",
+      "levels": [
+        {"label": "Excelente", "score": 4, "description": "Actividades variadas que desarrollan habilidades de orden superior: análisis, síntesis, creación y colaboración."},
+        {"label": "Bueno",     "score": 3, "description": "Actividades que promueven comprensión y aplicación, con alguna instancia colaborativa."},
+        {"label": "En desarrollo", "score": 2, "description": "Actividades presentes pero principalmente de memorización o bajo nivel cognitivo."},
+        {"label": "Incipiente", "score": 1, "description": "Pocas o ninguna actividad de aprendizaje activo disponible."}
+      ]
+    },
+    {
+      "name": "Evaluación formativa y retroalimentación",
+      "description": "Claridad de criterios evaluativos y disponibilidad de mecanismos de retroalimentación al estudiante",
+      "weight": 25,
+      "dimension": "Evaluación",
+      "levels": [
+        {"label": "Excelente", "score": 4, "description": "Criterios explícitos, rúbricas disponibles, retroalimentación frecuente y oportuna, con instancias de autoevaluación."},
+        {"label": "Bueno",     "score": 3, "description": "Criterios claros y retroalimentación presente, aunque no sistematizada."},
+        {"label": "En desarrollo", "score": 2, "description": "Evaluaciones presentes sin criterios explícitos o con retroalimentación limitada."},
+        {"label": "Incipiente", "score": 1, "description": "Sin criterios visibles ni mecanismos de retroalimentación al estudiante."}
+      ]
+    }
+  ]
+}
