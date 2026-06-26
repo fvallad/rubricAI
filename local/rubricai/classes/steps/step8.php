@@ -225,6 +225,7 @@ class step8 {
         if ($error) {
             $msg = 'Ocurrió un error al procesar la auditoría.';
             if ($error === 'no_rubric') $msg = 'No seleccionaste una rúbrica válida.';
+            if ($error === 'rubric_empty') $msg = 'La rúbrica seleccionada no tiene criterios definidos. Agregá al menos un criterio antes de iniciar la auditoría.';
             if ($error === 'evaluation_failed') {
                 $sess_msg = session_manager::get('compare_error_' . $courseid);
                 $msg = $sess_msg ?: 'La evaluación multiagente falló. Verifica que el microservicio de Python esté operativo y configurado en tu archivo .env.';
@@ -262,9 +263,7 @@ class step8 {
             $ts = $generated_at ?: time();
             $fecha_hora = (new \DateTime('@' . $ts))->setTimezone($tz_arg)->format('d/m/Y H:i');
 
-            $recalc_url = new moodle_url($PAGE->url, ['step' => 8, 'action' => 'compare', 'recalc' => 1]);
-            echo html_writer::start_tag('div', ['class' => 'rubricai-report-header', 'style' => 'display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:24px; padding:16px 20px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.08);']);
-            echo html_writer::start_tag('div');
+            echo html_writer::start_tag('div', ['class' => 'rubricai-report-header', 'style' => 'margin-bottom:24px; padding:16px 20px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.08);']);
             echo html_writer::tag('div', 'Informe de Auditoría Pedagógica — RubricAI', ['style' => 'font-size:11px; text-transform:uppercase; letter-spacing:2px; color:#888; margin-bottom:6px;']);
             echo html_writer::tag('h2', htmlspecialchars($course_name), ['style' => 'margin:0 0 6px 0; font-size:20px; font-weight:700; color:#fff;']);
             echo html_writer::start_tag('div', ['style' => 'display:flex; gap:24px; flex-wrap:wrap; font-size:12px; color:#aaa;']);
@@ -272,21 +271,23 @@ class step8 {
             echo html_writer::tag('span', '🕐 Generado: ' . $fecha_hora);
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('div');
-            echo html_writer::link($recalc_url->out(false), '🔄 Cambiar rúbrica', ['style' => 'flex-shrink:0; font-size:13px; font-weight:600; padding:8px 16px; background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:8px; text-decoration:none;']);
-            echo html_writer::end_tag('div');
 
             // Render score card
             echo html_writer::start_tag('div', ['class' => 'rubricai-results-dashboard', 'style' => 'display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 30px;']);
-
+            
             // Score circle card
             $score_color = '#dc3545'; // red
             if ($score >= 80) $score_color = '#198754'; // green
             else if ($score >= 50) $score_color = '#ffc107'; // yellow
-
+            
             echo html_writer::start_tag('div', ['class' => 'rubricai-score-card', 'style' => 'background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; align-items:center; justify-content:center;']);
             echo html_writer::tag('div', 'Puntuación de Alineación', ['style' => 'font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 10px;']);
             echo html_writer::tag('div', number_format($score, 1) . '%', ['style' => 'font-size: 48px; font-weight: 800; color: ' . $score_color . '; text-shadow: 0 0 10px ' . $score_color . '33;']);
             echo html_writer::tag('div', 'Rúbrica: ' . $rubric_id, ['style' => 'font-size: 11px; color: #888; margin-top: 10px;']);
+            
+            // Recalculate button
+            $recalc_url = new moodle_url($PAGE->url, ['step' => 8, 'action' => 'compare', 'recalc' => 1]);
+            echo html_writer::link($recalc_url->out(false), '🔄 Repetir Auditoría', ['class' => 'rubricai-btn', 'style' => 'font-size: 11px; margin-top: 15px; padding: 5px 12px; background: rgba(255,255,255,0.1); color: #fff; border-radius: 6px; text-decoration:none;']);
             echo html_writer::end_tag('div');
 
             // Quick details card

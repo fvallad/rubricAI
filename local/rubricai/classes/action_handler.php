@@ -228,6 +228,12 @@ class action_handler {
             redirect($redir);
         }
 
+        $rubric = rag_client::get_rubric($rubric_id);
+        if (!$rubric || empty($rubric->criteria)) {
+            $redir = new \moodle_url($base_url, ['step' => 8, 'action' => 'compare', 'error' => 'rubric_empty']);
+            redirect($redir);
+        }
+
         // 1. Gather all course resources and activities
         $payload = data_provider::get_course_full_evaluation_payload($course_id);
 
