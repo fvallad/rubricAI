@@ -67,7 +67,8 @@ if ($action === 'save' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $rubric['id'] ? 'edit' : 'create';
 }
 
-if ($action === 'delete' && $confirm && $id) {
+// Issue 3 fix: enforce POST for delete+confirm to prevent CSRF via GET
+if ($action === 'delete' && $confirm && $id && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_sesskey();
     $deleted = rag_client::delete_rubric($id);
     if ($deleted) {
@@ -127,11 +128,12 @@ if ($action === 'list') {
         ['class' => 'btn btn-primary']
     );
     echo ' ';
-    echo html_writer::link(
-        new moodle_url($page_url, ['action' => 'import_generic', 'sesskey' => sesskey()]),
-        get_string('rubric_import_generic', 'local_rubricai'),
-        ['class' => 'btn btn-secondary']
-    );
+    // Issue 2 fix: use POST form instead of GET link for state-mutating action
+    echo html_writer::start_tag('form', ['method' => 'post', 'style' => 'display:inline;']);
+    echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'action', 'value' => 'import_generic']);
+    echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]);
+    echo html_writer::tag('button', get_string('rubric_import_generic', 'local_rubricai'), ['type' => 'submit', 'class' => 'btn btn-secondary']);
+    echo html_writer::end_tag('form');
     echo html_writer::end_tag('div');
 
     // Import from JSON form
@@ -151,17 +153,16 @@ if ($action === 'list') {
         echo $OUTPUT->notification(get_string('no_rubrics', 'local_rubricai'), 'info');
     } else {
         $table = new html_table();
+        // Issue 4 fix: removed 'Criteria' column — list_rubrics() never returns criteria data so count was always 0
         $table->head = [
             get_string('rubric_title_field', 'local_rubricai'),
             get_string('rubric_desc_field', 'local_rubricai'),
-            get_string('rubric_criteria', 'local_rubricai'),
             '',
         ];
         $table->data = [];
         foreach ($rubrics as $r) {
             $r = (object)$r;
             $rubric_id  = $r->id ?? '';
-            $n_criteria = count($r->criteria ?? []);
             $edit_url   = new moodle_url($page_url, ['action' => 'edit', 'id' => $rubric_id]);
             $del_url    = new moodle_url($page_url, ['action' => 'delete', 'id' => $rubric_id]);
             $actions    = html_writer::link($edit_url, get_string('rubric_edit', 'local_rubricai'), ['class' => 'btn btn-sm btn-outline-primary me-1']);
@@ -169,7 +170,6 @@ if ($action === 'list') {
             $table->data[] = [
                 html_writer::tag('strong', s($r->title ?? '')),
                 s($r->description ?? ''),
-                $n_criteria,
                 $actions,
             ];
         }
@@ -210,7 +210,9 @@ if (in_array($action, ['create', 'edit'])) {
         }
     }
 
-    $title    = $rubric ? s($rubric->title ?? '') : '';
+    // Issue 1 fix: do NOT wrap with s() here — html_writer::empty_tag() encodes value attrs internally
+    $title    = $rubric ? ($rubric->title ?? '') : '';
+    // $desc feeds a textarea rendered via html_writer::tag() which does NOT escape content — keep s()
     $desc     = $rubric ? s($rubric->description ?? '') : '';
     $criteria = $rubric ? ($rubric->criteria ?? []) : [];
     $heading  = $action === 'edit'
@@ -289,12 +291,13 @@ function self_rubricai_criterion_row(int|string $idx, object $crit): string {
 
     $out .= html_writer::start_tag('div', ['class' => 'col-md-4']);
     $out .= html_writer::tag('label', get_string('criterion_name', 'local_rubricai'), ['class' => 'form-label']);
-    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_name[$idx]", 'value' => s($crit->name ?? ''), 'class' => 'form-control form-control-sm']);
+    // Issue 1 fix: html_writer::empty_tag() escapes value attrs — no s() needed here
+    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_name[$idx]", 'value' => $crit->name ?? '', 'class' => 'form-control form-control-sm']);
     $out .= html_writer::end_tag('div');
 
     $out .= html_writer::start_tag('div', ['class' => 'col-md-4']);
     $out .= html_writer::tag('label', get_string('criterion_description', 'local_rubricai'), ['class' => 'form-label']);
-    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_desc[$idx]", 'value' => s($crit->description ?? ''), 'class' => 'form-control form-control-sm']);
+    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_desc[$idx]", 'value' => $crit->description ?? '', 'class' => 'form-control form-control-sm']);
     $out .= html_writer::end_tag('div');
 
     $out .= html_writer::start_tag('div', ['class' => 'col-md-2']);
@@ -304,7 +307,7 @@ function self_rubricai_criterion_row(int|string $idx, object $crit): string {
 
     $out .= html_writer::start_tag('div', ['class' => 'col-md-2']);
     $out .= html_writer::tag('label', get_string('criterion_dimension', 'local_rubricai'), ['class' => 'form-label']);
-    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_dimension[$idx]", 'value' => s($crit->dimension ?? 'General'), 'class' => 'form-control form-control-sm']);
+    $out .= html_writer::empty_tag('input', ['type' => 'text', 'name' => "criterion_dimension[$idx]", 'value' => $crit->dimension ?? 'General', 'class' => 'form-control form-control-sm']);
     $out .= html_writer::end_tag('div');
 
     $out .= html_writer::end_tag('div'); // row
