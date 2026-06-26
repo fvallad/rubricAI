@@ -13,11 +13,7 @@ class rag_client {
 
     /** @var string Base URL of the Python service. */
     private static function get_base_url(): string {
-        $url = get_config('local_rubricai', 'service_url');
-        if ($url) {
-            return rtrim($url, '/');
-        }
-        // Legacy fallback: ini file (deprecated — remove after Fase 2)
+        // 1. Try to read from a local .ini file (easier to manage for the user)
         $ini_path = __DIR__ . '/../rubricai.ini';
         if (file_exists($ini_path)) {
             $config = parse_ini_file($ini_path);
@@ -25,6 +21,14 @@ class rag_client {
                 return rtrim($config['rubricai_ai_url'], '/');
             }
         }
+
+        // 2. Fallback to Environment Variable
+        $env_url = getenv('RUBRICAI_AI_URL');
+        if ($env_url) {
+            return rtrim($env_url, '/');
+        }
+
+        // 3. Last resort default for Docker environments
         return 'http://host.docker.internal:8000';
     }
 
@@ -197,6 +201,69 @@ class rag_client {
         $response = self::post('/evaluate', json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE), 600, 30);
         return @json_decode($response);
     }
+
+    /**
+     * GET /rubrics — list all rubrics.
+     *
+     * @return array  Array of rubric objects, empty array on failure.
+     */
+    public static function list_rubrics(): array {
+        $ch = curl_init(self::get_base_url() . '/rubrics');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $raw = curl_exec($ch);
+        curl_close($ch);
+        $data = @json_decode($raw, true);
+        return is_array($data) ? $data : [];
+    }
+
+    /**
+     * POST /rubrics — create or update a rubric.
+     *
+     * @param array $rubric  Keys: id (optional), title, description, criteria[]
+     * @return object|null  { status, rubric_id } or null on failure.
+     */
+    public static function save_rubric(array $rubric): ?object {
+        $payload  = json_encode($rubric, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response = self::post('/rubrics', $payload, 30, 10);
+        return @json_decode($response);
+    }
+
+    /**
+     * GET /rubrics/{id} — fetch a single rubric with all criteria.
+     *
+     * @param string $rubric_id
+     * @return object|null
+     */
+    public static function get_rubric(string $rubric_id): ?object {
+        $ch = curl_init(self::get_base_url() . '/rubrics/' . urlencode($rubric_id));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $raw = curl_exec($ch);
+        curl_close($ch);
+        return @json_decode($raw);
+    }
+
+    /**
+     * DELETE /rubrics/{id} — delete a rubric.
+     *
+     * @param string $rubric_id
+     * @return bool  true if deleted, false otherwise.
+     */
+    public static function delete_rubric(string $rubric_id): bool {
+        $ch = curl_init(self::get_base_url() . '/rubrics/' . urlencode($rubric_id));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $raw = curl_exec($ch);
+        curl_close($ch);
+        $data = @json_decode($raw);
+        return isset($data->status) && $data->status === 'success';
+    }
+
+    // ------------------------------------------------------------------
+    // Private utilities
+    // ------------------------------------------------------------------
 
     /**
      * Execute a POST request against the Python service.
