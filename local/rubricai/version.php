@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Plugin version and metadata.
+ *
  * @package    local_rubricai
  * @copyright  2024 Vicente Astorga (areteIA original)
  * @copyright  2026 Fernando Valladares, Diego Racero

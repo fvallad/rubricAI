@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'local_rubricai', language 'en'.
+ * Language strings for local_rubricai (English).
  *
  * @package    local_rubricai
  * @copyright  2024 Vicente Astorga (areteIA original)

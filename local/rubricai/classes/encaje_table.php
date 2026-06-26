@@ -1,13 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 namespace local_rubricai;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Tabla de encaje pedagógico: mapea instrumentos de evaluación a los
- * instrumentos de corrección válidos según criterios pedagógicos.
+ * Table renderer for alignment results.
  *
- * Fuente: RAG_encaje_2.docx.md
+ * @package    local_rubricai
+ * @copyright  2024 Vicente Astorga (areteIA original)
+ * @copyright  2026 Fernando Valladares, Diego Racero
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class encaje_table {
 

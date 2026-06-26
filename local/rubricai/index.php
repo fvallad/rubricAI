@@ -1,18 +1,25 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * RubricAI — Entry point for the pedagogical workflow.
  *
- * This file is intentionally slim (~80 lines). All logic lives in:
- *   classes/session_manager.php  — state persistence + cascading invalidation
- *   classes/lock_manager.php     — reusable step-locking UI pattern
- *   classes/rag_client.php       — HTTP client for the Python RAG service
- *   classes/action_handler.php   — sync / ingest / export actions
- *   classes/step_renderer.php    — progress bar + card wrapper + dispatch
- *   classes/steps/step0..7.php   — individual step renderers
- *   rubricai.js                   — client-side AJAX navigation + reactivity
- *
  * @package    local_rubricai
- * @copyright  2026 Vicente Astorga
+ * @copyright  2024 Vicente Astorga (areteIA original)
+ * @copyright  2026 Fernando Valladares, Diego Racero
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

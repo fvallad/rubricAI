@@ -1,17 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 namespace local_rubricai;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Reusable lock/protection pattern for RubricAI steps.
+ * Step lock manager.
  *
- * When a teacher has already advanced in the pedagogical workflow,
- * earlier steps become "locked" to prevent accidental data loss.
- * This class provides:
- * - is_locked($step): checks if the step has downstream content that would be lost
- * - render_lock_banner(): the yellow warning card + unlock button
- * - render_option(): renders a card/pill as either a clickable <a> or inert <span>
+ * @package    local_rubricai
+ * @copyright  2024 Vicente Astorga (areteIA original)
+ * @copyright  2026 Fernando Valladares, Diego Racero
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class lock_manager {
 
