@@ -25,7 +25,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-if ($hassiteconfig && $settings) {
+// local plugins must create their own $settings page — Moodle does not provide one.
+if ($hassiteconfig) {
+
+    $settings = new admin_settingpage(
+        'local_rubricai',
+        get_string('pluginname', 'local_rubricai'),
+        'moodle/site:config'
+    );
 
     // --- Connection settings ---
     $settings->add(new admin_setting_heading(
@@ -67,6 +74,8 @@ if ($hassiteconfig && $settings) {
         get_string('rubrics', 'local_rubricai'),
         ''
     ));
+
+    $ADMIN->add('localplugins', $settings);
 
     $ADMIN->add('localplugins', new admin_externalpage(
         'local_rubricai_rubrics',
