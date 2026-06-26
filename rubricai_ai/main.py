@@ -627,12 +627,33 @@ def get_rubric(rubric_id: str):
     client = get_neo4j_client()
     if not client or not client.initialized:
         return {"status": "error", "message": "Neo4j not connected"}
-    
+
     try:
         rubric = client.get_rubric(rubric_id)
         if not rubric:
             return {"status": "error", "message": "Rubric not found"}
         return rubric
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.delete("/rubrics/{rubric_id}")
+@trace_moodle_request(name="moodle_delete_rubric")
+def delete_rubric(rubric_id: str):
+    """
+    Deletes a rubric and all associated nodes from Neo4j.
+    """
+    add_run_metadata({"rubric_id": rubric_id})
+    from neo4j_client import get_neo4j_client
+    client = get_neo4j_client()
+    if not client or not client.initialized:
+        return {"status": "error", "message": "Neo4j not connected"}
+
+    try:
+        deleted = client.delete_rubric(rubric_id)
+        if deleted:
+            return {"status": "success"}
+        return {"status": "error", "message": "Rubric not found"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 

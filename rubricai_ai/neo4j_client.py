@@ -326,6 +326,23 @@ class Neo4jClient:
         add_run_metadata({"rubrics_count": len(results)})
         return results
 
+    @trace_db(name="neo4j_delete_rubric")
+    def delete_rubric(self, rubric_id: str) -> bool:
+        """Deletes a rubric and all its criteria/levels from the rubrics database."""
+        add_run_metadata({"rubric_id": rubric_id, "target_db": self.rubrics_database})
+        result = self.query(
+            """
+            MATCH (r:Rubric {id: $id})
+            OPTIONAL MATCH (r)-[:HAS_CRITERION]->(c:Criterion)
+            OPTIONAL MATCH (c)-[:HAS_LEVEL]->(l:Level)
+            DETACH DELETE r, c, l
+            RETURN count(r) AS deleted
+            """,
+            {"id": rubric_id},
+            database=self.rubrics_database
+        )
+        return bool(result and result[0].get("deleted", 0) > 0)
+
     # --- Course Graphing Methods ---
 
     @trace_db(name="neo4j_sync_course_data")
